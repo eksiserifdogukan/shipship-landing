@@ -1,0 +1,171 @@
+<!doctype html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>shipship — yakında</title>
+  <meta name="description" content="Aşkına karışsınlar. (İyi anlamda.) shipship yakında App Store ve Google Play'de.">
+  <meta property="og:title" content="shipship — yakında">
+  <meta property="og:description" content="Aşkına karışsınlar. (İyi anlamda.)">
+  <meta property="og:url" content="https://shipshipapp.com">
+  <meta property="og:type" content="website">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🚢</text></svg>">
+  <style>
+    :root {
+      --ink: #fff7f4;
+      --ink-soft: rgba(255, 247, 244, 0.82);
+      --ink-dim: rgba(255, 247, 244, 0.6);
+    }
+    * { box-sizing: border-box; margin: 0; }
+    html, body { height: 100%; }
+    body {
+      min-height: 100vh;
+      display: flex; flex-direction: column;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      -webkit-font-smoothing: antialiased;
+      color: var(--ink);
+      background: linear-gradient(160deg, #ff6f61 0%, #f4577d 34%, #d05aa4 68%, #8e4bbf 100%);
+      background-attachment: fixed;
+      overflow-x: hidden;
+    }
+
+    /* soft moving light — barely-there life in the background */
+    .aura {
+      position: fixed; inset: -20%;
+      pointer-events: none;
+      background:
+        radial-gradient(ellipse 45% 38% at 22% 24%, rgba(255, 255, 255, 0.16), transparent 70%),
+        radial-gradient(ellipse 40% 34% at 82% 78%, rgba(70, 20, 120, 0.25), transparent 70%);
+      animation: drift 16s ease-in-out infinite alternate;
+    }
+    @keyframes drift {
+      from { transform: translate3d(-1.5%, -1%, 0) scale(1); }
+      to { transform: translate3d(1.5%, 1.5%, 0) scale(1.04); }
+    }
+
+    header {
+      position: relative;
+      padding: 26px clamp(22px, 5vw, 48px);
+    }
+    .wordmark {
+      font-size: 21px; font-weight: 800; letter-spacing: -0.02em;
+      text-shadow: 0 1px 12px rgba(120, 30, 90, 0.25);
+    }
+
+    main {
+      flex: 1;
+      position: relative;
+      display: flex; flex-direction: column;
+      justify-content: center;
+      padding: 24px clamp(22px, 5vw, 48px) 48px;
+      max-width: 1100px;
+    }
+
+    h1 {
+      font-size: clamp(52px, 11vw, 128px);
+      line-height: 1.02;
+      font-weight: 800;
+      letter-spacing: -0.035em;
+      text-wrap: balance;
+      text-shadow: 0 2px 28px rgba(110, 25, 85, 0.28);
+      animation: rise 0.9s cubic-bezier(0.22, 1, 0.36, 1) both;
+    }
+    .footnote {
+      margin-top: 22px;
+      font-size: clamp(16px, 2.6vw, 20px);
+      font-weight: 500;
+      color: var(--ink-soft);
+      animation: rise 0.9s 0.14s cubic-bezier(0.22, 1, 0.36, 1) both;
+    }
+
+    .soon {
+      margin-top: 42px;
+      display: inline-flex; width: fit-content;
+      align-items: center; gap: 9px;
+      font-size: 13px; font-weight: 700;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--ink);
+      background: rgba(255, 255, 255, 0.14);
+      border: 1px solid rgba(255, 255, 255, 0.28);
+      -webkit-backdrop-filter: blur(6px);
+      backdrop-filter: blur(6px);
+      padding: 10px 18px; border-radius: 999px;
+      animation: rise 0.9s 0.26s cubic-bezier(0.22, 1, 0.36, 1) both;
+    }
+    .soon .dot {
+      width: 7px; height: 7px; border-radius: 50%;
+      background: var(--ink);
+      animation: pulse 2.4s ease-in-out infinite;
+    }
+    @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
+
+    .links {
+      margin-top: 20px;
+      display: flex; gap: 10px; flex-wrap: wrap;
+      animation: rise 0.9s 0.36s cubic-bezier(0.22, 1, 0.36, 1) both;
+    }
+    .links a {
+      color: var(--ink);
+      text-decoration: none;
+      font-size: 15px; font-weight: 700;
+      padding: 12px 22px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.12);
+      border: 1px solid rgba(255, 255, 255, 0.22);
+      transition: background 0.25s, transform 0.25s;
+    }
+    .links a:hover, .links a:focus-visible {
+      background: rgba(255, 255, 255, 0.24);
+      transform: translateY(-2px);
+      outline: none;
+    }
+
+    footer {
+      position: relative;
+      padding: 26px clamp(22px, 5vw, 48px);
+      display: flex; justify-content: space-between; align-items: center;
+      gap: 12px; flex-wrap: wrap;
+      font-size: 13.5px;
+      color: var(--ink-dim);
+    }
+    footer a { color: var(--ink-soft); text-decoration: none; font-weight: 600; }
+    footer a:hover { color: var(--ink); }
+
+    @keyframes rise {
+      from { opacity: 0; transform: translateY(22px); }
+      to { opacity: 1; transform: none; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .aura, .soon .dot { animation: none; }
+      h1, .footnote, .soon, .links { animation: none; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="aura"></div>
+
+<header>
+  <div class="wordmark">shipship</div>
+</header>
+
+<main>
+  <h1>Aşkına<br>karışsınlar.*</h1>
+  <p class="footnote">* İyi anlamda.</p>
+
+  <div class="soon"><span class="dot"></span> Yakında · App Store &amp; Google Play</div>
+
+  <div class="links">
+    <a href="https://instagram.com/shipshipapp" rel="noopener">Instagram</a>
+    <a href="https://tiktok.com/@shipshipapp" rel="noopener">TikTok</a>
+    <a href="https://x.com/shipshipapp" rel="noopener">X</a>
+  </div>
+</main>
+
+<footer>
+  <div>© 2026 shipship</div>
+  <div><a href="mailto:merhaba@shipshipapp.com">merhaba@shipshipapp.com</a></div>
+</footer>
+
+</body>
+</html>
