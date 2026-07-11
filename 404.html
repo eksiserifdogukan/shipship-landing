@@ -72,13 +72,9 @@
   <main>
     <div class="wrap" id="invite" style="display:none">
       <h1>Birisi seni shipship'e davet ediyor</h1>
-      <p class="sub">Topluluğun eşleştirdiği tanışma uygulaması. Uygulamayı kur, sonra davet kodunu gir — arkadaş çevrenize eklenirsiniz.</p>
-      <div class="codebox">
-        <div class="codelabel">Davet kodun</div>
-        <div class="code" id="code">—</div>
-      </div>
+      <p class="sub">Topluluğun eşleştirdiği tanışma uygulaması. Uygulamayı kur ve kendi numaranla gir — seni davet edenle otomatik arkadaş olursunuz.</p>
       <a class="cta" href="https://apps.apple.com/app/id6789615007">App Store'dan indir</a>
-      <p class="hint">Uygulamayı açtıktan sonra bu kodu yapıştır. (Kod bu bağlantıda saklı — kaybetme.)</p>
+      <p class="hint">Numaranla giriş yapman yeter — davet kendiliğinden bağlanır.</p>
     </div>
 
     <div class="wrap" id="notfound" style="display:none">
@@ -90,13 +86,10 @@
 
   <script>
     (function () {
-      var m = location.pathname.match(/\/invite\/([^/?#]+)/);
-      if (m && m[1]) {
-        document.getElementById("code").textContent = decodeURIComponent(m[1]);
-        document.getElementById("invite").style.display = "";
-      } else {
-        document.getElementById("notfound").style.display = "";
-      }
+      // /invite veya /invite/<herhangi> → davet landing (kod yok; bağlantı
+      // telefon eşleşmesiyle kurulur). Diğer yollar → sade 404.
+      var invite = /^\/invite(\/|$)/.test(location.pathname);
+      document.getElementById(invite ? "invite" : "notfound").style.display = "";
     })();
   </script>
 </body>
