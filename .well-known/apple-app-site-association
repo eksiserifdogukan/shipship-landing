@@ -1,0 +1,12 @@
+{
+  "applinks": {
+    "details": [
+      {
+        "appIDs": ["SZ24B7PG64.com.shipshipapp.app"],
+        "components": [
+          { "/": "/invite/*", "comment": "Arkadas daveti derin linkleri" }
+        ]
+      }
+    ]
+  }
+}
