@@ -8,7 +8,7 @@
   <meta name="robots" content="index,follow">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🚢</text></svg>">
   <style>
-    :root { --ink:#2a1a24; --ink-soft:#5c4553; --ink-dim:#8a7280; --accent:#d05aa4; --card:#fffdfc; }
+    :root { --ink:#2a1a24; --ink-soft:#5c4553; --ink-dim:#8a7280; --accent:#d05aa4; --card:#fffdfc; --line:#f0e4e9; }
     * { box-sizing:border-box; margin:0; }
     body {
       min-height:100vh; display:flex; flex-direction:column;
@@ -21,26 +21,43 @@
     .wordmark { font-size:19px; font-weight:800; letter-spacing:-0.02em; color:#fff7f4; text-decoration:none; display:inline-block; }
     main { flex:1; padding:0 clamp(16px,4vw,48px) 56px; }
     .doc {
-      max-width:760px; margin:0 auto; background:var(--card); color:var(--ink);
+      max-width:720px; margin:0 auto; background:var(--card); color:var(--ink);
       border-radius:22px; padding:clamp(26px,5vw,52px);
       box-shadow:0 24px 70px rgba(90,20,70,0.35);
     }
-    .doc h1 { font-size:clamp(24px,4.5vw,32px); letter-spacing:-0.02em; line-height:1.18; }
+    .doc h1 { font-size:clamp(26px,4.5vw,34px); letter-spacing:-0.02em; line-height:1.15; }
     .meta { margin-top:8px; font-size:13.5px; color:var(--ink-dim); }
     .doc h2 { font-size:19px; margin:34px 0 10px; letter-spacing:-0.01em; }
     .doc p, .doc li { font-size:15.5px; line-height:1.65; color:var(--ink-soft); }
     .doc p + p { margin-top:10px; }
     .doc ul { padding-left:22px; margin:8px 0; }
-    .doc li { margin:6px 0; }
+    .doc li { margin:8px 0; }
     .doc strong { color:var(--ink); }
     .doc a { color:var(--accent); font-weight:600; text-decoration:none; }
     .doc a:hover { text-decoration:underline; }
-    .tablewrap { overflow-x:auto; margin:12px 0; }
-    table { border-collapse:collapse; width:100%; min-width:520px; font-size:14px; }
-    th, td { text-align:left; padding:10px 12px; border-bottom:1px solid #f0e4e9; vertical-align:top; line-height:1.5; color:var(--ink-soft); }
-    th { color:var(--ink); font-size:12.5px; text-transform:uppercase; letter-spacing:0.04em; }
-    td strong { color:var(--ink); }
-    .otherdocs { margin-top:38px; padding-top:18px; border-top:1px solid #f0e4e9; font-size:14px; color:var(--ink-dim); }
+
+    .tablewrap { overflow-x:auto; -webkit-overflow-scrolling:touch; margin:14px 0; }
+    table { border-collapse:collapse; width:100%; }
+    th, td { text-align:left; padding:10px 12px; border-bottom:1px solid var(--line); vertical-align:top; font-size:14.5px; line-height:1.55; color:var(--ink-soft); }
+    th { color:var(--ink); font-weight:700; font-size:12px; text-transform:uppercase; letter-spacing:0.05em; }
+
+    /* Dar ekranda tablo = dikey kart yığını. Bu sayfa esasen telefonda
+       (uygulama içi tarayıcıda) okunuyor; yatay kaydırma okumayı bozuyordu. */
+    @media (max-width:600px) {
+      .tablewrap { overflow-x:visible; }
+      table, tbody, tr, td { display:block; width:100%; }
+      tr:first-child { display:none; }
+      tr { border:1px solid var(--line); border-radius:14px; padding:12px 15px; margin-bottom:10px; }
+      td { border:none; padding:6px 0; }
+      td + td { border-top:1px solid var(--line); }
+      td::before {
+        content:attr(data-l); display:block; margin-bottom:3px;
+        font-size:11px; font-weight:700; text-transform:uppercase;
+        letter-spacing:0.06em; color:var(--ink-dim);
+      }
+    }
+
+    .otherdocs { margin-top:38px; padding-top:18px; border-top:1px solid var(--line); font-size:14px; color:var(--ink-dim); }
     footer { padding:24px clamp(22px,5vw,48px); display:flex; justify-content:space-between; flex-wrap:wrap; gap:10px; font-size:13.5px; color:rgba(255,247,244,0.7); }
     footer a { color:rgba(255,247,244,0.9); text-decoration:none; font-weight:600; }
   </style>
@@ -62,25 +79,26 @@
   <p>Tüm veriler, uygulama üzerinden <strong>tamamen otomatik yollarla</strong> (senin form/profil alanlarına girişinle ve uygulamanın teknik kayıtlarıyla) elde edilir.</p>
   <div class="tablewrap"><table>
     <tr><th>Veri kategorisi</th><th>İçerik</th></tr>
-    <tr><td>Kimlik/iletişim</td><td>Görünen ad, telefon numarası, doğum tarihi</td></tr>
-    <tr><td>Profil</td><td>Fotoğraflar, bio, meslek, şehir, ilgi alanları, boy/eğitim gibi isteğe bağlı alanlar</td></tr>
-    <tr><td><strong>Özel nitelikli</strong></td><td>Cinsiyet ve <strong>"kimi arıyorsun" tercihi</strong> (cinsel hayata ilişkin veri, KVKK m.6)</td></tr>
-    <tr><td>Kullanım</td><td>Oyların, Tanış/Geç kararların, önerilerin, arkadaşlık bağlantıların, mesajların</td></tr>
-    <tr><td>Konum</td><td>Seçtiğin şehir; iznin varsa yaklaşık konum (tam adres toplanmaz)</td></tr>
-    <tr><td>Teknik</td><td>Cihaz modeli, uygulama sürümü, çökme/hata kayıtları</td></tr>
+    <tr><td data-l="Veri kategorisi">Kimlik/iletişim</td><td data-l="İçerik">Görünen ad, telefon numarası, doğum tarihi</td></tr>
+    <tr><td data-l="Veri kategorisi">Profil</td><td data-l="İçerik">Fotoğraflar, bio, meslek, şehir, ilgi alanları, boy/eğitim gibi isteğe bağlı alanlar</td></tr>
+    <tr><td data-l="Veri kategorisi"><strong>Özel nitelikli</strong></td><td data-l="İçerik">Cinsiyet ve <strong>"kimi arıyorsun" tercihi</strong> (cinsel hayata ilişkin veri, KVKK m.6)</td></tr>
+    <tr><td data-l="Veri kategorisi">Kullanım</td><td data-l="İçerik">Oyların, Tanış/Geç kararların, önerilerin, arkadaşlık bağlantıların, mesajların</td></tr>
+    <tr><td data-l="Veri kategorisi">Konum</td><td data-l="İçerik">Seçtiğin şehir; iznin varsa yaklaşık konum (tam adres toplanmaz)</td></tr>
+    <tr><td data-l="Veri kategorisi">Teknik</td><td data-l="İçerik">Cihaz modeli, uygulama sürümü, çökme/hata kayıtları</td></tr>
   </table></div>
+  <p>Yüz/biyometrik veri toplamıyoruz; kimlik belgesi istemiyoruz.</p>
 
   <h2>4. Neden ve hangi hukuki sebeple işliyoruz?</h2>
   <div class="tablewrap"><table>
     <tr><th>Amaç</th><th>Veri</th><th>Hukuki sebep (KVKK)</th></tr>
-    <tr><td>Hesap açma ve girişte SMS koduyla doğrulama</td><td>Telefon numarası</td><td>m.5/2-c: sözleşmenin kurulması/ifası</td></tr>
-    <tr><td>18 yaş denetimi; profilde yalnız yaşın gösterilmesi (tam doğum tarihin asla gösterilmez)</td><td>Doğum tarihi</td><td>m.5/2-c ve m.5/2-ç: hukuki yükümlülük</td></tr>
-    <tr><td>Profilinin ikili önerilerinde diğer kullanıcılara gösterilmesi ve topluluk oylaması (yalnız "Eşleşmelere katıl" modunda)</td><td>Profil verileri</td><td>m.5/2-c: sözleşmenin ifası (mod seçimin sözleşmenin konusudur)</td></tr>
-    <tr><td>Uygun ikililerin oluşturulması</td><td>Cinsiyet + "kimi arıyorsun"</td><td><strong>m.6: açık rıza</strong> — uygulama içinde ayrı beyanla</td></tr>
-    <tr><td>Oylama/eşleşme/sohbet özelliklerinin çalıştırılması</td><td>Kullanım verileri</td><td>m.5/2-c: sözleşmenin ifası</td></tr>
-    <tr><td>Uzaklık tercihine göre aday gösterimi</td><td>Şehir / yaklaşık konum</td><td>m.5/1: açık rıza (konum iznini reddedebilirsin; şehir beyanı sözleşmenin ifası)</td></tr>
-    <tr><td>Hataların bulunup düzeltilmesi, güvenlik ve kötüye kullanımın önlenmesi</td><td>Teknik kayıtlar</td><td>m.5/2-f: meşru menfaat</td></tr>
-    <tr><td>Şikayetlerin incelenmesi, hukuka aykırı kullanımın tespiti</td><td>İlgili içerik/kayıtlar</td><td>m.5/2-ç, m.5/2-e: hukuki yükümlülük / hakkın tesisi</td></tr>
+    <tr><td data-l="Amaç">Hesap açma ve girişte SMS koduyla doğrulama</td><td data-l="Veri">Telefon numarası</td><td data-l="Hukuki sebep">m.5/2-c: sözleşmenin kurulması/ifası</td></tr>
+    <tr><td data-l="Amaç">18 yaş denetimi; profilde yalnız yaşın gösterilmesi (tam doğum tarihin asla gösterilmez)</td><td data-l="Veri">Doğum tarihi</td><td data-l="Hukuki sebep">m.5/2-c ve m.5/2-ç: hukuki yükümlülük</td></tr>
+    <tr><td data-l="Amaç">Profilinin ikili önerilerinde diğer kullanıcılara gösterilmesi ve topluluk oylaması (yalnız "Eşleşmelere katıl" modunda)</td><td data-l="Veri">Profil verileri</td><td data-l="Hukuki sebep">m.5/2-c: sözleşmenin ifası (mod seçimin sözleşmenin konusudur)</td></tr>
+    <tr><td data-l="Amaç">Uygun ikililerin oluşturulması</td><td data-l="Veri">Cinsiyet + "kimi arıyorsun"</td><td data-l="Hukuki sebep"><strong>m.6: açık rıza</strong> — uygulama içinde ayrı beyanla</td></tr>
+    <tr><td data-l="Amaç">Oylama/eşleşme/sohbet özelliklerinin çalıştırılması</td><td data-l="Veri">Kullanım verileri</td><td data-l="Hukuki sebep">m.5/2-c: sözleşmenin ifası</td></tr>
+    <tr><td data-l="Amaç">Uzaklık tercihine göre aday gösterimi</td><td data-l="Veri">Şehir / yaklaşık konum</td><td data-l="Hukuki sebep">m.5/1: açık rıza (konum iznini reddedebilirsin; şehir beyanı sözleşmenin ifası)</td></tr>
+    <tr><td data-l="Amaç">Hataların bulunup düzeltilmesi, güvenlik ve kötüye kullanımın önlenmesi</td><td data-l="Veri">Teknik kayıtlar</td><td data-l="Hukuki sebep">m.5/2-f: meşru menfaat</td></tr>
+    <tr><td data-l="Amaç">Şikayetlerin incelenmesi, hukuka aykırı kullanımın tespiti</td><td data-l="Veri">İlgili içerik/kayıtlar</td><td data-l="Hukuki sebep">m.5/2-ç, m.5/2-e: hukuki yükümlülük / hakkın tesisi</td></tr>
   </table></div>
   <p>Reklam/pazarlama amaçlı işleme ve veri satışı yoktur.</p>
 
@@ -95,12 +113,12 @@
   <h2>6. Kimlere, hangi amaçla aktarıyoruz?</h2>
   <div class="tablewrap"><table>
     <tr><th>Alıcı grubu</th><th>Aktarım amacı</th></tr>
-    <tr><td><strong>Barındırma hizmeti sağlayıcısı</strong> (Supabase — altyapı: Amazon Web Services)</td><td>Verilerin saklanması, kimlik doğrulama ve uygulamanın çalıştırılması</td></tr>
-    <tr><td><strong>SMS hizmeti sağlayıcısı</strong> (Twilio)</td><td>Giriş doğrulama kodunun telefonuna iletilmesi</td></tr>
-    <tr><td><strong>Hata izleme sağlayıcısı</strong> (Sentry)</td><td>Çökme/hata kayıtlarının incelenmesi (mesaj/fotoğraf içeriği gönderilmez)</td></tr>
-    <tr><td><strong>Uygulama dağıtım platformu</strong> (Apple)</td><td>Uygulamanın dağıtımı; bildirimler açılırsa iletimi</td></tr>
-    <tr><td><strong>İşletmenin devri hâlinde devralan</strong></td><td>Uygulamanın işletilmesi bir şirkete ya da üçüncü kişiye devredilirse, hizmetin sürdürülebilmesi. Böyle bir durumda önceden bilgilendirilirsin ve hesabını silme hakkın saklıdır</td></tr>
-    <tr><td>Yetkili kurumlar</td><td>Yalnız hukuken zorunlu hâllerde (mahkeme kararı vb.)</td></tr>
+    <tr><td data-l="Alıcı grubu"><strong>Barındırma hizmeti sağlayıcısı</strong> (Supabase — altyapı: Amazon Web Services)</td><td data-l="Aktarım amacı">Verilerin saklanması, kimlik doğrulama ve uygulamanın çalıştırılması</td></tr>
+    <tr><td data-l="Alıcı grubu"><strong>SMS hizmeti sağlayıcısı</strong> (Twilio)</td><td data-l="Aktarım amacı">Giriş doğrulama kodunun telefonuna iletilmesi</td></tr>
+    <tr><td data-l="Alıcı grubu"><strong>Hata izleme sağlayıcısı</strong> (Sentry)</td><td data-l="Aktarım amacı">Çökme/hata kayıtlarının incelenmesi (mesaj/fotoğraf içeriği gönderilmez)</td></tr>
+    <tr><td data-l="Alıcı grubu"><strong>Uygulama dağıtım platformu</strong> (Apple)</td><td data-l="Aktarım amacı">Uygulamanın dağıtımı; bildirimler açılırsa iletimi</td></tr>
+    <tr><td data-l="Alıcı grubu"><strong>İşletmenin devri hâlinde devralan</strong></td><td data-l="Aktarım amacı">Uygulamanın işletilmesi bir şirkete ya da üçüncü kişiye devredilirse, hizmetin sürdürülebilmesi. Böyle bir durumda önceden bilgilendirilirsin ve hesabını silme hakkın saklıdır</td></tr>
+    <tr><td data-l="Alıcı grubu">Yetkili kurumlar</td><td data-l="Aktarım amacı">Yalnız hukuken zorunlu hâllerde (mahkeme kararı vb.)</td></tr>
   </table></div>
   <p><strong>Diğer kullanıcılar:</strong> "Eşleşmelere katıl" modundaysan profil kartın (fotoğraflar, ad, yaş, meslek, şehir, bio, ilgi alanları) diğer kullanıcılara gösterilir. Oyların kimliğinle birlikte gösterilmez. "Sadece oy ver" modunda profilin kimseye gösterilmez.</p>
 
@@ -114,16 +132,16 @@
   <h2>9. Ne kadar saklıyoruz?</h2>
   <div class="tablewrap"><table>
     <tr><th>Ne</th><th>Süre</th><th>Dayanak</th></tr>
-    <tr><td>Hesap ve profil verilerin (fotoğraflar, tercihler, eşleşmeler)</td><td>Hesabın açık olduğu sürece</td><td>Sözleşmenin ifası</td></tr>
-    <tr><td><strong>Hesabını sildiğinde</strong></td><td><strong>Anında ve geri alınamaz şekilde silinir</strong> — hesabı geri getirme penceresi yoktur</td><td>Talebin (m.7)</td></tr>
-    <tr><td>— mesajlarının karşı taraftaki kopyası</td><td>Silinmez, <strong>anonimleştirilir</strong>: gönderen "Silinmiş kullanıcı" olarak görünür</td><td>Karşı tarafın kendi sohbet geçmişi; m.7 anonim hâle getirme</td></tr>
-    <tr><td>— verdiğin oylar</td><td><strong>Kimliksiz istatistik</strong> olarak kalır (kime ait olduğu geri döndürülemez)</td><td>m.7 anonim hâle getirme</td></tr>
-    <tr><td>Şikayet ve moderasyon kayıtları</td><td>12 ay</td><td>Tekrar eden ihlalin tespiti — m.5/2-f meşru menfaat</td></tr>
-    <tr><td>Engelleme kayıtları</td><td>Engelleyen hesap açık olduğu sürece</td><td>Engellemenin çalışmaya devam etmesi için teknik zorunluluk</td></tr>
-    <tr><td>Destek yazışmaları</td><td>5 yıl</td><td>Olası talep ve uyuşmazlıklar</td></tr>
-    <tr><td>Açık rıza kayıtları</td><td>Rıza geçerli olduğu sürece + 5 yıl</td><td>İspat yükü veri sorumlusunda</td></tr>
-    <tr><td>Mali kayıtlar</td><td>Ücretli özellik gelirse 10 yıl</td><td>Vergi ve ticaret mevzuatı</td></tr>
-    <tr><td>Uzun süre girilmeyen hesaplar</td><td><strong>Otomatik silinmez</strong> — hesabın sen silene kadar durur</td><td>Ürün kararı</td></tr>
+    <tr><td data-l="Ne">Hesap ve profil verilerin (fotoğraflar, tercihler, eşleşmeler)</td><td data-l="Süre">Hesabın açık olduğu sürece</td><td data-l="Dayanak">Sözleşmenin ifası</td></tr>
+    <tr><td data-l="Ne"><strong>Hesabını sildiğinde</strong></td><td data-l="Süre"><strong>Anında ve geri alınamaz şekilde silinir</strong> — hesabı geri getirme penceresi yoktur</td><td data-l="Dayanak">Talebin (m.7)</td></tr>
+    <tr><td data-l="Ne">— mesajlarının karşı taraftaki kopyası</td><td data-l="Süre">Silinmez, <strong>anonimleştirilir</strong>: gönderen "Silinmiş kullanıcı" olarak görünür</td><td data-l="Dayanak">Karşı tarafın kendi sohbet geçmişi; m.7 anonim hâle getirme</td></tr>
+    <tr><td data-l="Ne">— verdiğin oylar</td><td data-l="Süre"><strong>Kimliksiz istatistik</strong> olarak kalır (kime ait olduğu geri döndürülemez)</td><td data-l="Dayanak">m.7 anonim hâle getirme</td></tr>
+    <tr><td data-l="Ne">Şikayet ve moderasyon kayıtları</td><td data-l="Süre">12 ay</td><td data-l="Dayanak">Tekrar eden ihlalin tespiti — m.5/2-f meşru menfaat</td></tr>
+    <tr><td data-l="Ne">Engelleme kayıtları</td><td data-l="Süre">Engelleyen hesap açık olduğu sürece</td><td data-l="Dayanak">Engellemenin çalışmaya devam etmesi için teknik zorunluluk</td></tr>
+    <tr><td data-l="Ne">Destek yazışmaları</td><td data-l="Süre">5 yıl</td><td data-l="Dayanak">Olası talep ve uyuşmazlıklar</td></tr>
+    <tr><td data-l="Ne">Açık rıza kayıtları</td><td data-l="Süre">Rıza geçerli olduğu sürece + 5 yıl</td><td data-l="Dayanak">İspat yükü veri sorumlusunda</td></tr>
+    <tr><td data-l="Ne">Mali kayıtlar</td><td data-l="Süre">Ücretli özellik gelirse 10 yıl</td><td data-l="Dayanak">Vergi ve ticaret mevzuatı</td></tr>
+    <tr><td data-l="Ne">Uzun süre girilmeyen hesaplar</td><td data-l="Süre"><strong>Otomatik silinmez</strong> — hesabın sen silene kadar durur</td><td data-l="Dayanak">Ürün kararı</td></tr>
   </table></div>
   <p>Erişim/trafik kayıtları için mevzuatın öngördüğü saklama süreleri ayrıca uygulanır.</p>
 
