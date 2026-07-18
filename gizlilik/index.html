@@ -56,7 +56,7 @@
   <p>6698 sayılı Kişisel Verilerin Korunması Kanunu ("KVKK") uyarınca veri sorumlusu: <strong>Şerif Doğukan Ekşi</strong>, İstanbul. İletişim: <strong>kvkk@shipshipapp.com</strong></p>
 
   <h2>2. Bu metnin kapsamı</h2>
-  <p>Bu metin, shipship mobil uygulamasını kullananların kişisel verilerinin işlenmesine ilişkin KVKK m.10 aydınlatma yükümlülüğünü yerine getirir. Uygulama 18 yaş altına yönelik değildir (bkz. §10). Bu metin bir rıza beyanı içermez; açık rıza gerektiren işlemler için rızan, uygulama içinde ayrı ekranlarda ayrıca istenir.</p>
+  <p>Bu metin, shipship mobil uygulamasını kullananların kişisel verilerinin işlenmesine ilişkin KVKK m.10 aydınlatma yükümlülüğünü yerine getirir. Uygulama 18 yaş altına yönelik değildir (bkz. §12). Bu metin bir rıza beyanı içermez; açık rıza gerektiren işlemler için rızan, uygulama içinde ayrı ekranlarda ayrıca istenir.</p>
 
   <h2>3. Hangi verileri topluyoruz, hangi yöntemle?</h2>
   <p>Tüm veriler, uygulama üzerinden <strong>tamamen otomatik yollarla</strong> (senin form/profil alanlarına girişinle ve uygulamanın teknik kayıtlarıyla) elde edilir.</p>
@@ -82,43 +82,69 @@
     <tr><td>Hataların bulunup düzeltilmesi, güvenlik ve kötüye kullanımın önlenmesi</td><td>Teknik kayıtlar</td><td>m.5/2-f: meşru menfaat</td></tr>
     <tr><td>Şikayetlerin incelenmesi, hukuka aykırı kullanımın tespiti</td><td>İlgili içerik/kayıtlar</td><td>m.5/2-ç, m.5/2-e: hukuki yükümlülük / hakkın tesisi</td></tr>
   </table></div>
-  <p>Reklam/pazarlama amaçlı işleme ve veri satışı yoktur. Profilleme yalnız uygulamanın temel işlevi (uygun ikili önerme) için yapılır.</p>
+  <p>Reklam/pazarlama amaçlı işleme ve veri satışı yoktur.</p>
 
-  <h2>5. Kimlere, hangi amaçla aktarıyoruz?</h2>
+  <h2>5. Otomatik değerlendirme ve öneri sıralaması</h2>
+  <p>Uygulamanın temel işlevi otomatik bir hesaplamaya dayanır: hangi ikililerin oluşturulacağı ve sana hangi ikililerin gösterileceği otomatik olarak belirlenir.</p>
+  <ul>
+    <li><strong>Kullanılan girdiler:</strong> profil bilgilerin, eşleşme tercihlerin, oy geçmişin, uygulamadaki etkinliğin ve (izin verdiysen) yaklaşık konumun.</li>
+    <li>Bu hesaplama sana içerik <strong>sıralar/önerir</strong>; hakkında hukuki sonuç doğuran ya da seni benzer ölçüde etkileyen <strong>tam otomatik bir karar değildir</strong>. Kimseyi hizmetten çıkarmaz, bir hak kaybına yol açmaz.</li>
+    <li>Sonuçtan memnun değilsen eşleşme tercihlerini değiştirebilir, <strong>"Sadece oy ver"</strong> moduna geçerek profilinin gösterilmesini tamamen durdurabilir ya da KVKK m.11 uyarınca itiraz hakkını kullanabilirsin.</li>
+  </ul>
+
+  <h2>6. Kimlere, hangi amaçla aktarıyoruz?</h2>
   <div class="tablewrap"><table>
     <tr><th>Alıcı grubu</th><th>Aktarım amacı</th></tr>
     <tr><td><strong>Barındırma hizmeti sağlayıcısı</strong> (Supabase — altyapı: Amazon Web Services)</td><td>Verilerin saklanması, kimlik doğrulama ve uygulamanın çalıştırılması</td></tr>
     <tr><td><strong>SMS hizmeti sağlayıcısı</strong> (Twilio)</td><td>Giriş doğrulama kodunun telefonuna iletilmesi</td></tr>
     <tr><td><strong>Hata izleme sağlayıcısı</strong> (Sentry)</td><td>Çökme/hata kayıtlarının incelenmesi (mesaj/fotoğraf içeriği gönderilmez)</td></tr>
     <tr><td><strong>Uygulama dağıtım platformu</strong> (Apple)</td><td>Uygulamanın dağıtımı; bildirimler açılırsa iletimi</td></tr>
+    <tr><td><strong>İşletmenin devri hâlinde devralan</strong></td><td>Uygulamanın işletilmesi bir şirkete ya da üçüncü kişiye devredilirse, hizmetin sürdürülebilmesi. Böyle bir durumda önceden bilgilendirilirsin ve hesabını silme hakkın saklıdır</td></tr>
     <tr><td>Yetkili kurumlar</td><td>Yalnız hukuken zorunlu hâllerde (mahkeme kararı vb.)</td></tr>
   </table></div>
   <p><strong>Diğer kullanıcılar:</strong> "Eşleşmelere katıl" modundaysan profil kartın (fotoğraflar, ad, yaş, meslek, şehir, bio, ilgi alanları) diğer kullanıcılara gösterilir. Oyların kimliğinle birlikte gösterilmez. "Sadece oy ver" modunda profilin kimseye gösterilmez.</p>
 
-  <h2>6. Yurt dışına aktarım</h2>
+  <h2>7. Yurt dışına aktarım</h2>
   <p>Yukarıdaki hizmet sağlayıcıların sunucuları <strong>yurt dışındadır</strong>; bu nedenle verilerin yurt dışına aktarılır. Bu aktarımlar, KVKK m.9 kapsamında öngörülen güvencelere ve gerekli hâllerde kayıt sırasında uygulama içinde ayrıca istenen açık rızana dayanılarak yapılır.</p>
 
-  <h2>7. Hakların (KVKK m.11)</h2>
+  <h2>8. Hakların (KVKK m.11)</h2>
   <p>Bize <strong>kvkk@shipshipapp.com</strong> üzerinden ya da Veri Sorumlusuna Başvuru Usul ve Esasları Hakkında Tebliğ'e uygun yazılı başvuruyla: verinin işlenip işlenmediğini öğrenme · bilgi talep etme · işlenme amacını ve amacına uygun kullanılıp kullanılmadığını öğrenme · yurt içinde/dışında aktarıldığı üçüncü kişileri bilme · eksik/yanlış işlenmişse düzeltilmesini isteme · silinmesini/yok edilmesini isteme (ve bunların aktarılan üçüncü kişilere bildirilmesini isteme) · münhasıran otomatik sistemlerle analiz sonucu aleyhine bir sonucun ortaya çıkmasına itiraz etme · zarara uğradıysan giderilmesini talep etme haklarına sahipsin. Başvurular en geç <strong>30 gün</strong> içinde ücretsiz sonuçlandırılır. Ayrıca Kişisel Verileri Koruma Kurulu'na şikayet hakkın saklıdır.</p>
   <p><strong>Hesabını uygulama içinden (Ayarlar → Hesabımı sil) her zaman silebilirsin;</strong> verdiğin açık rızaları da dilediğin an, verdiğin kolaylıkta geri çekebilirsin (Ayarlar → Gizlilik).</p>
 
-  <h2>8. Ne kadar saklıyoruz?</h2>
-  <ul>
-    <li>Hesap açıkken: hizmetin gerektirdiği süre boyunca.</li>
-    <li><strong>Hesap silindiğinde:</strong> profilin, fotoğrafların ve eşleşme/aday kayıtların tamamen silinir. Karşı tarafın kendi sohbet geçmişindeki mesajların, gönderen kimliği <strong>"Silinmiş kullanıcı"</strong> olacak şekilde geri döndürülemez biçimde anonimleştirilir (karşı tarafın kendi konuşma kaydı korunur); topluluk oyları kimliksiz istatistik olarak kalır — hiçbiri seninle ilişkilendirilemez. Yasal saklama yükümlülükleri saklıdır.</li>
-    <li>Şikayet kayıtları güvenlik amacıyla 12 ay saklanabilir.</li>
-  </ul>
+  <h2>9. Ne kadar saklıyoruz?</h2>
+  <div class="tablewrap"><table>
+    <tr><th>Ne</th><th>Süre</th><th>Dayanak</th></tr>
+    <tr><td>Hesap ve profil verilerin (fotoğraflar, tercihler, eşleşmeler)</td><td>Hesabın açık olduğu sürece</td><td>Sözleşmenin ifası</td></tr>
+    <tr><td><strong>Hesabını sildiğinde</strong></td><td><strong>Anında ve geri alınamaz şekilde silinir</strong> — hesabı geri getirme penceresi yoktur</td><td>Talebin (m.7)</td></tr>
+    <tr><td>— mesajlarının karşı taraftaki kopyası</td><td>Silinmez, <strong>anonimleştirilir</strong>: gönderen "Silinmiş kullanıcı" olarak görünür</td><td>Karşı tarafın kendi sohbet geçmişi; m.7 anonim hâle getirme</td></tr>
+    <tr><td>— verdiğin oylar</td><td><strong>Kimliksiz istatistik</strong> olarak kalır (kime ait olduğu geri döndürülemez)</td><td>m.7 anonim hâle getirme</td></tr>
+    <tr><td>Şikayet ve moderasyon kayıtları</td><td>12 ay</td><td>Tekrar eden ihlalin tespiti — m.5/2-f meşru menfaat</td></tr>
+    <tr><td>Engelleme kayıtları</td><td>Engelleyen hesap açık olduğu sürece</td><td>Engellemenin çalışmaya devam etmesi için teknik zorunluluk</td></tr>
+    <tr><td>Destek yazışmaları</td><td>5 yıl</td><td>Olası talep ve uyuşmazlıklar</td></tr>
+    <tr><td>Açık rıza kayıtları</td><td>Rıza geçerli olduğu sürece + 5 yıl</td><td>İspat yükü veri sorumlusunda</td></tr>
+    <tr><td>Mali kayıtlar</td><td>Ücretli özellik gelirse 10 yıl</td><td>Vergi ve ticaret mevzuatı</td></tr>
+    <tr><td>Uzun süre girilmeyen hesaplar</td><td><strong>Otomatik silinmez</strong> — hesabın sen silene kadar durur</td><td>Ürün kararı</td></tr>
+  </table></div>
+  <p>Erişim/trafik kayıtları için mevzuatın öngördüğü saklama süreleri ayrıca uygulanır.</p>
 
-  <h2>9. Güvenlik</h2>
+  <h2>10. Güvenlik</h2>
   <p>Veriler aktarımda ve saklamada şifrelenir; erişim, satır bazlı yetki kurallarıyla (her kullanıcı yalnız kendi verisine erişir) sınırlanır; özel nitelikli veriler için Kurul'un aradığı ek teknik ve idari tedbirler uygulanır.</p>
 
-  <h2>10. Çocukların gizliliği</h2>
-  <p>Uygulama 18 yaş altına yönelik değildir; 18 yaş altı olduğu anlaşılan hesaplar ve verileri derhâl silinir.</p>
+  <h2>11. Veri ihlali durumunda ne yaparız?</h2>
+  <p>Kişisel verilerin hukuka aykırı olarak başkaları tarafından elde edildiğini tespit edersek:</p>
+  <ul>
+    <li>durumu <strong>Kişisel Verileri Koruma Kurulu'na</strong> mevzuatın öngördüğü sürede (Kurul kararı uyarınca en geç <strong>72 saat</strong> içinde) bildiririz,</li>
+    <li><strong>etkilenen kullanıcılara</strong> makul olan en kısa sürede, uygulama içinden ve/veya kayıtlı iletişim kanalından bilgi veririz,</li>
+    <li>ihlalin kapsamını, alınan önlemleri ve senin yapabileceklerini açıkça anlatırız.</li>
+  </ul>
 
-  <h2>11. Değişiklikler</h2>
+  <h2>12. Çocukların gizliliği</h2>
+  <p>Uygulama 18 yaş altına yönelik değildir; 18 yaş altı olduğu anlaşılan hesaplar ve verileri derhâl silinir. 18 yaşından küçük birinin verisinin işlendiğini fark edersen <strong>kvkk@shipshipapp.com</strong> adresine bildir.</p>
+
+  <h2>13. Değişiklikler</h2>
   <p>Bu metin güncellenebilir; esaslı değişiklikler uygulama içinden duyurulur ve gerekiyorsa ilgili ayrı rızalar yeniden alınır.</p>
 
-  <h2>12. İletişim</h2>
+  <h2>14. İletişim</h2>
   <p>Şerif Doğukan Ekşi · İstanbul · KVKK başvuruları: <strong>kvkk@shipshipapp.com</strong> · genel: <strong>destek@shipshipapp.com</strong></p>
 
   <p class="otherdocs">İlgili belgeler: <a href="/kosullar">Kullanım Koşulları</a> · <a href="/guvenlik">Güvenli Tanışma İpuçları</a></p>
