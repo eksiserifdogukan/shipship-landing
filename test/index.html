@@ -1,0 +1,165 @@
+<!doctype html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>shipship — teste katıl</title>
+  <meta name="description" content="Yeni bir tanışma uygulamasının ilk test turu. Ne yaptığımızı söylemiyoruz — keşfetmeni istiyoruz.">
+  <meta property="og:title" content="shipship — teste katıl">
+  <meta property="og:description" content="Ne yaptığımızı sana söylemeyeceğiz. Keşfetmeni istiyoruz.">
+  <meta property="og:url" content="https://shipshipapp.com/test">
+  <meta property="og:type" content="website">
+  <meta name="robots" content="noindex,nofollow">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🚢</text></svg>">
+  <style>
+    :root { --ink:#fff7f4; --ink-soft:rgba(255,247,244,0.85); --ink-dim:rgba(255,247,244,0.62); }
+    * { box-sizing:border-box; margin:0; }
+    body {
+      min-height:100vh; display:flex; flex-direction:column;
+      font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+      -webkit-font-smoothing:antialiased; color:var(--ink);
+      background:linear-gradient(160deg,#ff6f61 0%,#f4577d 34%,#d05aa4 68%,#8e4bbf 100%);
+      background-attachment:fixed; overflow-x:hidden;
+    }
+    .aura {
+      position:fixed; inset:-20%; pointer-events:none;
+      background:
+        radial-gradient(ellipse 45% 38% at 22% 24%, rgba(255,255,255,0.16), transparent 70%),
+        radial-gradient(ellipse 40% 34% at 82% 78%, rgba(70,20,120,0.25), transparent 70%);
+      animation:drift 16s ease-in-out infinite alternate;
+    }
+    @keyframes drift {
+      from { transform:translate3d(-1.5%,-1%,0) scale(1); }
+      to   { transform:translate3d(1.5%,1.5%,0) scale(1.04); }
+    }
+    header { position:relative; padding:24px clamp(22px,5vw,48px); }
+    .wordmark { font-size:20px; font-weight:800; letter-spacing:-0.02em; color:var(--ink); text-decoration:none; }
+
+    main { position:relative; flex:1; width:100%; max-width:680px; margin:0 auto;
+           padding:12px clamp(22px,5vw,40px) 64px; }
+
+    .kicker {
+      display:inline-block; font-size:12px; font-weight:800; letter-spacing:0.12em;
+      text-transform:uppercase; color:var(--ink);
+      background:rgba(255,255,255,0.16); border:1px solid rgba(255,255,255,0.28);
+      padding:7px 14px; border-radius:999px; margin-bottom:22px;
+      animation:rise 0.8s cubic-bezier(0.22,1,0.36,1) both;
+    }
+    h1 {
+      font-size:clamp(34px,7vw,58px); line-height:1.06; font-weight:800;
+      letter-spacing:-0.03em; text-wrap:balance;
+      text-shadow:0 2px 24px rgba(110,25,85,0.26);
+      animation:rise 0.8s 0.08s cubic-bezier(0.22,1,0.36,1) both;
+    }
+    .lede { margin-top:20px; font-size:clamp(16.5px,2.4vw,19px); line-height:1.6;
+            color:var(--ink-soft); animation:rise 0.8s 0.16s cubic-bezier(0.22,1,0.36,1) both; }
+    .lede + .lede { margin-top:14px; }
+    .lede strong { color:var(--ink); font-weight:700; }
+
+    .card {
+      margin-top:34px; background:rgba(255,255,255,0.13);
+      border:1px solid rgba(255,255,255,0.24); border-radius:20px;
+      padding:clamp(20px,4vw,28px);
+      -webkit-backdrop-filter:blur(8px); backdrop-filter:blur(8px);
+      animation:rise 0.8s 0.24s cubic-bezier(0.22,1,0.36,1) both;
+    }
+    .card h2 { font-size:17px; letter-spacing:-0.01em; margin-bottom:14px; }
+    .facts { list-style:none; display:grid; gap:12px; }
+    .facts li { display:flex; gap:11px; align-items:flex-start; font-size:15.5px;
+                line-height:1.5; color:var(--ink-soft); }
+    .facts .ico { flex:none; width:22px; text-align:center; font-size:16px; }
+    .facts b { color:var(--ink); font-weight:700; }
+
+    form { margin-top:34px; animation:rise 0.8s 0.32s cubic-bezier(0.22,1,0.36,1) both; }
+    .fields { display:grid; gap:10px; }
+    input[type="text"], input[type="email"] {
+      width:100%; font:inherit; font-size:16px; color:#2a1a24;
+      background:#fffdfc; border:1px solid rgba(255,255,255,0.4);
+      border-radius:14px; padding:15px 17px; outline:none;
+    }
+    input::placeholder { color:#a2909a; }
+    input:focus { box-shadow:0 0 0 3px rgba(255,255,255,0.45); }
+    button {
+      margin-top:12px; width:100%; font:inherit; font-size:16.5px; font-weight:800;
+      color:#b0357d; background:#fffdfc; border:none; border-radius:999px;
+      padding:16px 22px; cursor:pointer; letter-spacing:-0.01em;
+      transition:transform 0.2s, box-shadow 0.2s;
+      box-shadow:0 10px 26px rgba(90,20,70,0.24);
+    }
+    button:hover { transform:translateY(-2px); box-shadow:0 14px 32px rgba(90,20,70,0.3); }
+    button:active { transform:translateY(0); }
+    .fineprint { margin-top:14px; font-size:13px; line-height:1.55; color:var(--ink-dim); }
+    .fineprint a { color:var(--ink-soft); font-weight:600; }
+    .honey { position:absolute; left:-9999px; opacity:0; }
+
+    footer { position:relative; padding:22px clamp(22px,5vw,48px);
+             display:flex; justify-content:space-between; flex-wrap:wrap; gap:10px;
+             font-size:13px; color:var(--ink-dim); }
+    footer a { color:var(--ink-soft); text-decoration:none; font-weight:600; }
+
+    @keyframes rise { from { opacity:0; transform:translateY(20px); } to { opacity:1; transform:none; } }
+    @media (prefers-reduced-motion:reduce) {
+      .aura, .kicker, h1, .lede, .card, form { animation:none; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="aura"></div>
+
+<header><a class="wordmark" href="/">shipship</a></header>
+
+<main>
+  <span class="kicker">İlk test turu · 10 kişi</span>
+
+  <h1>Ne yaptığımızı sana söylemeyeceğiz.</h1>
+
+  <p class="lede">
+    Yeni bir tanışma uygulaması yaptık. Nasıl çalıştığını anlatsak testi
+    bozarız — çünkü tam olarak <strong>onu anlayıp anlamadığını</strong>
+    ölçmeye çalışıyoruz.
+  </p>
+  <p class="lede">
+    O yüzden anlatmıyoruz. Sen açacaksın, biz izleyeceğiz. Kafan karışırsa
+    bu <strong>bizim hatamız</strong> — ve tam da öğrenmek istediğimiz şey.
+  </p>
+
+  <div class="card">
+    <h2>Nasıl olacak?</h2>
+    <ul class="facts">
+      <li><span class="ico">💻</span><span><b>Online.</b> Görüntülü görüşme; telefonunun ekranını paylaşacaksın.</span></li>
+      <li><span class="ico">⏱</span><span><b>35–40 dakika.</b> Tek seferlik, devamı yok.</span></li>
+      <li><span class="ico">📱</span><span><b>Kendi iPhone'unda.</b> Uygulamayı sana önceden göndereceğiz. <i>(Şimdilik yalnız iPhone.)</i></span></li>
+      <li><span class="ico">🗓</span><span><b>Tarihi birlikte seçeriz.</b> Sana uyan günü sen söylersin.</span></li>
+      <li><span class="ico">🙂</span><span><b>Hazırlık yok, doğru cevap yok.</b> Takıldığın her yer bizim için en değerli bilgi.</span></li>
+    </ul>
+  </div>
+
+  <form action="https://formsubmit.co/shipshipappco@gmail.com" method="POST">
+    <div class="fields">
+      <input type="text" name="Ad" placeholder="Adın (isteğe bağlı)" autocomplete="name">
+      <input type="email" name="E-posta" placeholder="E-posta adresin" required autocomplete="email">
+    </div>
+    <input type="text" name="_honey" class="honey" tabindex="-1" autocomplete="off" aria-hidden="true">
+    <input type="hidden" name="_subject" value="shipship testi — yeni başvuru">
+    <input type="hidden" name="_template" value="table">
+    <input type="hidden" name="_captcha" value="false">
+    <input type="hidden" name="_next" value="https://shipshipapp.com/test/tesekkurler/">
+    <button type="submit">Teste katılmak istiyorum</button>
+    <p class="fineprint">
+      E-postanı yalnız bu testin daveti ve bilgilendirmesi için kullanacağız;
+      başka hiçbir şey için kullanmayacak, kimseyle paylaşmayacağız.
+      Test öncesi sana neyin nasıl olacağını anlatan ayrıntılı bir e-posta
+      göndereceğiz — kararını ondan sonra da verebilirsin.
+      <a href="/gizlilik">Gizlilik Politikası</a>
+    </p>
+  </form>
+</main>
+
+<footer>
+  <div>© 2026 shipship</div>
+  <div><a href="/kosullar">Koşullar</a> · <a href="/gizlilik">Gizlilik</a> · <a href="/guvenlik">Güvenlik</a></div>
+</footer>
+
+</body>
+</html>
