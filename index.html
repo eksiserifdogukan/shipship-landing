@@ -50,9 +50,39 @@
       position: relative;
       padding: 26px clamp(22px, 5vw, 48px);
     }
+    /* ——— shipship logosu ———
+       Uygulamadaki components/ui/wordmark.tsx ile AYNI kilit: iki "ship"
+       üst üste, ön beyaz baskın, arka ACCENT sağ-aşağı kaymış, ikisi -13°.
+       Ölçüler font-size'a oranlı (dikey .32 / yatay .10).
+       Nabız: splash'takiyle aynı fikir — 8 saniyede bir "ship" ile
+       "shipship" arasında gidip gelir. */
     .wordmark {
-      font-size: 21px; font-weight: 800; letter-spacing: -0.02em;
+      position: relative; display: inline-block; line-height: 1;
+      font-size: 21px; font-weight: 800; letter-spacing: -0.04em;
+      padding: 0 .16em .42em 0;
+    }
+    .wordmark .f, .wordmark .b { display: block; }
+    .wordmark .b {
+      position: absolute; left: 0; top: 0; color: #e0909e;
+      transform: translate(.10em, .32em) rotate(-13deg);
+      animation: markPulse 8s cubic-bezier(0.22,1,0.36,1) infinite;
+    }
+    .wordmark .f {
+      position: relative; color: #fff7f4;
+      transform: rotate(-13deg);
       text-shadow: 0 1px 12px rgba(120, 30, 90, 0.25);
+      animation: markPulseFront 8s cubic-bezier(0.22,1,0.36,1) infinite;
+    }
+    /* birleşik → ayrık → birleşik; sürenin çoğunda LOGO hâlinde durur */
+    @keyframes markPulse {
+      0%, 6%   { transform: translate(0,0) rotate(0deg); }
+      14%, 92% { transform: translate(.10em,.32em) rotate(-13deg); }
+      100%     { transform: translate(0,0) rotate(0deg); }
+    }
+    @keyframes markPulseFront {
+      0%, 6%   { transform: rotate(0deg); }
+      14%, 92% { transform: rotate(-13deg); }
+      100%     { transform: rotate(0deg); }
     }
 
     main {
@@ -149,7 +179,7 @@
 <div class="aura"></div>
 
 <header>
-  <div class="wordmark">shipship</div>
+  <div class="wordmark" role="img" aria-label="shipship"><span class="b" aria-hidden="true">ship</span><span class="f" aria-hidden="true">ship</span></div>
 </header>
 
 <main>
