@@ -4,9 +4,9 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>shipship — teste katıl</title>
-  <meta name="description" content="shipship'in yayın öncesi kullanıcı testi için 10 kişi arıyoruz. Online, 35-40 dakika, kendi iPhone'unda.">
+  <meta name="description" content="shipship'in yayın öncesi kullanıcı testi için katılımcı arıyoruz. Online, 35-40 dakika, kendi iPhone'unda.">
   <meta property="og:title" content="shipship — bir uygulama yaptık, test eder misin?">
-  <meta property="og:description" content="Yayın öncesi kullanıcı testi için 10 kişi arıyoruz. Online, 35-40 dakika.">
+  <meta property="og:description" content="Yayın öncesi kullanıcı testi. Online, 35-40 dakika.">
   <meta property="og:url" content="https://shipshipapp.com/test">
   <meta property="og:type" content="website">
   <meta name="robots" content="noindex,nofollow">
@@ -33,7 +33,7 @@
       to   { transform:translate3d(1.5%,1.5%,0) scale(1.04); }
     }
     header { position:relative; padding:24px clamp(22px,5vw,48px); }
-    .wordmark { font-size:20px; font-weight:800; letter-spacing:-0.02em; color:var(--ink); text-decoration:none; }
+    .wordmark { font-size:20px; font-weight:800; letter-spacing:-0.02em; color:var(--ink); }
 
     main { position:relative; flex:1; width:100%; max-width:680px; margin:0 auto;
            padding:12px clamp(22px,5vw,40px) 64px; }
@@ -71,7 +71,9 @@
     .facts b { color:var(--ink); font-weight:700; }
 
     form { margin-top:34px; animation:rise 0.8s 0.32s cubic-bezier(0.22,1,0.36,1) both; }
-    .fields { display:grid; gap:10px; }
+    .field { display:grid; gap:6px; margin-bottom:14px; }
+    .label { font-size:14px; font-weight:700; color:var(--ink); }
+    .hint { font-size:13px; line-height:1.5; color:var(--ink-dim); }
     input[type="text"], input[type="email"] {
       width:100%; font:inherit; font-size:16px; color:#2a1a24;
       background:#fffdfc; border:1px solid rgba(255,255,255,0.4);
@@ -79,8 +81,20 @@
     }
     input::placeholder { color:#a2909a; }
     input:focus { box-shadow:0 0 0 3px rgba(255,255,255,0.45); }
+
+    .radios { display:flex; gap:10px; flex-wrap:wrap; }
+    .radio {
+      flex:1 1 140px; display:flex; align-items:center; gap:9px; cursor:pointer;
+      background:rgba(255,255,255,0.12); border:1px solid rgba(255,255,255,0.26);
+      border-radius:14px; padding:13px 15px; font-size:15.5px; color:var(--ink);
+      transition:background 0.2s, border-color 0.2s;
+    }
+    .radio:hover { background:rgba(255,255,255,0.2); }
+    .radio input { accent-color:#fffdfc; width:17px; height:17px; flex:none; }
+    .radio:has(input:checked) { background:rgba(255,255,255,0.26); border-color:rgba(255,255,255,0.55); }
+
     button {
-      margin-top:12px; width:100%; font:inherit; font-size:16.5px; font-weight:800;
+      margin-top:8px; width:100%; font:inherit; font-size:16.5px; font-weight:800;
       color:#b0357d; background:#fffdfc; border:none; border-radius:999px;
       padding:16px 22px; cursor:pointer; letter-spacing:-0.01em;
       transition:transform 0.2s, box-shadow 0.2s;
@@ -89,13 +103,10 @@
     button:hover { transform:translateY(-2px); box-shadow:0 14px 32px rgba(90,20,70,0.3); }
     button:active { transform:translateY(0); }
     .fineprint { margin-top:14px; font-size:13px; line-height:1.55; color:var(--ink-dim); }
-    .fineprint a { color:var(--ink-soft); font-weight:600; }
     .honey { position:absolute; left:-9999px; opacity:0; }
 
     footer { position:relative; padding:22px clamp(22px,5vw,48px);
-             display:flex; justify-content:space-between; flex-wrap:wrap; gap:10px;
              font-size:13px; color:var(--ink-dim); }
-    footer a { color:var(--ink-soft); text-decoration:none; font-weight:600; }
 
     @keyframes rise { from { opacity:0; transform:translateY(20px); } to { opacity:1; transform:none; } }
     @media (prefers-reduced-motion:reduce) {
@@ -107,27 +118,26 @@
 
 <div class="aura"></div>
 
-<header><a class="wordmark" href="/">shipship</a></header>
+<header><span class="wordmark">shipship</span></header>
 
 <main>
-  <span class="kicker">Kullanıcı testi daveti · 10 kişilik ilk tur</span>
+  <span class="kicker">Kullanıcı testi daveti</span>
 
   <h1>Bir uygulama yaptık. Test eder misin?</h1>
 
   <p class="lede">
     <strong>shipship</strong> yeni bir tanışma uygulaması. Yayına çıkmadan
     önce gerçek insanlarla küçük bir kullanılabilirlik testi yapıyoruz ve
-    bunun için 10 kişi arıyoruz.
+    bunun için katılımcı arıyoruz.
   </p>
   <p class="lede">
-    Tek bir tuhaflığı var: <strong>uygulamanın nasıl çalıştığını sana
-    önceden söylemeyeceğiz.</strong> Anlatsak testi bozarız — çünkü ölçmeye
-    çalıştığımız şey tam olarak bu: uygulamayı ilk kez açan biri ne olduğunu
-    kendi başına anlıyor mu?
+    Uygulamanın nasıl çalıştığını sana <strong>önceden anlatmayacağız</strong>.
+    Ölçmek istediğimiz şey tam olarak bu: ilk kez açan biri ne olduğunu kendi
+    başına anlıyor mu? Sen açacaksın, biz izleyeceğiz.
   </p>
   <p class="lede">
-    Yani sen açacaksın, biz izleyeceğiz. Kafan karışırsa bu
-    <strong>bizim hatamız</strong> — ve tam da öğrenmek istediğimiz şey.
+    Kafan karışırsa bu <strong>bizim hatamız</strong> — ve tam da öğrenmek
+    istediğimiz şey.
   </p>
 
   <div class="card">
@@ -135,17 +145,38 @@
     <ul class="facts">
       <li><span class="ico">💻</span><span><b>Online.</b> Görüntülü görüşme; telefonunun ekranını paylaşacaksın.</span></li>
       <li><span class="ico">⏱</span><span><b>35–40 dakika.</b> Tek seferlik, devamı yok.</span></li>
-      <li><span class="ico">📱</span><span><b>Kendi iPhone'unda.</b> Uygulamayı sana önceden göndereceğiz. <i>(Şimdilik yalnız iPhone.)</i></span></li>
+      <li><span class="ico">📱</span><span><b>Kendi telefonunda.</b> Uygulamayı sana önceden göndereceğiz. <b>Şimdilik yalnız iPhone</b> — Android kullanıyorsan yine e-postanı bırak, Android turu açılınca ilk sana yazarız.</span></li>
       <li><span class="ico">🗓</span><span><b>Tarihi birlikte seçeriz.</b> Sana uyan günü sen söylersin.</span></li>
       <li><span class="ico">🙂</span><span><b>Hazırlık yok, doğru cevap yok.</b> Takıldığın her yer bizim için en değerli bilgi.</span></li>
     </ul>
   </div>
 
   <form action="https://formsubmit.co/shipshipappco@gmail.com" method="POST">
-    <div class="fields">
-      <input type="text" name="Ad" placeholder="Adın (isteğe bağlı)" autocomplete="name">
-      <input type="email" name="E-posta" placeholder="E-posta adresin" required autocomplete="email">
+    <div class="field">
+      <label class="label" for="ad">Adın <span class="hint">(isteğe bağlı)</span></label>
+      <input id="ad" type="text" name="Ad" placeholder="Adın" autocomplete="name">
     </div>
+
+    <div class="field">
+      <label class="label" for="mail">Apple ID (iCloud) e-posta adresin</label>
+      <p class="hint">
+        Uygulamayı sana <b>TestFlight</b> ile göndereceğiz; bu yüzden
+        <b>Apple ID'ne bağlı</b> e-posta adresini yaz (genelde
+        <i>@icloud.com</i>, <i>@me.com</i> ya da Apple ID'ni açtığın adres).
+        Farklı bir adres yazarsan davet sana ulaşmayabilir.
+      </p>
+      <input id="mail" type="email" name="Apple ID e-posta" placeholder="ornek@icloud.com" required autocomplete="email">
+    </div>
+
+    <div class="field">
+      <span class="label">Telefonun</span>
+      <div class="radios">
+        <label class="radio"><input type="radio" name="Telefon" value="iPhone" required> iPhone</label>
+        <label class="radio"><input type="radio" name="Telefon" value="Android"> Android</label>
+      </div>
+      <p class="hint">Android'i şu an teste alamıyoruz ama sırası gelince haber vereceğiz.</p>
+    </div>
+
     <input type="text" name="_honey" class="honey" tabindex="-1" autocomplete="off" aria-hidden="true">
     <input type="hidden" name="_subject" value="shipship testi — yeni başvuru">
     <input type="hidden" name="_template" value="table">
@@ -155,17 +186,14 @@
     <p class="fineprint">
       E-postanı yalnız bu testin daveti ve bilgilendirmesi için kullanacağız;
       başka hiçbir şey için kullanmayacak, kimseyle paylaşmayacağız.
-      Test öncesi sana neyin nasıl olacağını anlatan ayrıntılı bir e-posta
-      göndereceğiz — kararını ondan sonra da verebilirsin.
-      <a href="/gizlilik">Gizlilik Politikası</a>
+      Test öncesi sana neyin nasıl olacağını ve verilerinin nasıl işleneceğini
+      anlatan ayrıntılı bir e-posta göndereceğiz — kararını ondan sonra da
+      verebilirsin.
     </p>
   </form>
 </main>
 
-<footer>
-  <div>© 2026 shipship</div>
-  <div><a href="/kosullar">Koşullar</a> · <a href="/gizlilik">Gizlilik</a> · <a href="/guvenlik">Güvenlik</a></div>
-</footer>
+<footer>© 2026 shipship</footer>
 
 </body>
 </html>

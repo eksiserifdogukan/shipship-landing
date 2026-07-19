@@ -38,24 +38,17 @@
     p { margin-top:18px; font-size:clamp(16px,2.3vw,18px); line-height:1.62; color:var(--ink-soft);
         animation:rise 0.7s 0.16s cubic-bezier(0.22,1,0.36,1) both; }
     p strong { color:var(--ink); font-weight:700; }
-    .back { display:inline-block; margin-top:32px; font-size:15px; font-weight:700;
-            color:var(--ink); text-decoration:none; padding:12px 22px; border-radius:999px;
-            background:rgba(255,255,255,0.14); border:1px solid rgba(255,255,255,0.26);
-            animation:rise 0.7s 0.24s cubic-bezier(0.22,1,0.36,1) both; }
-    .back:hover { background:rgba(255,255,255,0.24); }
     footer { position:relative; padding:22px clamp(22px,5vw,48px);
-             display:flex; justify-content:space-between; flex-wrap:wrap; gap:10px;
              font-size:13px; color:var(--ink-dim); }
-    footer a { color:var(--ink-soft); text-decoration:none; font-weight:600; }
     @keyframes rise { from { opacity:0; transform:translateY(18px); } to { opacity:1; transform:none; } }
-    @media (prefers-reduced-motion:reduce) { .aura, .tick, h1, p, .back { animation:none; } }
+    @media (prefers-reduced-motion:reduce) { .aura, .tick, h1, p { animation:none; } }
   </style>
 </head>
 <body>
 
 <div class="aura"></div>
 
-<header><a class="wordmark" href="/">shipship</a></header>
+<header><span class="wordmark">shipship</span></header>
 
 <main>
   <div class="tick">✓</div>
@@ -70,13 +63,9 @@
     araştırmaya çalışma — <strong>hiçbir şey bilmeden gelmen</strong> testin
     en değerli kısmı.
   </p>
-  <a class="back" href="/">shipship'e dön</a>
 </main>
 
-<footer>
-  <div>© 2026 shipship</div>
-  <div><a href="/kosullar">Koşullar</a> · <a href="/gizlilik">Gizlilik</a> · <a href="/guvenlik">Güvenlik</a></div>
-</footer>
+<footer>© 2026 shipship</footer>
 
 </body>
 </html>
