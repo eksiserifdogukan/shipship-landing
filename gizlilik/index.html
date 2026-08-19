@@ -103,7 +103,7 @@
   <p>Amaçlar belirli ve sınırlıdır; "ileride başka hizmetler için kullanılabilir" türünde açık uçlu bir amaç yoktur.</p>
   <div class="tablewrap"><table>
     <tr><th>Amaç</th><th>Veri</th><th>Hukuki sebep (KVKK)</th></tr>
-    <tr><td data-l="Amaç">Hesap açma ve girişte SMS kodu ya da Apple/Google ile kimlik doğrulama</td><td data-l="Veri">Telefon numarası, sağlayıcı hesap kimliği</td><td data-l="Hukuki sebep (KVKK)">m.5/2-c — sözleşmenin kurulması ve ifası</td></tr>
+    <tr><td data-l="Amaç">Hesap açma ve giriş (SMS kodu ya da Apple/Google hesabıyla oturum açma)</td><td data-l="Veri">Telefon numarası, sağlayıcı hesap kimliği</td><td data-l="Hukuki sebep (KVKK)">m.5/2-c — sözleşmenin kurulması ve ifası</td></tr>
     <tr><td data-l="Amaç">18 yaş denetimi; profilde yalnızca yaşın gösterilmesi (tam doğum tarihi hiçbir zaman gösterilmez)</td><td data-l="Veri">Doğum tarihi</td><td data-l="Hukuki sebep (KVKK)">m.5/2-c ve m.5/2-ç — hukuki yükümlülük</td></tr>
     <tr><td data-l="Amaç">Profilinin ikili önerileri içinde diğer kullanıcılara gösterilmesi ve topluluk oylaması (yalnızca "Eşleşmeye katıl" modunda)</td><td data-l="Veri">Profil verileri</td><td data-l="Hukuki sebep (KVKK)">m.5/2-c — sözleşmenin ifası (mod seçimin sözleşmenin konusudur)</td></tr>
     <tr><td data-l="Amaç">Uygun ikililerin oluşturulması ve sana gösterilecek ikililerin sıralanması</td><td data-l="Veri">Profil bilgilerin (yaş, şehir, niyet, ilgi alanları vb.), Eşleşme Tercihleri'ndeki ayarların, yaklaşık konumun, oy geçmişin ve katkın</td><td data-l="Hukuki sebep (KVKK)">m.5/2-c — sözleşmenin ifası (ayrıntı 5. bölümde)</td></tr>
@@ -131,10 +131,10 @@
   <h2>6. Aktarılan taraflar ve aktarım amaçları</h2>
   <div class="tablewrap"><table>
     <tr><th>Alıcı grubu</th><th>Aktarım amacı</th></tr>
-    <tr><td data-l="Alıcı grubu"><strong>Barındırma hizmeti sağlayıcısı</strong> (Supabase — altyapı: Amazon Web Services; sunucu bölgesi <strong>AB / Frankfurt</strong>)</td><td data-l="Aktarım amacı">Verilerin saklanması, kimlik doğrulama ve uygulamanın çalıştırılması</td></tr>
+    <tr><td data-l="Alıcı grubu"><strong>Barındırma hizmeti sağlayıcısı</strong> (Supabase — altyapı: Amazon Web Services; sunucu bölgesi <strong>AB / Frankfurt</strong>)</td><td data-l="Aktarım amacı">Verilerin saklanması, giriş ve oturum yönetimi, uygulamanın çalıştırılması</td></tr>
     <tr><td data-l="Alıcı grubu"><strong>Barındırma sağlayıcısının içerik dağıtım ağı (CDN)</strong> (Cloudflare)</td><td data-l="Aktarım amacı">Profil fotoğraflarının hızlı gösterilmesi. Fotoğraflar tahmin edilemez kalıcı adreslerde sunulur ve önbelleğe alınır; hesabını sildiğinde dosya silinir ve adres geçersiz olur. Türkiye'den yapılan isteklerde İstanbul uç sunucusu kullanılır. Kırpılmamış orijinal fotoğraf hiçbir zaman servis edilmez; yalnızca senin belirlediğin kadraj gösterilir</td></tr>
     <tr><td data-l="Alıcı grubu"><strong>SMS hizmeti sağlayıcısı</strong> (Twilio Verify)</td><td data-l="Aktarım amacı">Giriş doğrulama kodunun telefonuna iletilmesi</td></tr>
-    <tr><td data-l="Alıcı grubu"><strong>Kimlik sağlayıcılar</strong> (Apple, Google)</td><td data-l="Aktarım amacı">Bu yolla girişi seçersen kimliğinin doğrulanması</td></tr>
+    <tr><td data-l="Alıcı grubu"><strong>Giriş sağlayıcıları</strong> (Apple, Google)</td><td data-l="Aktarım amacı">Bu yolla girişi seçersen hesabınla oturum açılması</td></tr>
     <tr><td data-l="Alıcı grubu"><strong>Hata izleme sağlayıcısı</strong> (Sentry)</td><td data-l="Aktarım amacı">Çökme ve hata kayıtlarının incelenmesi (mesaj ve fotoğraf içeriği gönderilmez)</td></tr>
     <tr><td data-l="Alıcı grubu"><strong>Uygulama dağıtım ve bildirim platformları</strong> (Apple, Google, Expo bildirim servisi)</td><td data-l="Aktarım amacı">Uygulamanın dağıtımı; bildirimlere izin verirsen bildirimin cihazına iletilmesi (bildirim metni ilgili kişinin adını içerebilir)</td></tr>
     <tr><td data-l="Alıcı grubu"><strong>E-posta hizmeti sağlayıcısı</strong> (Google)</td><td data-l="Aktarım amacı">Bizimle e-posta yoluyla yazışırsan yazışmanın saklanması</td></tr>
