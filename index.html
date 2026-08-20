@@ -1,207 +1,445 @@
 <!doctype html>
 <html lang="tr">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>shipship — yakında</title>
-  <meta name="description" content="Kaydırmaktan yorulduk. shipship yakında App Store ve Google Play'de.">
-  <meta property="og:title" content="shipship — yakında">
-  <meta property="og:description" content="Kaydırmaktan yorulduk. Sen de yorulduysan yakında görüşürüz.">
-  <meta property="og:url" content="https://shipshipapp.com">
-  <meta property="og:type" content="website">
-  <!-- Apple Smart App Banner — Safari'de üstte native "İndir/Aç" şeridi.
-       YALNIZ app App Store'da yayınlanınca görünür (beta'da görünmez). -->
-  <meta name="apple-itunes-app" content="app-id=6789615007">
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🚢</text></svg>">
-  <style>
-    :root {
-      --ink: #fff7f4;
-      --ink-soft: rgba(255, 247, 244, 0.82);
-      --ink-dim: rgba(255, 247, 244, 0.6);
-    }
-    * { box-sizing: border-box; margin: 0; }
-    html, body { height: 100%; }
-    body {
-      min-height: 100vh;
-      display: flex; flex-direction: column;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-      -webkit-font-smoothing: antialiased;
-      color: var(--ink);
-      background: linear-gradient(160deg, #ff6f61 0%, #f4577d 34%, #d05aa4 68%, #8e4bbf 100%);
-      background-attachment: fixed;
-      overflow-x: hidden;
-    }
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>shipship — Eşleşmene topluluk karar verir</title>
+<meta name="description" content="Adayını sen aramazsın. İkilini topluluk yakıştırır, son sözü sen söylersin. shipship yakında App Store ve Google Play'de.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🚢</text></svg>">
+<style>
+  :root{
+    --ink:#2a1a24; --soft:#5c4553; --dim:#8a7280; --card:#fffdfc; --accent:#d05aa4;
+    --cream:#fdf7f4; --night:#1b1119; --night-soft:#d3bcc9;
+  }
+  *{box-sizing:border-box;margin:0}
+  body{
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+    -webkit-font-smoothing:antialiased;
+    background:var(--night); color:#fff7f4; line-height:1.45;
+    overflow-x:hidden;
+  }
+  .wordmark{position:relative;display:inline-block;line-height:1;
+    font-size:18px;font-weight:800;letter-spacing:-.04em;text-decoration:none;
+    padding:0 .16em .42em 0;color:#fff7f4}
+  .wordmark .f,.wordmark .b{display:block}
+  .wordmark .b{position:absolute;left:0;top:0;color:#e0909e;
+    transform:translate(.10em,.32em) rotate(-13deg)}
+  .wordmark .f{position:relative;transform:rotate(-13deg)}
+  .topbar{position:fixed;top:0;left:0;right:0;z-index:30;
+    padding:20px clamp(20px,5vw,44px);pointer-events:none}
+  .topbar .wordmark{pointer-events:auto;opacity:.85}
 
-    /* soft moving light — barely-there life in the background */
-    .aura {
-      position: fixed; inset: -20%;
-      pointer-events: none;
-      background:
-        radial-gradient(ellipse 45% 38% at 22% 24%, rgba(255, 255, 255, 0.16), transparent 70%),
-        radial-gradient(ellipse 40% 34% at 82% 78%, rgba(70, 20, 120, 0.25), transparent 70%);
-      animation: drift 16s ease-in-out infinite alternate;
-    }
-    @keyframes drift {
-      from { transform: translate3d(-1.5%, -1%, 0) scale(1); }
-      to { transform: translate3d(1.5%, 1.5%, 0) scale(1.04); }
-    }
 
-    header {
-      position: relative;
-      padding: 26px clamp(22px, 5vw, 48px);
-    }
-    /* ——— shipship logosu ———
-       Uygulamadaki components/ui/wordmark.tsx ile AYNI kilit: iki "ship"
-       üst üste, ön beyaz baskın, arka ACCENT sağ-aşağı kaymış, ikisi -13°.
-       Ölçüler font-size'a oranlı (dikey .32 / yatay .10).
-       Nabız: splash'takiyle aynı fikir — 8 saniyede bir "ship" ile
-       "shipship" arasında gidip gelir. */
-    .wordmark {
-      position: relative; display: inline-block; line-height: 1;
-      font-size: 21px; font-weight: 800; letter-spacing: -0.04em;
-      padding: 0 .16em .42em 0;
-    }
-    .wordmark .f, .wordmark .b { display: block; }
-    .wordmark .b {
-      position: absolute; left: 0; top: 0; color: #e0909e;
-      transform: translate(.10em, .32em) rotate(-13deg);
-      animation: markPulse 8s cubic-bezier(0.22,1,0.36,1) infinite;
-    }
-    .wordmark .f {
-      position: relative; color: #fff7f4;
-      transform: rotate(-13deg);
-      text-shadow: 0 1px 12px rgba(120, 30, 90, 0.25);
-      animation: markPulseFront 8s cubic-bezier(0.22,1,0.36,1) infinite;
-    }
-    /* birleşik → ayrık → birleşik; sürenin çoğunda LOGO hâlinde durur */
-    @keyframes markPulse {
-      0%, 6%   { transform: translate(0,0) rotate(0deg); }
-      14%, 92% { transform: translate(.10em,.32em) rotate(-13deg); }
-      100%     { transform: translate(0,0) rotate(0deg); }
-    }
-    @keyframes markPulseFront {
-      0%, 6%   { transform: rotate(0deg); }
-      14%, 92% { transform: rotate(-13deg); }
-      100%     { transform: rotate(0deg); }
-    }
+  /* ═══ HERO: önce ne olduğumuzu söyler ═══ */
+  /* Fold tam ekran: video kadrajı cihazın oranına göre seçilir, boşluk kalmaz. */
+  .hero{position:relative;height:100svh;min-height:100svh;display:flex;flex-direction:column;
+    justify-content:flex-end;overflow:hidden}
+  .hero-media{position:absolute;inset:0;z-index:0}
+  .hero-media video,.hero-media img{width:100%;height:100%;object-fit:cover;object-position:50% 45%;display:block}
+  .hero-fallback{display:none}
+  .hero-pause{position:absolute;right:clamp(16px,4vw,28px);bottom:clamp(18px,3.5svh,34px);z-index:3;
+    width:40px;height:40px;border-radius:999px;border:1px solid rgba(255,247,244,.35);
+    background:rgba(27,17,25,.4);color:#fff7f4;font-size:11px;letter-spacing:.08em;
+    cursor:pointer;backdrop-filter:blur(6px)}
+  .hero-pause:hover{background:rgba(255,247,244,.16)}
+  /* Hareket azaltılmışsa video KENDİLİĞİNDEN oynamaz — ama gizlenmez:
+     durağan ilk karesi durur, isteyen sağ alttaki düğmeyle oynatır. */
+  .hero-media::after{content:"";position:absolute;inset:0;
+    background:linear-gradient(180deg,rgba(27,17,25,.55) 0%,rgba(27,17,25,.15) 32%,
+      rgba(27,17,25,.72) 78%,rgba(27,17,25,.96) 100%)}
+  .hero-copy{position:relative;z-index:1;padding:0 clamp(24px,6vw,64px) clamp(96px,14svh,140px);
+    display:flex;flex-direction:column;gap:16px;max-width:1180px;margin:0 auto;width:100%}
+  .hero-copy h1{font-size:clamp(36px,7.4vw,74px);line-height:1.03;letter-spacing:-.045em;
+    font-weight:800;max-width:13ch;text-wrap:balance}
+  .hero-copy p{font-size:clamp(16px,2.3vw,20px);color:#f0dbe6;max-width:32ch}
+  .hero-cue{position:absolute;left:50%;bottom:clamp(18px,3.5svh,34px);transform:translateX(-50%);
+    z-index:3;display:inline-flex;flex-direction:column;align-items:center;gap:6px;
+    color:#fff7f4;text-decoration:none;font-size:13px;font-weight:600;letter-spacing:.06em;
+    padding:12px 20px 10px;border-radius:999px;border:1px solid rgba(255,247,244,.4);
+    background:rgba(27,17,25,.3);backdrop-filter:blur(6px);cursor:pointer;font-family:inherit}
+  .hero-cue:hover{background:rgba(255,247,244,.16)}
+  .hero-cue:focus-visible{outline:2px solid #fff7f4;outline-offset:3px}
+  .hero-cue svg{display:block;animation:nudge 2.2s ease-in-out infinite}
+  @keyframes nudge{0%,100%{transform:translateY(0)}50%{transform:translateY(5px)}}
+  @media (prefers-reduced-motion:reduce){.hero-cue svg{animation:none}}
 
-    main {
-      flex: 1;
-      position: relative;
-      display: flex; flex-direction: column;
-      justify-content: center;
-      padding: 24px clamp(22px, 5vw, 48px) 48px;
-      max-width: 1100px;
-    }
+  /* ═══ SAGA: sabit motif + üstünden akan perdeler ═══ */
+  .saga{position:relative}
+  .motif{position:sticky;top:0;height:100svh;margin-bottom:-100svh;
+    display:grid;place-items:center;z-index:0;pointer-events:none}
+  .motif svg{width:min(560px,86vw);height:auto;overflow:visible}
+  .m-you,.m-them{transition:transform 1.1s cubic-bezier(.22,1,.36,1),opacity .9s ease}
+  .m-ring circle{opacity:0;transition:opacity .8s ease,transform .9s cubic-bezier(.22,1,.36,1)}
+  .m-links line{opacity:0;transition:opacity .7s ease}
+  .m-you{transform:translateX(-118px)}
+  .m-them{transform:translateX(118px)}
 
-    h1 {
-      font-size: clamp(52px, 11vw, 128px);
-      line-height: 1.02;
-      font-weight: 800;
-      letter-spacing: -0.035em;
-      text-wrap: balance;
-      text-shadow: 0 2px 28px rgba(110, 25, 85, 0.28);
-      animation: rise 0.9s cubic-bezier(0.22, 1, 0.36, 1) both;
-    }
-    .footnote {
-      margin-top: 22px;
-      font-size: clamp(16px, 2.6vw, 20px);
-      font-weight: 500;
-      color: var(--ink-soft);
-      animation: rise 0.9s 0.14s cubic-bezier(0.22, 1, 0.36, 1) both;
-    }
+  /* durumlar */
+  .motif[data-st="0"] .m-you,.motif[data-st="0"] .m-them{opacity:.30}
+  .motif[data-st="1"] .m-you,.motif[data-st="1"] .m-them{opacity:.55}
+  .motif[data-st="2"] .m-ring circle{opacity:.30}
+  .motif[data-st="3"] .m-ring circle{opacity:.55}
+  .motif[data-st="3"] .m-links line{opacity:.28}
+  .motif[data-st="4"] .m-ring circle{opacity:.7}
+  .motif[data-st="4"] .m-links line{opacity:.45}
+  .motif[data-st="4"] .m-you{transform:translateX(-34px)}
+  .motif[data-st="4"] .m-them{transform:translateX(34px)}
 
-    .soon {
-      margin-top: 42px;
-      display: inline-flex; width: fit-content;
-      align-items: center; gap: 9px;
-      font-size: 13px; font-weight: 700;
-      letter-spacing: 0.1em; text-transform: uppercase;
-      color: var(--ink);
-      background: rgba(255, 255, 255, 0.14);
-      border: 1px solid rgba(255, 255, 255, 0.28);
-      -webkit-backdrop-filter: blur(6px);
-      backdrop-filter: blur(6px);
-      padding: 10px 18px; border-radius: 999px;
-      animation: rise 0.9s 0.26s cubic-bezier(0.22, 1, 0.36, 1) both;
-    }
-    .soon .dot {
-      width: 7px; height: 7px; border-radius: 50%;
-      background: var(--ink);
-      animation: pulse 2.4s ease-in-out infinite;
-    }
-    @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
+  /* ═══ PERDE ═══ */
+  .scene{position:relative;z-index:1;min-height:100svh;
+    display:flex;flex-direction:column;align-items:center;justify-content:center;
+    text-align:center;padding:12svh clamp(24px,7vw,64px);gap:20px}
+  .scene .say{
+    font-size:clamp(30px,6.4vw,62px);line-height:1.08;letter-spacing:-.045em;
+    font-weight:800;max-width:15ch;text-wrap:balance;
+    opacity:0;transform:translateY(22px);
+    transition:opacity 1s ease,transform 1s cubic-bezier(.22,1,.36,1)}
+  .scene.in .say{opacity:1;transform:none}
+  .scene .whisper{font-size:clamp(15px,2.1vw,18px);color:var(--night-soft);
+    max-width:30ch;opacity:0;transform:translateY(14px);
+    transition:opacity 1s ease .18s,transform 1s cubic-bezier(.22,1,.36,1) .18s}
+  .scene.in .whisper{opacity:1;transform:none}
+  .scene.quote .say{font-size:clamp(28px,6vw,58px);font-weight:700;
+    font-style:italic;max-width:13ch;color:#ffd9ee}
+  .scene.thesis .say{max-width:17ch}
+  .scene.thesis .brand{opacity:0;transform:translateY(14px);
+    transition:opacity .9s ease .35s,transform .9s cubic-bezier(.22,1,.36,1) .35s}
+  .scene.thesis.in .brand{opacity:1;transform:none}
+  .brand .wordmark{font-size:30px}
 
-    .links {
-      margin-top: 20px;
-      display: flex; gap: 10px; flex-wrap: wrap;
-      animation: rise 0.9s 0.36s cubic-bezier(0.22, 1, 0.36, 1) both;
-    }
-    .links a {
-      color: var(--ink);
-      text-decoration: none;
-      font-size: 15px; font-weight: 700;
-      padding: 12px 22px;
-      border-radius: 999px;
-      background: rgba(255, 255, 255, 0.12);
-      border: 1px solid rgba(255, 255, 255, 0.22);
-      transition: background 0.25s, transform 0.25s;
-    }
-    .links a:hover, .links a:focus-visible {
-      background: rgba(255, 255, 255, 0.24);
-      transform: translateY(-2px);
-      outline: none;
-    }
+  .hint{position:absolute;bottom:26px;left:50%;transform:translateX(-50%);
+    font-size:12px;letter-spacing:.1em;color:rgba(255,247,244,.5);
+    display:flex;flex-direction:column;align-items:center;gap:8px}
+  .hint i{display:block;width:1px;height:30px;
+    background:linear-gradient(rgba(255,247,244,.6),transparent)}
 
-    footer {
-      position: relative;
-      padding: 26px clamp(22px, 5vw, 48px);
-      display: flex; justify-content: space-between; align-items: center;
-      gap: 12px; flex-wrap: wrap;
-      font-size: 13.5px;
-      color: var(--ink-dim);
-    }
-    footer a { color: var(--ink-soft); text-decoration: none; font-weight: 600; }
-    footer a:hover { color: var(--ink); }
+  /* ara adım: detaya kapı */
+  .doorway{display:inline-flex;align-items:center;gap:8px;
+    color:#ffd9ee;text-decoration:none;font-size:15px;font-weight:600;
+    border-bottom:1px solid rgba(255,217,238,.35);padding-bottom:3px;
+    opacity:0;transform:translateY(10px);
+    transition:opacity .9s ease .5s,transform .9s ease .5s}
+  .scene.in .doorway,.trust.in .doorway{opacity:1;transform:none}
+  .doorway:hover{border-bottom-color:#ffd9ee}
 
-    @keyframes rise {
-      from { opacity: 0; transform: translateY(22px); }
-      to { opacity: 1; transform: none; }
-    }
-    @media (prefers-reduced-motion: reduce) {
-      .aura, .soon .dot { animation: none; }
-      h1, .footnote, .soon, .links { animation: none; }
-    }
-  </style>
+  /* ═══ MEKANİZMA ═══ */
+  .how{position:relative;background:var(--cream);color:var(--ink)}
+  .how-open{min-height:60svh;display:flex;flex-direction:column;
+    align-items:center;justify-content:center;text-align:center;gap:14px;
+    padding:0 clamp(24px,6vw,56px)}
+  .how-open h2{font-size:clamp(28px,5.4vw,48px);letter-spacing:-.04em;
+    font-weight:800;line-height:1.08;max-width:16ch;text-wrap:balance}
+  .how-open p{color:var(--soft);max-width:34ch}
+  .rail{position:relative;max-width:1080px;margin:0 auto;padding:0 clamp(24px,5vw,48px)}
+  .rail-scroll{height:420vh}
+  .rail-stick{position:sticky;top:0;height:100svh;display:grid;
+    grid-template-columns:1fr;place-items:center;gap:24px;align-content:center}
+  .phone{width:min(232px,54vw);aspect-ratio:9/19.5;border-radius:36px;
+    background:#1b1119;padding:8px;box-shadow:0 26px 64px rgba(90,20,70,.26)}
+  .screen{position:relative;width:100%;height:100%;border-radius:29px;
+    overflow:hidden;background:#2a1a24}
+  .screen img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
+    opacity:0;transform:scale(1.02);
+    transition:opacity .55s ease,transform .8s cubic-bezier(.22,1,.36,1)}
+  .screen img.on{opacity:1;transform:none}
+  .beat{position:relative;text-align:center;max-width:24ch}
+  .beat .b{position:absolute;inset:0;display:flex;flex-direction:column;gap:8px;
+    align-items:center;justify-content:center;
+    opacity:0;transform:translateY(12px);
+    transition:opacity .5s ease,transform .6s cubic-bezier(.22,1,.36,1)}
+  .beat .b.on{opacity:1;transform:none;position:relative}
+  .beat .no{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;
+    font-size:11.5px;letter-spacing:.18em;color:var(--accent)}
+  .beat h3{font-size:clamp(22px,3.8vw,32px);letter-spacing:-.03em;font-weight:800;
+    line-height:1.1}
+  @media(min-width:880px){
+    .rail-stick{grid-template-columns:1fr 1fr;place-items:center start;gap:70px}
+    .phone{justify-self:end}
+    .beat{text-align:left}
+    .beat .b{align-items:flex-start;justify-content:center;text-align:left}
+  }
+
+  /* ═══ GÜVENCE ═══ */
+  .trust{background:var(--cream);color:var(--ink);
+    padding:clamp(70px,14vh,130px) clamp(24px,6vw,56px) clamp(80px,16vh,150px);
+    display:flex;flex-direction:column;align-items:center;gap:34px;text-align:center}
+  .trust h2{font-size:clamp(28px,5.4vw,46px);letter-spacing:-.04em;font-weight:800;
+    max-width:16ch;text-wrap:balance;
+    opacity:0;transform:translateY(18px);transition:opacity .9s ease,transform .9s cubic-bezier(.22,1,.36,1)}
+  .trust.in h2{opacity:1;transform:none}
+  .three{display:grid;gap:14px;grid-template-columns:1fr;max-width:900px;width:100%}
+  @media(min-width:760px){.three{grid-template-columns:repeat(3,1fr)}}
+  .tc{background:var(--card);border:1px solid #f2e5ec;border-radius:18px;
+    padding:24px 22px;text-align:left;
+    opacity:0;transform:translateY(16px);
+    transition:opacity .8s ease,transform .8s cubic-bezier(.22,1,.36,1)}
+  .trust.in .tc{opacity:1;transform:none}
+  .trust.in .tc:nth-child(2){transition-delay:.1s}
+  .trust.in .tc:nth-child(3){transition-delay:.2s}
+  .tc b{display:block;font-size:18px;letter-spacing:-.02em;margin-bottom:6px}
+  .tc span{color:var(--soft);font-size:15.5px}
+  .trust .doorway{color:var(--accent);border-bottom-color:rgba(208,90,164,.35)}
+
+  /* ═══ DAVET ═══ */
+  .invite{min-height:88svh;display:flex;flex-direction:column;align-items:center;
+    justify-content:center;text-align:center;gap:18px;
+    padding:clamp(60px,12vh,110px) clamp(24px,6vw,56px);
+    background:linear-gradient(170deg,#d05aa4,#8e4bbf 70%,#1b1119)}
+  .invite h2{font-size:clamp(34px,7vw,64px);letter-spacing:-.045em;font-weight:800}
+  .invite p{opacity:.9;max-width:30ch}
+  footer{padding:26px clamp(24px,6vw,56px);display:flex;justify-content:space-between;
+    flex-wrap:wrap;gap:10px;font-size:13.5px;background:var(--night);
+    color:rgba(255,247,244,.65)}
+  footer a{color:rgba(255,247,244,.9);text-decoration:none;font-weight:600}
+
+  .flag{position:fixed;left:12px;bottom:12px;z-index:50;background:#fff7f4;color:#2a1a24;
+    font-size:11px;letter-spacing:.06em;padding:6px 11px;border-radius:999px;opacity:.8}
+
+  @media (prefers-reduced-motion:reduce){
+    .scene .say,.scene .whisper,.doorway,.trust h2,.tc{opacity:1 !important;transform:none !important}
+    .motif{position:static;height:auto;margin-bottom:0;padding:40px 0}
+    .rail-scroll{height:auto}
+    .rail-stick{position:static;height:auto;padding:40px 0}
+    .beat .b{position:relative;opacity:1;transform:none;margin-bottom:26px}
+    .screen img{transition:none}
+  }
+</style>
 </head>
 <body>
 
-<div class="aura"></div>
+<div class="topbar"><span class="wordmark"><span class="b" aria-hidden="true">ship</span><span class="f" aria-hidden="true">ship</span></span></div>
 
-<header>
-  <div class="wordmark" role="img" aria-label="shipship"><span class="b" aria-hidden="true">ship</span><span class="f" aria-hidden="true">ship</span></div>
-</header>
 
-<main>
-  <h1>Kaydırmaktan<br>yorulduk.*</h1>
-  <p class="footnote">* Sen de yorulduysan yakında görüşürüz.</p>
-
-  <div class="soon"><span class="dot"></span> Yakında · App Store &amp; Google Play</div>
-
-  <div class="links">
-    <a href="https://instagram.com/shipshipapp" rel="noopener">Instagram</a>
-    <a href="https://tiktok.com/@shipshipapp" rel="noopener">TikTok</a>
-    <a href="https://x.com/shipshipapp" rel="noopener">X</a>
+<!-- ═══ 0. HERO — siteye düşen herkes fikri BURADA alır ═══ -->
+<section class="hero">
+  <div class="hero-media">
+    <video id="heroVid" poster="/video/poster.jpg" muted playsinline loop autoplay preload="metadata"
+           aria-label="Birbirini yeni fark etmiş bir ikili ve etraflarında onlara bakan insanlar">
+      <source id="heroSrcWebm" src="/video/loop16x9.webm" type="video/webm">
+      <source id="heroSrc" src="/video/loop16x9.mp4" type="video/mp4">
+    </video>
+    <img class="hero-fallback" src="/video/poster.jpg" alt="Birbirini yeni fark etmiş bir ikili ve etraflarında onlara bakan insanlar">
   </div>
-</main>
+  <button class="hero-cue" id="inceleBtn" type="button" aria-label="Aşağı kaydır ve incele">
+    İNCELE
+    <svg width="16" height="10" viewBox="0 0 16 10" fill="none" aria-hidden="true"><path d="M1 1l7 7 7-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  </button>
+  <button class="hero-pause" type="button" aria-label="Videoyu durdur">❚❚</button>
+  <div class="hero-copy">
+    <h1>Eşleşmene topluluk karar verir</h1>
+    <p>Adayını sen aramazsın. İkilini topluluk yakıştırır, son sözü sen söylersin.</p>
+
+  </div>
+</section>
+
+<!-- ═══ I. YAY: tanıma → itiraz → çekirdek → tez ═══ -->
+<div class="saga" id="hikaye">
+  <div class="motif" data-st="0" aria-hidden="true">
+    <svg viewBox="-160 -110 320 220">
+      <g class="m-links" stroke="#f19cd0" stroke-width="1">
+        <line x1="0" y1="-86" x2="-34" y2="0"/><line x1="0" y1="-86" x2="34" y2="0"/>
+        <line x1="74" y1="-44" x2="34" y2="0"/><line x1="-74" y1="-44" x2="-34" y2="0"/>
+        <line x1="86" y1="30" x2="34" y2="0"/><line x1="-86" y1="30" x2="-34" y2="0"/>
+        <line x1="46" y1="82" x2="34" y2="0"/><line x1="-46" y1="82" x2="-34" y2="0"/>
+      </g>
+      <g class="m-ring" fill="#f7ecf1">
+        <circle cx="0" cy="-86" r="4"/><circle cx="74" cy="-44" r="4"/>
+        <circle cx="86" cy="30" r="4"/><circle cx="46" cy="82" r="4"/>
+        <circle cx="-46" cy="82" r="4"/><circle cx="-86" cy="30" r="4"/>
+        <circle cx="-74" cy="-44" r="4"/>
+      </g>
+      <circle class="m-you" cx="0" cy="0" r="13" fill="#ff8375"/>
+      <circle class="m-them" cx="0" cy="0" r="13" fill="#e5a3af"/>
+    </svg>
+  </div>
+
+  <section class="scene" data-st="0">
+    <p class="say">Yüzlerce yüz kaydırdın.</p>
+    <p class="whisper">Akşamın sonunda hiçbiri aklında kalmadı.</p>
+  </section>
+
+  <section class="scene" data-st="1">
+    <p class="say">Suç sende değil.</p>
+    <p class="whisper">Bu kararı hep tek başına vermek zorunda kaldın.</p>
+  </section>
+
+  <section class="scene quote" data-st="3">
+    <p class="say">“Siz çok yakışıyorsunuz.”</p>
+    <p class="whisper">Bunu hep birileri söyledi. Sen sormadan.</p>
+  </section>
+
+  <section class="scene thesis" data-st="4">
+    <p class="say">shipship, o cümleyi bir uygulamaya çevirir.</p>
+  </section>
+</div>
+
+<!-- ═══ II. MEKANİZMA ═══ -->
+<section class="how">
+  <div class="how-open">
+    <h2>Dört adım, o kadar.</h2>
+    <p>Kaydır, telefonda ne olduğunu gör.</p>
+  </div>
+  <div class="rail">
+    <div class="rail-scroll">
+      <div class="rail-stick">
+        <div class="phone"><div class="screen">
+          <img data-shot="0" class="on" src="/img/02-akis.jpg" alt="Akış'ta bir ikili kartı">
+          <img data-shot="1" src="/img/02-akis-swipe.jpg" alt="İkili sağa sürüklenirken oy rozeti">
+          <img data-shot="2" src="/img/04-eslesmelerin.jpg" alt="Eşleşmelerin ekranı">
+          <img data-shot="3" src="/img/05-sohbet.jpg" alt="Sohbet ekranı">
+        </div></div>
+        <div class="beat">
+          <div class="b on" data-beat="0"><span class="no">01</span><h3>Biri seni birine yakıştırır.</h3></div>
+          <div class="b" data-beat="1"><span class="no">02</span><h3>Topluluk oylar.</h3></div>
+          <div class="b" data-beat="2"><span class="no">03</span><h3>Yeterince “Uygun” gelirse eşleşme doğar.</h3></div>
+          <div class="b" data-beat="3"><span class="no">04</span><h3>Son sözü sen söylersin.</h3></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ III. GÜVENCE (ara adım → detay) ═══ -->
+<section class="trust">
+  <h2>Topluluk karışıyor diye savunmasız değilsin.</h2>
+  <div class="three">
+    <div class="tc"><b>Görünmeden de olur</b><span>Eşleşmeye katılmadan sadece oy verirsin. Profilin kimseye gösterilmez.</span></div>
+    <div class="tc"><b>Kimse puanlanmaz</b><span>Oy kişiye değil, ikilinin uyumuna verilir. Sıralama, puan, liste yok.</span></div>
+    <div class="tc"><b>Kapı hep açık</b><span>İstediğin an havuzdan çıkar, istediğin an hesabını silersin.</span></div>
+  </div>
+  <a class="doorway" href="/guvenlik">Güvenlik ve mahremiyet <span aria-hidden="true">→</span></a>
+</section>
+
+<!-- ═══ IV. DAVET ═══ -->
+<section class="invite">
+  <h2>Yakında.</h2>
+  <p>App Store ve Google Play’de. Türkiye’de başlıyoruz.</p>
+</section>
 
 <footer>
   <div>© 2026 shipship</div>
-  <div>
-    <a href="/destek">Destek</a> · <a href="/kosullar">Koşullar</a> · <a href="/gizlilik">Gizlilik</a> · <a href="/guvenlik">Güvenlik</a>
-    &nbsp;·&nbsp; <a href="mailto:merhaba@shipshipapp.com">merhaba@shipshipapp.com</a>
-  </div>
+  <div><a href="/destek">Destek</a> · <a href="/kosullar">Koşullar</a> · <a href="/gizlilik">Gizlilik</a> · <a href="/guvenlik">Güvenlik</a></div>
 </footer>
 
+<script>
+(function(){
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // Hero videosu: dar ekranda dikey kırpım, hareket-azalt'ta hiç oynamaz.
+  var vid = document.getElementById('heroVid');
+  var src = document.getElementById('heroSrc');
+  if (vid && src){
+    var pauseBtn = document.querySelector('.hero-pause');
+    function setBtn(playing){
+      if (!pauseBtn) return;
+      pauseBtn.textContent = playing ? '❚❚' : '▶';
+      pauseBtn.setAttribute('aria-label', playing ? 'Videoyu durdur' : 'Videoyu oynat');
+    }
+    if (pauseBtn){
+      pauseBtn.addEventListener('click', function(){
+        if (vid.paused){ vid.play(); setBtn(true); } else { vid.pause(); setBtn(false); }
+      });
+    }
+    if (reduce){
+      // Erişilebilirlik: kendiliğinden oynatma yok, karar kullanıcının.
+      vid.removeAttribute('autoplay'); vid.pause(); setBtn(false);
+    }
+    else {
+      // Ekranın en-boy oranına göre kadraj seç: yatayda 16:9, dikeyde 9:16.
+      // Böylece video her cihazda foldu doldurur ve kırpma en aza iner.
+      function pickSource(){
+        var webm = document.getElementById('heroSrcWebm');
+        var yatay = (window.innerWidth / window.innerHeight) >= 1;
+        var want = yatay ? '/video/loop16x9.mp4' : '/video/loop9x16.mp4';
+        if (webm) webm.setAttribute('type', yatay ? 'video/webm' : 'video/x-none');
+        if (src.getAttribute('src') !== want){
+          src.setAttribute('src', want); vid.load(); vid.play().catch(function(){});
+        }
+      }
+      pickSource();
+      var tekrar;
+      window.addEventListener('resize', function(){
+        clearTimeout(tekrar); tekrar = setTimeout(pickSource, 250);
+      });
+      window.addEventListener('orientationchange', function(){ setTimeout(pickSource, 300); });
+      // Bazı tarayıcılar autoplay etiketini kendiliğinden çalıştırmıyor; hazır olunca elle başlat.
+      var kick = function(){ vid.play().catch(function(){}); };
+      vid.addEventListener('canplay', kick, {once:true});
+      vid.addEventListener('loadeddata', kick, {once:true});
+      kick();
+    }
+  }
+
+  // "İncele": hikâyeye yaylanarak kayar. Hareket azaltılmışsa anında atlar.
+  var incele = document.getElementById('inceleBtn');
+  var hikaye = document.getElementById('hikaye');
+  if (incele && hikaye){
+    incele.addEventListener('click', function(){
+      var hedef = hikaye.getBoundingClientRect().top + window.pageYOffset;
+      if (reduce){ window.scrollTo(0, hedef); return; }
+      var bas = window.pageYOffset, yol = hedef - bas, sure = 1100, t0 = null;
+      // easeOutBack: sona doğru hedefi hafif geçip geri oturur — "bounce" hissi.
+      function egri(t){ var c1 = 1.70158, c3 = c1 + 1; return 1 + c3 * Math.pow(t - 1, 3) + c1 * Math.pow(t - 1, 2); }
+      function adim(zaman){
+        if (t0 === null) t0 = zaman;
+        var t = Math.min((zaman - t0) / sure, 1);
+        window.scrollTo(0, bas + yol * egri(t));
+        if (t < 1) requestAnimationFrame(adim);
+      }
+      requestAnimationFrame(adim);
+    });
+  }
+  var scenes = [].slice.call(document.querySelectorAll('.scene'));
+  var motif  = document.querySelector('.motif');
+  var trust  = document.querySelector('.trust');
+
+  if (!reduce && 'IntersectionObserver' in window){
+    // Perde ortaya gelince metni aç; motifi o perdenin durumuna al.
+    var io = new IntersectionObserver(function(es){
+      es.forEach(function(e){
+        if (!e.isIntersecting) return;
+        e.target.classList.add('in');
+        var st = e.target.getAttribute('data-st');
+        if (st && motif) motif.setAttribute('data-st', st);
+      });
+    }, {threshold:.45});
+    scenes.forEach(function(s){ io.observe(s); });
+
+    var io2 = new IntersectionObserver(function(es){
+      es.forEach(function(e){ if (e.isIntersecting) e.target.classList.add('in'); });
+    }, {threshold:.25});
+    if (trust) io2.observe(trust);
+  } else {
+    scenes.forEach(function(s){ s.classList.add('in'); });
+    if (trust) trust.classList.add('in');
+  }
+
+  // Mekanizma rayı: kaydırma oranı → aktif vuruş.
+  var rail = document.querySelector('.rail-scroll');
+  var beats = [].slice.call(document.querySelectorAll('[data-beat]'));
+  var shots = [].slice.call(document.querySelectorAll('[data-shot]'));
+  if (!reduce && rail && beats.length){
+    var last = -1, ticking = false;
+    function update(){
+      var r = rail.getBoundingClientRect();
+      var total = r.height - window.innerHeight;
+      if (total <= 0) return;
+      var p = Math.min(Math.max((-r.top)/total, 0), 1);
+      var i = Math.min(beats.length-1, Math.floor(p*beats.length));
+      if (i === last) return;
+      last = i;
+      beats.forEach(function(el,k){ el.classList.toggle('on', k===i); });
+      shots.forEach(function(el,k){ el.classList.toggle('on', k===i); });
+    }
+    function onScroll(){
+      if (ticking) return; ticking = true;
+      requestAnimationFrame(function(){ update(); ticking = false; });
+    }
+    window.addEventListener('scroll', onScroll, {passive:true});
+    window.addEventListener('resize', onScroll);
+    update();
+  }
+})();
+</script>
 </body>
 </html>
