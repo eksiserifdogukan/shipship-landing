@@ -8,6 +8,8 @@
 <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🚢</text></svg>">
 <style>
   :root{
+    /* Sayfanın TEK kenar boşluğu: logo, başlık ve düğmeler aynı hatta oturur. */
+    --gutter:clamp(22px,8vw,160px);
     --ink:#2a1a24; --soft:#5c4553; --dim:#8a7280; --card:#fffdfc; --accent:#d05aa4;
     --cream:#fdf7f4; --night:#1b1119; --night-soft:#d3bcc9;
   }
@@ -25,7 +27,7 @@
     font-size:clamp(24px,3.2vw,34px);font-weight:400;letter-spacing:-.025em;
     color:#fff;text-shadow:0 1px 14px rgba(27,17,25,.45)}
   .topbar{position:fixed;top:0;left:0;right:0;z-index:30;
-    padding:clamp(18px,3svh,28px) clamp(20px,5vw,44px);pointer-events:none}
+    padding:clamp(20px,3.4svh,34px) var(--gutter);pointer-events:none}
   .topbar .wordmark{pointer-events:auto}
 
 
@@ -36,7 +38,7 @@
   .hero-media{position:absolute;inset:0;z-index:0}
   .hero-media video,.hero-media img{width:100%;height:100%;object-fit:cover;object-position:50% 45%;display:block}
   .hero-fallback{display:none}
-  .hero-pause{position:absolute;right:clamp(16px,4vw,28px);bottom:clamp(18px,3.5svh,34px);z-index:3;
+  .hero-pause{position:absolute;right:var(--gutter);bottom:clamp(18px,3.5svh,34px);z-index:3;
     width:40px;height:40px;border-radius:999px;border:1px solid rgba(255,247,244,.35);
     background:rgba(27,17,25,.4);color:#fff7f4;font-size:11px;letter-spacing:.08em;
     cursor:pointer;backdrop-filter:blur(6px)}
@@ -46,8 +48,8 @@
   .hero-media::after{content:"";position:absolute;inset:0;
     background:linear-gradient(180deg,rgba(27,17,25,.55) 0%,rgba(27,17,25,.15) 32%,
       rgba(27,17,25,.72) 78%,rgba(27,17,25,.96) 100%)}
-  .hero-copy{position:relative;z-index:1;padding:0 clamp(24px,6vw,64px) clamp(96px,14svh,140px);
-    display:flex;flex-direction:column;gap:16px;max-width:1180px;margin:0 auto;width:100%}
+  .hero-copy{position:relative;z-index:1;padding:0 var(--gutter) clamp(96px,14svh,140px);
+    display:flex;flex-direction:column;gap:16px;width:100%}
   .hero-copy h1{font-size:clamp(36px,7.4vw,74px);line-height:1.03;letter-spacing:-.045em;
     font-weight:800;max-width:13ch;text-wrap:balance}
   .hero-copy p{font-size:clamp(16px,2.3vw,20px);color:#f0dbe6;max-width:32ch}
@@ -87,7 +89,7 @@
   /* ═══ PERDE ═══ */
   .scene{position:relative;z-index:1;min-height:100svh;
     display:flex;flex-direction:column;align-items:center;justify-content:center;
-    text-align:center;padding:12svh clamp(24px,7vw,64px);gap:20px}
+    text-align:center;padding:12svh var(--gutter);gap:20px}
   .scene .say{
     font-size:clamp(30px,6.4vw,62px);line-height:1.08;letter-spacing:-.045em;
     font-weight:800;max-width:15ch;text-wrap:balance;
@@ -125,11 +127,11 @@
   .how{position:relative;background:var(--cream);color:var(--ink)}
   .how-open{min-height:60svh;display:flex;flex-direction:column;
     align-items:center;justify-content:center;text-align:center;gap:14px;
-    padding:0 clamp(24px,6vw,56px)}
+    padding:0 var(--gutter)}
   .how-open h2{font-size:clamp(28px,5.4vw,48px);letter-spacing:-.04em;
     font-weight:800;line-height:1.08;max-width:16ch;text-wrap:balance}
   .how-open p{color:var(--soft);max-width:34ch}
-  .rail{position:relative;max-width:1080px;margin:0 auto;padding:0 clamp(24px,5vw,48px)}
+  .rail{position:relative;max-width:1080px;margin:0 auto;padding:0 var(--gutter)}
   .rail-scroll{height:420vh}
   .rail-stick{position:sticky;top:0;height:100svh;display:grid;
     grid-template-columns:1fr;place-items:center;gap:24px;align-content:center}
@@ -160,7 +162,7 @@
 
   /* ═══ GÜVENCE ═══ */
   .trust{background:var(--cream);color:var(--ink);
-    padding:clamp(70px,14vh,130px) clamp(24px,6vw,56px) clamp(80px,16vh,150px);
+    padding:clamp(70px,14vh,130px) var(--gutter) clamp(80px,16vh,150px);
     display:flex;flex-direction:column;align-items:center;gap:34px;text-align:center}
   .trust h2{font-size:clamp(28px,5.4vw,46px);letter-spacing:-.04em;font-weight:800;
     max-width:16ch;text-wrap:balance;
@@ -182,11 +184,11 @@
   /* ═══ DAVET ═══ */
   .invite{min-height:88svh;display:flex;flex-direction:column;align-items:center;
     justify-content:center;text-align:center;gap:18px;
-    padding:clamp(60px,12vh,110px) clamp(24px,6vw,56px);
+    padding:clamp(60px,12vh,110px) var(--gutter);
     background:linear-gradient(170deg,#d05aa4,#8e4bbf 70%,#1b1119)}
   .invite h2{font-size:clamp(34px,7vw,64px);letter-spacing:-.045em;font-weight:800}
   .invite p{opacity:.9;max-width:30ch}
-  footer{padding:26px clamp(24px,6vw,56px);display:flex;justify-content:space-between;
+  footer{padding:26px var(--gutter);display:flex;justify-content:space-between;
     flex-wrap:wrap;gap:10px;font-size:13.5px;background:var(--night);
     color:rgba(255,247,244,.65)}
   footer a{color:rgba(255,247,244,.9);text-decoration:none;font-weight:600}
