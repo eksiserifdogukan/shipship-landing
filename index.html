@@ -18,16 +18,15 @@
     background:var(--night); color:#fff7f4; line-height:1.45;
     overflow-x:hidden;
   }
-  .wordmark{position:relative;display:inline-block;line-height:1;
-    font-size:18px;font-weight:800;letter-spacing:-.04em;text-decoration:none;
-    padding:0 .16em .42em 0;color:#fff7f4}
-  .wordmark .f,.wordmark .b{display:block}
-  .wordmark .b{position:absolute;left:0;top:0;color:#e0909e;
-    transform:translate(.10em,.32em) rotate(-13deg)}
-  .wordmark .f{position:relative;transform:rotate(-13deg)}
+  /* shipship wordmark — uygulamadaki kanonik hâl: DÜZ, tek kelime, beyaz.
+     Eğik/üst üste binen eski sürüm uygulamada terk edildi (transform düşünce
+     isim yarıya iniyordu); site de o karara uyar. Tek kaynak: app Wordmark. */
+  .wordmark{display:inline-block;line-height:1.18;text-decoration:none;
+    font-size:clamp(24px,3.2vw,34px);font-weight:400;letter-spacing:-.025em;
+    color:#fff;text-shadow:0 1px 14px rgba(27,17,25,.45)}
   .topbar{position:fixed;top:0;left:0;right:0;z-index:30;
-    padding:20px clamp(20px,5vw,44px);pointer-events:none}
-  .topbar .wordmark{pointer-events:auto;opacity:.85}
+    padding:clamp(18px,3svh,28px) clamp(20px,5vw,44px);pointer-events:none}
+  .topbar .wordmark{pointer-events:auto}
 
 
   /* ═══ HERO: önce ne olduğumuzu söyler ═══ */
@@ -105,7 +104,7 @@
   .scene.thesis .brand{opacity:0;transform:translateY(14px);
     transition:opacity .9s ease .35s,transform .9s cubic-bezier(.22,1,.36,1) .35s}
   .scene.thesis.in .brand{opacity:1;transform:none}
-  .brand .wordmark{font-size:30px}
+  .brand .wordmark{font-size:clamp(30px,5vw,46px)}
 
   .hint{position:absolute;bottom:26px;left:50%;transform:translateX(-50%);
     font-size:12px;letter-spacing:.1em;color:rgba(255,247,244,.5);
@@ -207,7 +206,7 @@
 </head>
 <body>
 
-<div class="topbar"><span class="wordmark"><span class="b" aria-hidden="true">ship</span><span class="f" aria-hidden="true">ship</span></span></div>
+<div class="topbar"><span class="wordmark">shipship</span></div>
 
 
 <!-- ═══ 0. HERO — siteye düşen herkes fikri BURADA alır ═══ -->
@@ -340,11 +339,10 @@
         if (vid.paused){ vid.play(); setBtn(true); } else { vid.pause(); setBtn(false); }
       });
     }
-    if (reduce){
-      // Erişilebilirlik: kendiliğinden oynatma yok, karar kullanıcının.
-      vid.removeAttribute('autoplay'); vid.pause(); setBtn(false);
-    }
-    else {
+    {
+      // Hero filmi sakin bir sahne, kamera neredeyse sabit: denge bozucu değil.
+      // Bu yüzden "hareketi azalt" açıkken de oynar; asgari şart olan durdurma
+      // düğmesi her zaman görünür. Kaydırma animasyonlarını ayar yönetmeye devam eder.
       // Ekranın en-boy oranına göre kadraj seç: yatayda 16:9, dikeyde 9:16.
       // Böylece video her cihazda foldu doldurur ve kırpma en aza iner.
       function pickSource(){
@@ -366,6 +364,9 @@
       var kick = function(){ vid.play().catch(function(){}); };
       vid.addEventListener('canplay', kick, {once:true});
       vid.addEventListener('loadeddata', kick, {once:true});
+      // Düğme simgesi videonun gerçek durumunu izler (tarayıcı kendi de durdurabilir).
+      vid.addEventListener('play', function(){ setBtn(true); });
+      vid.addEventListener('pause', function(){ setBtn(false); });
       kick();
     }
   }

@@ -18,13 +18,10 @@
       background-attachment:fixed;
     }
     header { padding:22px clamp(22px,5vw,48px); }
-    .wordmark { position:relative; display:inline-block; line-height:1;
-      font-size:19px; font-weight:800; letter-spacing:-0.04em; color:#fff7f4;
-      text-decoration:none; padding:0 .16em .42em 0; }
-    .wordmark .f, .wordmark .b { display:block; }
-    .wordmark .b { position:absolute; left:0; top:0; color:#e0909e;
-      transform:translate(.10em,.32em) rotate(-13deg); }
-    .wordmark .f { position:relative; color:#fff7f4; transform:rotate(-13deg); }
+    /* shipship wordmark — uygulamadaki kanonik hâl: DÜZ, tek kelime, beyaz. */
+    .wordmark { display:inline-block; line-height:1.18; color:#fff;
+      font-size:clamp(22px,3vw,28px); font-weight:400; letter-spacing:-0.025em;
+      text-decoration:none; text-shadow:0 1px 12px rgba(90,20,70,.25); }
     main { flex:1; padding:0 clamp(16px,4vw,48px) 56px; }
     .doc {
       max-width:720px; margin:0 auto; background:var(--card); color:var(--ink);
@@ -47,7 +44,7 @@
   </style>
 </head>
 <body>
-<header><a class="wordmark" href="/" aria-label="shipship"><span class="b" aria-hidden="true">ship</span><span class="f" aria-hidden="true">ship</span></a></header>
+<header><a class="wordmark" href="/" aria-label="shipship">shipship</a></header>
 <main>
 <article class="doc">
   <h1>Güvenli Tanışma İpuçları</h1>
