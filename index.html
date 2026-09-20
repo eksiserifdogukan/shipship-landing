@@ -379,6 +379,17 @@
   .flag{position:fixed;left:12px;bottom:12px;z-index:60;background:#fff7f4;
     color:var(--ink);font-size:11px;letter-spacing:.06em;padding:6px 11px;
     border-radius:999px;opacity:.85;box-shadow:0 4px 14px rgba(0,0,0,.2)}
+
+  /* HERO metni — ince blok (2026-09-20): köşe-ağırlıklı karartma (videonun ortası/sağı
+     temiz), başlık tek satır + gevşek harf aralığı (Türkçe ş-t-ı-r sıkışıyordu),
+     açıklama geniş → 2 satır. */
+  .hero-card::after{background:
+    linear-gradient(180deg,rgba(27,17,25,.22) 0%,rgba(27,17,25,0) 22%),
+    radial-gradient(120% 90% at 0% 100%,rgba(27,17,25,.80) 0%,rgba(27,17,25,.46) 34%,rgba(27,17,25,0) 62%)}
+  .hero-copy h1{letter-spacing:-.03em;font-weight:700;font-size:clamp(30px,4.6vw,54px);max-width:none}
+  .hero-copy p{max-width:50ch;text-wrap:balance}
+  /* Dar/orta ekranda ortadaki "kaydır" işareti metnin üstüne biniyordu → blok yukarı alınır. */
+  @media (max-width:1099px){.hero-copy{bottom:calc(8.5svh + 72px)}} /* işaret hero'da 8.5vh yukarıda durur (cueGuncelle) */
 </style>
 </head>
 <body>
