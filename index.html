@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="robots" content="noindex,nofollow">
 <title>shipship — Topluluk yakıştırır, son söz senin</title>
-<meta name="description" content="Adayını sen aramazsın. Profiline uyanlarla ve arkadaşlarının önerdikleriyle ikili olursun, topluluk oylar. shipship yakında App Store ve Google Play'de.">
+<meta name="description" content="Adayını sen aramazsın. Profiline uyanlarla ve arkadaşlarının önerdikleriyle ikili olursun, topluluk oylar. shipship yakında App Store'da.">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🚢</text></svg>">
 <style>
   :root{
@@ -390,6 +390,13 @@
   .hero-copy p{max-width:50ch;text-wrap:balance}
   /* Dar/orta ekranda ortadaki "kaydır" işareti metnin üstüne biniyordu → blok yukarı alınır. */
   @media (max-width:1099px){.hero-copy{bottom:calc(8.5svh + 72px)}} /* işaret hero'da 8.5vh yukarıda durur (cueGuncelle) */
+
+  /* Hareket azaltma: süs animasyonları ve geçişler durur (kaydırmaya bağlı sahneler
+     kullanıcının kendi hareketidir, onlar kalır). */
+  @media (prefers-reduced-motion: reduce){
+    .scroll-cue svg{animation:none}
+    *{transition-duration:.01ms !important}
+  }
 </style>
 </head>
 <body>
@@ -512,7 +519,7 @@
               <div class="oy-kart a" id="oyA"><img src="img/oy-kart-a.jpg" alt=""></div>
               <div class="oy-rozet" id="oyRozet"><span class="halka">✓</span>Uygun</div>
             </div>
-            <div class="app"><img src="img/s-04-eslesmelerin.jpg" alt="Tanış ya da Geç"></div>
+            <div class="app"><img src="img/s-04-sira-sende.jpg" alt="Sıra sende: Tanış ya da Geç"></div>
             <div class="app"><img src="img/s-08-oneri.jpg" alt="Arkadaşına aday öner"></div>
             <div class="app"><img src="img/s-07-tercihler.jpg" alt="Sadece oy ver"></div>
           </div></div>
@@ -682,8 +689,12 @@
     if (vid.paused){ vid.play(); pauseBtn.textContent = '❚❚'; }
     else { vid.pause(); pauseBtn.textContent = '▶'; }
   });
+  /* Hareket azaltma tercihi (erişilebilirlik): film otomatik OYNAMAZ, afiş karesi kalır;
+     ▶ ile kullanıcı isterse başlatır. Süs animasyonları aşağıdaki CSS ile durur. */
+  var azHareket = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
   var kick = function(){ vid.play().catch(function(){}); };
-  vid.addEventListener('canplay', kick, {once:true}); kick();
+  if (azHareket) { vid.removeAttribute('autoplay'); vid.pause(); pauseBtn.textContent = '▶'; }
+  else { vid.addEventListener('canplay', kick, {once:true}); kick(); }
 
   /* F2: kelimelere böl — güvenli DOM kurulumu (innerHTML yok) */
   document.querySelectorAll('[data-fill]').forEach(function(el){
