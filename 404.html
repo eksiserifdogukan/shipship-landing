@@ -71,10 +71,13 @@
   <header><div class="wordmark">shipship</div></header>
   <main>
     <div class="wrap" id="invite" style="display:none">
-      <h1>Birisi seni shipship'e davet ediyor</h1>
-      <p class="sub">Topluluğun eşleştirdiği tanışma uygulaması. Uygulamayı indir, arkadaşlarınla birbirinize beğendiğiniz adayları önerin.</p>
+      <!-- İki varyant (2026-09-20): /invite/yakistirma ya da #y → arkadaşı onu BİRİYLE
+           yakıştırmış (uygulamada "Listede yok mu? Davet et" yolu). Linkte ad/kişisel
+           veri YOK; aday adı yalnız arkadaşın gönderdiği mesajda geçer. -->
+      <h1 id="invTitle">Bir arkadaşın seni shipship'e davet ediyor</h1>
+      <p class="sub" id="invSub">Topluluğun yakıştırdığı tanışma uygulaması. Arkadaşlarınla birbirinize aday önerirsiniz; tanışıp tanışmamak hep senin kararın.</p>
       <a class="cta" href="https://apps.apple.com/app/id6789615007">App Store'dan indir</a>
-      <p class="hint">Numaranla giriş yapman yeter — davet kendiliğinden bağlanır.</p>
+      <p class="hint">Kendi numaranla giriş yapman yeter, davet kendiliğinden bağlanır. Numaran kimseyle paylaşılmaz.</p>
     </div>
 
     <div class="wrap" id="notfound" style="display:none">
@@ -89,6 +92,10 @@
       // /invite veya /invite/<herhangi> → davet landing (kod yok; bağlantı
       // telefon eşleşmesiyle kurulur). Diğer yollar → sade 404.
       var invite = /^\/invite(\/|$)/.test(location.pathname);
+      if (invite && (/^\/invite\/yakistirma\/?$/.test(location.pathname) || location.hash === "#y")) {
+        document.getElementById("invTitle").textContent = "Bir arkadaşın seni biriyle yakıştırdı";
+        document.getElementById("invSub").textContent = "shipship'te ikilileri topluluk oylar. Uygulamayı indir, kendi numaranla gir; yakıştırıldığın kişiyle oylamaya çıkarsın. Tanışıp tanışmamak hep senin kararın.";
+      }
       document.getElementById(invite ? "invite" : "notfound").style.display = "";
     })();
   </script>
