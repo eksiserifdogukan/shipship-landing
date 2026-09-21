@@ -1,0 +1,293 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>lab — mekanizma omurgası (yalnız kaydırma)</title>
+<style>
+  :root{
+    --gutter:clamp(22px,8vw,160px);
+    --ink:#2a1a24; --soft:#5c4553; --dim:#8a7280; --card:#fffdfc;
+    --accent:#d05aa4; --cream:#fdf7f4; --night:#1b1119;
+    --ok:#5db98a;
+  }
+  *{box-sizing:border-box;margin:0}
+  body{background:var(--cream);color:var(--soft);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+    -webkit-font-smoothing:antialiased;line-height:1.5}
+  .pad{height:70svh;display:grid;place-items:center;color:var(--dim);
+    font-size:13px;letter-spacing:.1em;text-transform:uppercase}
+
+  /* ═══ OMURGA: tek büyük pin sahnesi ═══ */
+  .spine{position:relative}
+  .spine-scroll{height:520svh} /* ~5 ekranlık kaydırma bütçesi */
+  .stage{position:sticky;top:0;height:100svh;overflow:hidden;
+    display:grid;grid-template-rows:auto 1fr;padding:0 var(--gutter)}
+  /* F10: eşik geçilince kenarlardan taşan gül ışıması */
+  .glow{position:absolute;inset:-40px;pointer-events:none;opacity:0;z-index:0;
+    background:
+      radial-gradient(60% 50% at 50% 110%, rgba(224,144,158,.55), transparent 70%),
+      radial-gradient(40% 40% at -5% 50%, rgba(208,90,164,.35), transparent 70%),
+      radial-gradient(40% 40% at 105% 50%, rgba(255,111,97,.30), transparent 70%);
+    transition:opacity .5s ease}
+  .stage-head{padding-top:clamp(18px,4svh,44px);position:relative;z-index:2}
+  .stage-head h2{color:var(--ink);font-size:clamp(26px,4.4vw,40px);
+    letter-spacing:-.04em;font-weight:800;line-height:1.05}
+  .stage-body{display:grid;grid-template-columns:1fr;align-items:center;
+    gap:clamp(18px,3vw,60px);position:relative;z-index:2;min-height:0}
+
+  /* F7: sol adım listesi */
+  .steps{display:none;flex-direction:column;gap:18px;max-width:34ch}
+  .step{opacity:.3;transition:opacity .35s ease;border-left:3px solid transparent;
+    padding-left:14px}
+  .step.on{opacity:1;border-left-color:var(--accent)}
+  .step h3{color:var(--ink);font-size:clamp(17px,1.9vw,22px);
+    letter-spacing:-.02em;font-weight:800;line-height:1.2}
+  .step p{font-size:14.5px;margin-top:4px}
+
+  /* mobilde adımlar üstte tek satır */
+  .steps-mini{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;
+    font-size:12.5px;color:var(--dim);padding-top:8px}
+  .steps-mini span{opacity:.4;transition:opacity .3s}
+  .steps-mini span.on{opacity:1;color:var(--accent);font-weight:700}
+
+  /* sabit telefon */
+  .phone-wrap{display:flex;justify-content:center;align-items:center;min-height:0}
+  .phone{position:relative;height:min(72svh,560px);aspect-ratio:9/19.5;
+    border-radius:36px;background:var(--night);padding:8px;
+    box-shadow:0 26px 64px rgba(90,20,70,.26);flex:none}
+  .screen{position:relative;width:100%;height:100%;border-radius:29px;
+    overflow:hidden;background:#241820}
+  /* F16/F17: ekranlar dikeyde kayarak takas olur */
+  .app{position:absolute;inset:0;transform:translateY(102%);
+    will-change:transform}
+  .app img{width:100%;height:100%;object-fit:cover;object-position:top;display:block}
+  .app.first{transform:none}
+
+  /* Adım 2 katmanı: oy sayacı (F19) */
+  .votes{position:absolute;inset:0;display:flex;flex-direction:column;
+    align-items:center;justify-content:center;gap:14px;background:#241820cc;
+    backdrop-filter:blur(3px);opacity:0}
+  .ring{width:120px;height:120px;border-radius:999px;
+    display:grid;place-items:center;position:relative}
+  .ring svg{position:absolute;inset:0;transform:rotate(-90deg)}
+  .ring .n{color:#fff7f4;font-size:30px;font-weight:800;
+    font-variant-numeric:tabular-nums}
+  .votes .lbl{color:#d3bcc9;font-size:13px;letter-spacing:.04em}
+  .votes .esik{color:#e0909e;font-size:12.5px;opacity:0;transition:opacity .3s}
+  .votes .esik.on{opacity:1}
+  .dogdu{position:absolute;left:0;right:0;bottom:16%;text-align:center;
+    color:#fff7f4;font-weight:800;font-size:17px;letter-spacing:-.01em;
+    opacity:0;transform:translateY(10px);transition:opacity .4s,transform .4s}
+  .dogdu.on{opacity:1;transform:none}
+
+  /* Adım 4 katmanı: oy koreografisi — İKİLİ kartı */
+  .koreo{position:absolute;inset:0;background:#241820;opacity:0;
+    display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px}
+  .koreo .hint{color:#a892a0;font-size:12.5px;letter-spacing:.04em}
+  .deck{position:relative;width:64%;aspect-ratio:3/4.1}
+  .mini{position:absolute;left:0;right:0;height:48%;border-radius:14px;overflow:hidden;
+    background:#2a1a24;box-shadow:0 10px 26px rgba(0,0,0,.4);will-change:transform}
+  .mini img{width:100%;height:100%;object-fit:cover;display:block}
+  .mini.top{top:0}.mini.bot{bottom:0}
+  .rozet{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+    z-index:4;padding:6px 13px;border-radius:999px;font-size:12.5px;font-weight:800;
+    color:#fff;background:var(--ok);opacity:0;pointer-events:none}
+  .koreo .son{color:#fff7f4;font-size:14.5px;text-align:center;max-width:26ch;
+    opacity:0;transform:translateY(8px);transition:opacity .4s,transform .4s}
+  .koreo .son.on{opacity:1;transform:none}
+
+  @media (min-width:880px){
+    .stage-body{grid-template-columns:1fr auto}
+    .steps{display:flex}
+    .steps-mini{display:none}
+    .phone-wrap{justify-content:flex-end}
+  }
+  @media (max-width:879px){
+    .stage-head h2{font-size:clamp(22px,6vw,30px)}
+    .phone{height:min(62svh,480px)}
+  }
+
+  /* hareket azalt: pin yok, düz dikey anlatı */
+  @media (prefers-reduced-motion:reduce){
+    .spine-scroll{height:auto}
+    .stage{position:static;height:auto;overflow:visible;padding-bottom:40px}
+    .steps{display:flex;max-width:none}
+    .step{opacity:1}
+    .app{position:relative;transform:none;height:300px;margin-top:14px}
+    .votes,.koreo{position:relative;opacity:1;margin-top:14px;padding:20px}
+    .glow{display:none}
+  }
+</style>
+</head>
+<body>
+
+<div class="pad">aşağı kaydır — omurga prototipi</div>
+
+<section class="spine">
+  <div class="spine-scroll" id="spineScroll">
+    <div class="stage">
+      <div class="glow" id="glow"></div>
+      <div class="stage-head">
+        <h2>Nasıl çalışıyor?</h2>
+        <div class="steps-mini" id="stepsMini">
+          <span>İkilin oluşur</span><span>Topluluk oylar</span><span>Son söz ikilide</span><span>Oy anı</span>
+        </div>
+      </div>
+      <div class="stage-body">
+        <div class="steps" id="steps">
+          <div class="step" data-i="0">
+            <h3>İkilin oluşur</h3>
+            <p>Adayını sen aramazsın. Profiline göre sistem, bazen de arkadaşların, sana uyabilecek birini yanına koyar.</p>
+          </div>
+          <div class="step" data-i="1">
+            <h3>Topluluk oylar</h3>
+            <p>İkili topluluğun önüne gelir. Oy kişiye değil, ikilinin uyumuna verilir.</p>
+          </div>
+          <div class="step" data-i="2">
+            <h3>Son söz ikilide</h3>
+            <p>Tanış ya da Geç. Sohbet ancak ikiniz de Tanış derse açılır.</p>
+          </div>
+          <div class="step" data-i="3">
+            <h3>Oy anı</h3>
+            <p>Kaydırmaya devam et — oyu sen veriyorsun.</p>
+          </div>
+        </div>
+
+        <div class="phone-wrap">
+          <div class="phone"><div class="screen">
+            <div class="app first" data-app="0"><img src="img/03-adaylar.jpg" alt="Adaylar ekranı"></div>
+            <div class="app" data-app="1"><img src="img/02-akis.jpg" alt="Akış ekranı"></div>
+            <div class="app" data-app="2"><img src="img/04-eslesmelerin.jpg" alt="Eşleşmelerin ekranı"></div>
+
+            <!-- Adım 2 üst katmanı: oy sayacı -->
+            <div class="votes" id="votes">
+              <div class="ring">
+                <svg viewBox="0 0 120 120" width="120" height="120" aria-hidden="true">
+                  <circle cx="60" cy="60" r="52" fill="none" stroke="#3a2b36" stroke-width="9"/>
+                  <circle id="ringFg" cx="60" cy="60" r="52" fill="none" stroke="#e0909e"
+                          stroke-width="9" stroke-linecap="round"
+                          stroke-dasharray="326.7" stroke-dashoffset="326.7"/>
+                </svg>
+                <div class="n" id="voteN">0</div>
+              </div>
+              <div class="lbl">Uygun oyu</div>
+              <div class="esik" id="esik">eşik: 30</div>
+              <div class="dogdu" id="dogdu">Eşleşme doğdu ✨</div>
+            </div>
+
+            <!-- Adım 4 üst katmanı: oy koreografisi -->
+            <div class="koreo" id="koreo">
+              <div class="hint">şimdi sıra sende</div>
+              <div class="deck" id="deck">
+                <div class="rozet" id="rozet">UYGUN</div>
+                <div class="mini top" id="mTop"><img src="img/a.jpg" alt=""></div>
+                <div class="mini bot" id="mBot"><img src="img/b.jpg" alt=""></div>
+              </div>
+              <div class="son" id="son">Oy verdin. Gerçekte de bu kadar: kaydır, yakıştır, geç.</div>
+            </div>
+          </div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="pad">omurga bitti — sonraki bölüm gelir</div>
+
+<script>
+(function(){
+  var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (reduce) return; // düz anlatı; her şey CSS'te açık
+
+  var scroll = document.getElementById('spineScroll');
+  var steps  = [].slice.call(document.querySelectorAll('.step'));
+  var minis  = [].slice.call(document.querySelectorAll('#stepsMini span'));
+  var apps   = [].slice.call(document.querySelectorAll('.app'));
+  var votes  = document.getElementById('votes');
+  var ringFg = document.getElementById('ringFg');
+  var voteN  = document.getElementById('voteN');
+  var esik   = document.getElementById('esik');
+  var dogdu  = document.getElementById('dogdu');
+  var glow   = document.getElementById('glow');
+  var koreo  = document.getElementById('koreo');
+  var mTop   = document.getElementById('mTop');
+  var mBot   = document.getElementById('mBot');
+  var rozet  = document.getElementById('rozet');
+  var son    = document.getElementById('son');
+
+  var RING = 326.7, ESIK_OY = 30, MAX_OY = 34;
+  // DESIGN.md oy imzası: üst kart CW, Uygun'da alt kart da CW + yakınsama.
+  var TILT = 14, CONVERGE = 26;
+
+  function clamp01(x){ return Math.min(1, Math.max(0, x)); }
+  // adım payları: [0-.22] 1 · [.22-.52] 2 · [.52-.72] 3 · [.72-1] 4
+  var SINIR = [0, .22, .52, .72, 1];
+
+  function ciz(){
+    var r = scroll.getBoundingClientRect();
+    var total = r.height - innerHeight;
+    if (total <= 0) return;
+    var p = clamp01((-r.top) / total);
+
+    // aktif adım
+    var i = 3;
+    for (var k = 0; k < 4; k++) if (p < SINIR[k+1]) { i = k; break; }
+    steps.forEach(function(el, n){ el.classList.toggle('on', n === i); });
+    minis.forEach(function(el, n){ el.classList.toggle('on', n === i); });
+
+    // F16/F17: ekran takası — her app katmanı kendi adımına doğru yukarı kayar
+    // app0: adım1'de yerinde; adım2 girerken yukarı çıkar (Akış gelir) vb.
+    var gecis = [ // [başla, bit] alt-ilerleme aralıkları (sayfa p'si)
+      [SINIR[1] - .05, SINIR[1] + .03],  // app0 → app1
+      [SINIR[2] - .05, SINIR[2] + .03],  // app1 → app2
+      [SINIR[3] - .05, SINIR[3] + .03]   // app2 → koreo
+    ];
+    function tpos(aralik){ return clamp01((p - aralik[0]) / (aralik[1] - aralik[0])); }
+    var t01 = tpos(gecis[0]), t12 = tpos(gecis[1]), t23 = tpos(gecis[2]);
+    apps[0].style.transform = 'translateY(' + (-102 * t01) + '%)';
+    // app1: t01 ile girer (102→0), t12 ile çıkar (0→-102)
+    apps[1].style.transform = 'translateY(' + (102 * (1 - t01) - 102 * t12) + '%)';
+    apps[2].style.transform = 'translateY(' + (102 * (1 - t12) - 102 * t23) + '%)';
+
+    // F19: adım 2 içinde sayaç dolar
+    var s2 = clamp01((p - SINIR[1]) / (SINIR[2] - SINIR[1]));
+    votes.style.opacity = (i === 1) ? String(clamp01(s2 * 6) * clamp01((1 - s2) * 8 + .4)) : '0';
+    var oy = Math.round(MAX_OY * clamp01(s2 * 1.15));
+    voteN.textContent = oy;
+    ringFg.style.strokeDashoffset = String(RING * (1 - clamp01(oy / MAX_OY)));
+    ringFg.style.stroke = oy >= ESIK_OY ? '#5db98a' : '#e0909e';
+    esik.classList.toggle('on', s2 > .15 && oy < ESIK_OY);
+    var gecti = oy >= ESIK_OY;
+    dogdu.classList.toggle('on', gecti && i === 1);
+    // F10: eşik geçildiği an gül ışıması taşar (adım 2 sonunda görünür kalır)
+    glow.style.opacity = (gecti && p < SINIR[2] + .06) ? '1' : '0';
+
+    // Adım 4: oy koreografisi — kaydırma jesti oy jestini sürer
+    var s4 = clamp01((p - SINIR[3]) / (1 - SINIR[3]));
+    koreo.style.opacity = String(clamp01(t23 * 2));
+    // 0-.55: kart sağa sürüklenir; .55-.85: sabit hızla uçar; .85-1: sonuç
+    var drag = clamp01(s4 / .55);
+    var ucus = clamp01((s4 - .55) / .30);
+    var dx = drag * 46 + ucus * 130;                 // % cinsinden yatay
+    var tilt = TILT * clamp01(drag + ucus);
+    var kay = CONVERGE * drag;                        // Uygun: yakınsama
+    mTop.style.transform = 'translateX(' + dx + '%) translateY(' + kay + 'px) rotate(' + tilt + 'deg)';
+    mBot.style.transform = 'translateX(' + dx + '%) translateY(' + (-kay) + 'px) rotate(' + tilt + 'deg)';
+    rozet.style.opacity = String(clamp01(drag * 1.4) * (1 - ucus));
+    son.classList.toggle('on', s4 > .85);
+  }
+
+  var tick = false;
+  function onScroll(){
+    if (tick) return; tick = true;
+    requestAnimationFrame(function(){ ciz(); tick = false; });
+  }
+  addEventListener('scroll', onScroll, {passive:true});
+  addEventListener('resize', onScroll);
+  ciz();
+})();
+</script>
+</body>
+</html>

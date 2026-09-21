@@ -1,0 +1,286 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>lab — yatay ray + canlı oy kartı</title>
+<style>
+  :root{
+    --gutter:clamp(22px,8vw,160px);
+    --ink:#2a1a24; --soft:#5c4553; --dim:#8a7280; --card:#fffdfc;
+    --accent:#d05aa4; --cream:#fdf7f4; --night:#1b1119;
+    --ok:#5db98a; --no:#e0708a;
+  }
+  *{box-sizing:border-box;margin:0}
+  body{background:var(--cream);color:var(--soft);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+    -webkit-font-smoothing:antialiased;line-height:1.5}
+  .pad{height:60svh;display:grid;place-items:center;color:var(--dim);font-size:13px;
+    letter-spacing:.1em;text-transform:uppercase}
+
+  /* ══ YATAY RAY ══ */
+  .rail-wrap{position:relative}
+  .rail-scroll{height:460svh}
+  .rail-stage{position:sticky;top:0;height:100svh;overflow:hidden;
+    display:flex;flex-direction:column;justify-content:center}
+  .rail-head{padding:0 var(--gutter);margin-bottom:clamp(20px,4svh,40px);
+    display:flex;align-items:baseline;gap:14px;flex-wrap:wrap}
+  .rail-head h2{color:var(--ink);font-size:clamp(26px,4.6vw,42px);
+    letter-spacing:-.04em;font-weight:800;line-height:1.05}
+  .rail-head .count{font-family:ui-monospace,Menlo,monospace;font-size:13px;
+    color:var(--dim);letter-spacing:.12em}
+  .track{display:flex;gap:clamp(16px,2.4vw,32px);padding:0 var(--gutter);
+    will-change:transform}
+  .stop{flex:0 0 auto;width:min(74vw,420px);background:var(--card);
+    border:1px solid #f2e5ec;border-radius:22px;padding:clamp(22px,3vw,32px);
+    display:flex;flex-direction:column;gap:12px;min-height:clamp(300px,46svh,400px);
+    box-shadow:0 18px 44px rgba(90,20,70,.08)}
+  .stop .no{font-family:ui-monospace,Menlo,monospace;font-size:12px;
+    letter-spacing:.18em;color:var(--accent)}
+  .stop h3{color:var(--ink);font-size:clamp(21px,2.6vw,28px);letter-spacing:-.03em;
+    font-weight:800;line-height:1.12}
+  .stop p{font-size:15.5px}
+  .stop .art{margin-top:auto;height:120px;border-radius:14px;
+    background:linear-gradient(135deg,#fdeef6,#f3e6fb);display:grid;place-items:center;
+    color:var(--dim);font-size:12px;letter-spacing:.08em}
+
+  /* son durak: canlı kart */
+  .stop.live{width:min(84vw,470px);background:var(--night);border-color:#33212e;
+    color:#d3bcc9;align-items:center;text-align:center;gap:10px;
+    min-height:clamp(360px,58svh,520px);justify-content:flex-start}
+  .stop.live h3{color:#fff7f4}
+  .stop.live .hint{font-size:13.5px;color:#a892a0}
+
+  /* ══ OY KARTI (uygulamanın hareket sözleşmesi) ══ */
+  .deck{position:relative;width:190px;height:250px;margin:6px auto 0;touch-action:none}
+  .pair{position:absolute;inset:0;cursor:grab}
+  .pair.dragging{cursor:grabbing}
+  .mini{position:absolute;left:0;right:0;height:118px;border-radius:16px;overflow:hidden;
+    background:#2a1a24;box-shadow:0 10px 26px rgba(0,0,0,.35);
+    will-change:transform}
+  .mini img{width:100%;height:100%;object-fit:cover;display:block}
+  .mini.top{top:0} .mini.bot{bottom:0}
+  .badge{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%) scale(.8);
+    z-index:5;padding:7px 14px;border-radius:999px;font-size:13px;font-weight:800;
+    letter-spacing:.02em;color:#fff;opacity:0;pointer-events:none;
+    transition:opacity .12s linear}
+  .badge.ok{background:var(--ok)} .badge.no{background:var(--no)}
+  .keys{display:flex;gap:10px;justify-content:center;margin-top:14px}
+  .keys button{font:inherit;font-size:13px;font-weight:700;padding:9px 16px;
+    border-radius:999px;border:1px solid #4a3542;background:#2a1f28;color:#f5eaf0;
+    cursor:pointer}
+  .keys button:hover{background:#3a2b36}
+  .result{margin-top:12px;min-height:64px;display:flex;flex-direction:column;
+    gap:4px;align-items:center;justify-content:center;
+    opacity:0;transform:translateY(8px);transition:opacity .4s ease,transform .4s ease}
+  .result.on{opacity:1;transform:none}
+  .result b{color:#fff7f4;font-size:16px}
+  .result span{font-size:13.5px;color:#a892a0;max-width:30ch}
+  .result .demo{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:#7b6572}
+
+  @media (prefers-reduced-motion:reduce){
+    .rail-scroll{height:auto}
+    .rail-stage{position:static;height:auto;padding:40px 0}
+    .track{flex-wrap:wrap;transform:none !important}
+    .stop{width:100%;max-width:520px}
+  }
+</style>
+</head>
+<body>
+
+<div class="pad">aşağı kaydır</div>
+
+<section class="rail-wrap">
+  <div class="rail-scroll">
+    <div class="rail-stage">
+      <div class="rail-head">
+        <h2>Nasıl çalışıyor?</h2>
+        <span class="count" id="say">1 / 5</span>
+      </div>
+      <div class="track" id="track">
+
+        <article class="stop">
+          <span class="no">01</span>
+          <h3>Biri seni birine yakıştırır</h3>
+          <p>Adayını sen aramazsın. İkilini profilin ve arkadaşların belirler.</p>
+          <div class="art">ikili oluşuyor</div>
+        </article>
+
+        <article class="stop">
+          <span class="no">02</span>
+          <h3>Topluluk oylar</h3>
+          <p>İkili topluluğun önüne gelir: Uygun ya da Uygun değil. Oy kişiye değil, ikilinin uyumuna verilir.</p>
+          <div class="art">oylar birikiyor</div>
+        </article>
+
+        <article class="stop">
+          <span class="no">03</span>
+          <h3>Eşleşme doğar</h3>
+          <p>Yeterince “Uygun” geldiğinde eşleşme oluşur ve ikinizin de karşısına çıkar.</p>
+          <div class="art">eşik geçildi</div>
+        </article>
+
+        <article class="stop">
+          <span class="no">04</span>
+          <h3>Son sözü sen söylersin</h3>
+          <p>Tanış ya da Geç. Sohbet ancak ikiniz de Tanış derse açılır.</p>
+          <div class="art">Tanış / Geç</div>
+        </article>
+
+        <article class="stop live">
+          <span class="no">05</span>
+          <h3>Şimdi sen dene</h3>
+          <p class="hint">Kartı sağa sürükle: Uygun. Sola sürükle: Uygun değil.</p>
+
+          <div class="deck">
+            <div class="pair" id="pair">
+              <div class="badge ok" id="bok">UYGUN</div>
+              <div class="badge no" id="bno">UYGUN DEĞİL</div>
+              <div class="mini top" id="mtop"><img src="img/a.jpg" alt=""></div>
+              <div class="mini bot" id="mbot"><img src="img/b.jpg" alt=""></div>
+            </div>
+          </div>
+
+          <div class="keys">
+            <button type="button" id="kno">← Uygun değil</button>
+            <button type="button" id="kok">Uygun →</button>
+          </div>
+
+          <div class="result" id="res">
+            <b id="resT"></b>
+            <span id="resS"></span>
+            <span class="demo">örnek</span>
+          </div>
+        </article>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="pad">ray bitti</div>
+
+<script>
+(function(){
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* ═══ YATAY RAY: dikey kaydırma → yatay ilerleme ═══ */
+  var scroll = document.querySelector('.rail-scroll');
+  var track  = document.getElementById('track');
+  var say    = document.getElementById('say');
+  var stops  = track.children.length;
+
+  function railTick(){
+    if (reduce) return;
+    var r = scroll.getBoundingClientRect();
+    var total = r.height - window.innerHeight;
+    if (total <= 0) return;
+    var p = Math.min(Math.max((-r.top) / total, 0), 1);
+    // Rayın kat etmesi gereken mesafe: içerik genişliği eksi görünen alan.
+    var mesafe = track.scrollWidth - window.innerWidth;
+    track.style.transform = 'translate3d(' + (-p * mesafe) + 'px,0,0)';
+    say.textContent = Math.min(stops, Math.floor(p * stops) + 1) + ' / ' + stops;
+  }
+  var tick = false;
+  function onScroll(){
+    if (tick) return; tick = true;
+    requestAnimationFrame(function(){ railTick(); tick = false; });
+  }
+  window.addEventListener('scroll', onScroll, {passive:true});
+  window.addEventListener('resize', onScroll);
+  railTick();
+
+  /* ═══ OY KARTI — uygulamadaki hareket sözleşmesinin web karşılığı ═══
+     Sözleşme (DESIGN.md): sürükleme 2D serbest, karar YATAY.
+     Uygun  → iki kart birbirine YAKINSAR, ikisi de saat yönünde döner.
+     Uygun değil → kartlar AYRIŞIR, üst saat yönünde / alt tersine döner.
+     Bırakınca kart atış vektörü boyunca SABİT HIZLA uçar (yavaşlama yok).
+     Eşiğin altında iki eksende de yerine yaylanır. */
+  var TILT_MAX = 8, TILT_EXIT = 16, CONVERGE = 22, SEPARATE = 50;
+  var THRESHOLD = 0.35, EXIT_SPEED = 1.1; // px/ms
+
+  var pair = document.getElementById('pair');
+  var mtop = document.getElementById('mtop'), mbot = document.getElementById('mbot');
+  var bok = document.getElementById('bok'), bno = document.getElementById('bno');
+  var res = document.getElementById('res'), resT = document.getElementById('resT'), resS = document.getElementById('resS');
+
+  var dragging = false, id = null, x0 = 0, y0 = 0, dx = 0, dy = 0;
+  var lastX = 0, lastT = 0, vx = 0, kilit = false;
+
+  function genislik(){ return pair.getBoundingClientRect().width || 190; }
+
+  function ciz(dx, dy, exit){
+    var oran = Math.max(-1, Math.min(1, dx / (genislik() * 0.9)));
+    var mut  = Math.abs(oran);
+    var uygun = dx > 0;
+    var tilt = (exit ? TILT_EXIT : TILT_MAX) * oran;
+    // üst kart HER ZAMAN saat yönünde; alt kart Uygun'da aynı, Uygun değil'de ters
+    var altTilt = uygun ? tilt : -tilt;
+    var kay = mut * (uygun ? CONVERGE : -SEPARATE);
+    mtop.style.transform = 'translate(' + dx + 'px,' + (dy + kay) + 'px) rotate(' + tilt + 'deg)';
+    mbot.style.transform = 'translate(' + dx + 'px,' + (dy - kay) + 'px) rotate(' + altTilt + 'deg)';
+    bok.style.opacity = uygun ? mut : 0;
+    bno.style.opacity = uygun ? 0 : mut;
+  }
+
+  function yerineYaylan(){
+    mtop.style.transition = mbot.style.transition = 'transform .42s cubic-bezier(.22,1,.36,1)';
+    ciz(0,0,false);
+    setTimeout(function(){ mtop.style.transition = mbot.style.transition = ''; }, 440);
+  }
+
+  function ucur(uygun, hiz){
+    kilit = true;
+    var hedef = (uygun ? 1 : -1) * (window.innerWidth * 0.9);
+    var kalan = Math.abs(hedef - dx);
+    var sure  = Math.max(180, kalan / Math.max(EXIT_SPEED, Math.abs(hiz))); // SABİT hız
+    var egim  = dy;
+    mtop.style.transition = mbot.style.transition = 'transform ' + sure + 'ms linear';
+    ciz(hedef, egim, true);
+    setTimeout(function(){ sonuc(uygun); }, sure);
+  }
+
+  function sonuc(uygun){
+    res.classList.add('on');
+    if (uygun){
+      resT.textContent = 'Uygun dedin.';
+      resS.textContent = 'Topluluktan gelen oyların çoğu da öyleydi: bu ikili eşleşti. Şimdi söz onlarda — Tanış ya da Geç.';
+    } else {
+      resT.textContent = 'Uygun değil dedin.';
+      resS.textContent = 'Oy ikilinin uyumuna verilir, kimseye puan verilmez. Kimin ne oy verdiği hiçbir zaman gösterilmez.';
+    }
+  }
+
+  function bas(e){
+    if (kilit) return;
+    dragging = true; id = e.pointerId; pair.setPointerCapture(id);
+    pair.classList.add('dragging');
+    x0 = e.clientX; y0 = e.clientY; lastX = e.clientX; lastT = performance.now();
+    mtop.style.transition = mbot.style.transition = '';
+  }
+  function hareket(e){
+    if (!dragging || e.pointerId !== id) return;
+    dx = e.clientX - x0; dy = e.clientY - y0;
+    var t = performance.now(), dt = t - lastT;
+    if (dt > 0){ vx = (e.clientX - lastX) / dt; lastX = e.clientX; lastT = t; }
+    ciz(dx, dy, false);
+  }
+  function birak(e){
+    if (!dragging || e.pointerId !== id) return;
+    dragging = false; pair.classList.remove('dragging');
+    var gecti = Math.abs(dx) > genislik() * THRESHOLD || Math.abs(vx) > 0.7;
+    if (gecti) ucur(dx > 0, vx); else { dx = dy = 0; yerineYaylan(); }
+  }
+  pair.addEventListener('pointerdown', bas);
+  pair.addEventListener('pointermove', hareket);
+  pair.addEventListener('pointerup', birak);
+  pair.addEventListener('pointercancel', birak);
+
+  // Klavye/dokunmatik alternatifi — sürükleyemeyen için aynı sonuç.
+  document.getElementById('kok').addEventListener('click', function(){ if(!kilit){ dx = genislik()*0.5; dy = 0; ucur(true, EXIT_SPEED);} });
+  document.getElementById('kno').addEventListener('click', function(){ if(!kilit){ dx = -genislik()*0.5; dy = 0; ucur(false, EXIT_SPEED);} });
+})();
+</script>
+</body>
+</html>

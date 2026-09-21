@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>lab · şerit — çağ geçişleri</title>
+<style>
+  *{box-sizing:border-box;margin:0}
+  html,body{background:rgb(58,27,62);color:#f3e9f1;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;-webkit-font-smoothing:antialiased}
+  .giris{height:60svh;display:grid;place-items:center;color:rgba(243,233,241,.45);font-size:14px;letter-spacing:.18em;text-transform:uppercase}
+  .evo-scroll{height:900svh}
+  .stage{position:sticky;top:0;height:100svh;overflow:hidden}
+  .head{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:min(92vw,1100px);text-align:center;
+    font-size:clamp(34px,5.2vw,76px);font-weight:800;letter-spacing:-.03em;line-height:1.05;opacity:0;will-change:transform,opacity}
+  .head small{display:block;margin-top:14px;font-size:11px;font-weight:600;letter-spacing:.22em;text-transform:uppercase;color:rgba(243,233,241,.45)}
+  svg.yol{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+  .band{stroke:none}
+  .cizgi{fill:none;stroke:rgba(255,255,255,.5);stroke-width:1.2;stroke-dasharray:6 10}
+  .era{--zd:1}
+  .era{position:absolute;left:0;top:0;will-change:transform,opacity}
+  .era img{height:clamp(150px,26svh,300px);width:auto;display:block;transform:translate(-50%,-56%);filter:drop-shadow(0 0 6px rgba(255,255,255,.35)) drop-shadow(0 0 18px rgba(255,255,255,.18))}
+  .lab{position:absolute;left:50%;top:0;transform:translateX(-50%);text-align:center;width:min(90vw,640px);opacity:0;transition:opacity .35s}
+  .lab.on{opacity:1}
+  .lab b{display:block;font-size:13px;letter-spacing:.2em;text-transform:uppercase;color:rgba(243,233,241,.55);margin-bottom:8px}
+  .lab span{font-size:clamp(18px,2.2vw,26px);font-weight:600;letter-spacing:-.01em}
+  .cue{position:fixed;left:50%;bottom:22px;transform:translateX(-50%);font-size:11px;letter-spacing:.22em;color:rgba(255,255,255,.6)}
+  .son{height:60svh}
+</style>
+</head>
+<body>
+<div class="giris">kaydır — şerit denemesi</div>
+<div class="evo-scroll" id="evoScroll">
+  <div class="stage" id="stage">
+    <svg class="yol" id="svg" aria-hidden="true">
+      <defs><path id="yolP" d="M 0 0"/></defs>
+      <radialGradient id="odakG" gradientUnits="userSpaceOnUse" cx="0" cy="0" r="1"><stop offset="0" stop-color="rgba(255,255,255,.26)"/><stop offset=".35" stop-color="rgba(255,255,255,.12)"/><stop offset="1" stop-color="rgba(255,255,255,.035)"/></radialGradient>
+      <path class="band" id="band" d="M 0 0" fill="url(#odakG)"/>
+      <clipPath id="cizgiK"><rect id="cizgiKlip" x="0" y="-2000" width="0" height="6000"/></clipPath>
+      <use href="#yolP" class="cizgi" id="cizgi" clip-path="url(#cizgiK)"/>
+    </svg>
+    <div class="era"><img src="img/e1.png" alt=""></div>
+    <div class="era"><img src="img/e2.png" alt=""></div>
+    <div class="era"><img src="img/e3.png" alt=""></div>
+    <div class="era"><img src="img/e4.png" alt=""></div>
+    <div class="era"><img src="img/e5.png" alt=""></div>
+    <div class="head" id="head">Oysa hayat hiç öyle işlemedi.<small>metin taslak</small></div>
+    <div class="lab" id="lab"><b id="labB"></b><span id="labS"></span></div>
+  </div>
+</div>
+<div class="son"></div>
+<div class="cue">KAYDIR</div>
+<script>
+(function(){
+  var c01 = function(v){ return Math.max(0, Math.min(1, v)); };
+  var sc = document.getElementById('evoScroll'), head = document.getElementById('head'),
+      eras = [].slice.call(document.querySelectorAll('.era')), yol = document.getElementById('yolP'),
+ 
+      lab = document.getElementById('lab'), labB = document.getElementById('labB'), labS = document.getElementById('labS');
+  var L = 1, band = document.getElementById('band'), cizgi = document.getElementById('cizgi'), cizgiKlip = document.getElementById('cizgiKlip');
+  
+  var metin = [
+    ['Mağara','Kabilenin büyüğü yakıştırdı.'],
+    ['Antik çağ','Kâhin söyledi.'],
+    ['Köy','Komşu teyze söyledi.'],
+    ["90'lar",'Arkadaşın “bak bu tam sana göre” dedi.'],
+    ['Bugün','Kimse. Sen, tek başına, bir ekranla.']];
+  // yol üzerinde u (0–1) → ekran pikseli (viewBox 1000×600 → tam ekran)
+  // yol piksel cinsinden kurulur (ölçek bozulması yok): kenardan kenara tek yumuşak dalga
+  // üç alternatif yol (?yol=a|b|c) — hepsi soldan sağa yazılır, çağlar sağdan gelip sola akar
+  var YOL = (location.search.match(/yol=([abc])/)||[])[1] || 'a';
+  function yolKur(){
+    var W = innerWidth, H = innerHeight, d;
+    if (YOL === 'a') // Wispr: sol-ortada küçük ilmek → sola-aşağı → ortadan (odak) → sağ-üste çıkar
+      d = 'M '+(-W*.05)+' '+(H*.44)+' C '+(W*.06)+' '+(H*.42)+', '+(W*.14)+' '+(H*.30)+', '+(W*.22)+' '+(H*.26)+
+          ' C '+(W*.30)+' '+(H*.22)+', '+(W*.33)+' '+(H*.38)+', '+(W*.25)+' '+(H*.42)+
+          ' C '+(W*.19)+' '+(H*.45)+', '+(W*.16)+' '+(H*.52)+', '+(W*.22)+' '+(H*.58)+
+          ' C '+(W*.30)+' '+(H*.66)+', '+(W*.40)+' '+(H*.71)+', '+(W*.50)+' '+(H*.70)+
+          ' C '+(W*.68)+' '+(H*.68)+', '+(W*.86)+' '+(H*.52)+', '+(W*1.05)+' '+(H*.34);
+    else if (YOL === 'b') // ilmeksiz kanca: sol-üstten kıvrılarak iner, ortadan geçer, sağ-üste çıkar
+      d = 'M '+(W*.10)+' '+(H*.22)+' C '+(W*.02)+' '+(H*.40)+', '+(W*.10)+' '+(H*.60)+', '+(W*.26)+' '+(H*.64)+
+          ' C '+(W*.38)+' '+(H*.70)+', '+(W*.44)+' '+(H*.70)+', '+(W*.50)+' '+(H*.70)+
+          ' C '+(W*.68)+' '+(H*.68)+', '+(W*.86)+' '+(H*.52)+', '+(W*1.05)+' '+(H*.34);
+    else // c: düzensiz dalga — genlik değişir, tekdüze sinüs değil
+      d = 'M '+(-W*.05)+' '+(H*.40)+' C '+(W*.10)+' '+(H*.40)+', '+(W*.14)+' '+(H*.76)+', '+(W*.28)+' '+(H*.72)+
+          ' C '+(W*.40)+' '+(H*.68)+', '+(W*.42)+' '+(H*.64)+', '+(W*.50)+' '+(H*.66)+
+          ' C '+(W*.62)+' '+(H*.69)+', '+(W*.70)+' '+(H*.50)+', '+(W*.82)+' '+(H*.48)+
+          ' C '+(W*.92)+' '+(H*.46)+', '+(W*.98)+' '+(H*.34)+', '+(W*1.05)+' '+(H*.30);
+    yol.setAttribute('d', d);
+    L = yol.getTotalLength();
+  }
+  // derinlik: u=0 (sol, kıvrım) uzak → u=1 (sağ) yakın. Bant kalınlığı buna göre değişir.
+  // derinlik odağa bağlı: odak (ekran ortası) en önde → kalın/parlak; iki yana açıldıkça geriye gider.
+  // sol (geçmiş) sağdan daha uzağa düşer — gelen çağ okunur, giden çağ uzaklaşır.
+  // perspektif: sağ (yakın) kalın → sol (uzak) ince, tek yönlü ve yumuşak. Odak vurgusu kalınlıkla değil ışıkla.
+  function derin(u){
+    var t = c01(u), taban = 0.25 + 0.75*(t*t*(3-2*t));
+    var on = c01((t - .62)/.38);                 // sağ uç: ekranın önünden geçer → hızla kalınlaşır
+    return taban + 2.6*on*on*on;
+  }
+  var bandR = -1;
+  function bandKur(r){
+    if (r === undefined) r = 1;
+    var H = innerHeight, kalin = Math.min(130, Math.max(70, H*.13)), N = 120, ust = [], alt = [];
+    for (var i=0;i<=N;i++){
+      var u = 1 - r + (i/N)*r, p = yol.getPointAtLength(u*L), q = yol.getPointAtLength(Math.min(L,u*L+1));
+      var a = Math.atan2(q.y-p.y,q.x-p.x), w = kalin*derin(u)/2;
+      if (i === 0) w *= .15; // uç: sivri değil, kalemle çizilir gibi
+      ust.push((p.x+Math.sin(a)*w)+' '+(p.y-Math.cos(a)*w)); alt.push((p.x-Math.sin(a)*w)+' '+(p.y+Math.cos(a)*w));
+    }
+    band.setAttribute('d', 'M '+ust.join(' L ')+' L '+alt.reverse().join(' L ')+' Z');
+    var o = yol.getPointAtLength(uOrta*L), g = document.getElementById('odakG');
+    g.setAttribute('cx', o.x); g.setAttribute('cy', o.y); g.setAttribute('r', innerWidth*.34);
+  }
+  function nokta(u){
+    var p = yol.getPointAtLength(u*L), q = yol.getPointAtLength(Math.min(L, u*L+2));
+    var a = Math.atan2(q.y-p.y, q.x-p.x);
+    while (a > Math.PI/2) a -= Math.PI; while (a < -Math.PI/2) a += Math.PI;
+    return {x:p.x, y:p.y, a:a, k:1};
+  }
+  // ekranın ortasına denk gelen yol konumu
+  var uOrta = 0.5;
+  function ortaBul(){ var best=0,bd=1e9; for(var i=70;i<=200;i++){var u=i/200,p=nokta(u);var d=Math.abs(p.x-innerWidth/2);if(d<bd){bd=d;best=u;}} uOrta=best; bandKur(); }
+  var ARA = 0.19; // iki çağ arası yol payı
+
+  function prog(){ var r = sc.getBoundingClientRect(); return c01(-r.top/(r.height-innerHeight)); }
+  var son = -1;
+  function ciz(){
+    var ep = prog();
+    // zaman: 0–.06 belirir · .06–.24 odakta durur · .22–.34 ilk çağ gelirken üste süzülür · .34–1 çağlar
+    var hb = c01(ep/.06), hu = c01((ep-.24)/.10);
+    head.style.opacity = String(hb);
+    head.style.transform = 'translate(-50%,-50%) translateY(' + (hu*-(innerHeight*.36)) + 'px) scale(' + (0.92+.08*hb-.40*hu) + ')';
+    var K = .62;
+    var es = c01((ep-.34)/.66) * (eras.length-1);
+    var konum = Math.min(eras.length-1, es - K*Math.sin(2*Math.PI*es)/(2*Math.PI));
+    // ilk çağ henüz gelmediyse şeridin sağından (ekran dışı) başlar
+    var giris = (1 - c01((ep-.22)/.12)) * 0.45;
+    var akis = -konum*ARA + giris;         // şeridin kendi akışı
+    var bo = c01((ep-.18)/.22), boE = 1 - Math.pow(1-bo, 3);   // şerit sağdan sola kendini çizer
+    if (boE !== bandR){ bandR = boE; bandKur(boE); }
+    cizgi.style.strokeDasharray = '6 10'; cizgi.style.opacity = '1';
+    cizgi.style.strokeDashoffset = String(-akis*L);
+    cizgiKlip.setAttribute('x', String(innerWidth*(1-boE) - 40)); cizgiKlip.setAttribute('width', String(innerWidth*boE + 80));
+    var od = nokta(uOrta); lab.style.top = (od.y + innerHeight*.19) + 'px'; lab.style.left = od.x + 'px';
+    var yakin = 0;
+    eras.forEach(function(el,i){
+      var u = uOrta + i*ARA + akis;   // ilk çağ en önde; sonrakiler sağdan gelip sola-yukarı akar
+      var p = nokta(u), d = Math.abs(u-uOrta)/ARA;
+      var nx = 0, ny = 0;
+      var zd = Math.min(1, derin(u)), s = (1.35 - .7*c01(d)) * (0.55 + .45*zd), o = (1 - .55*c01(d-.1)) * (0.5 + .5*zd);
+      var salin = Math.sin(ep*40 + i*1.3)*3;
+      el.style.transform = 'translate(' + (p.x+nx) + 'px,' + (p.y+ny+salin) + 'px) rotate(' + (p.a*0.6) + 'rad) scale(' + s + ')';
+      el.style.opacity = String(u > 1.02 ? 0 : Math.max(0,o));
+      if (d < .5) yakin = i+1;
+    });
+    // şeridin akışı: çizgi tireleri + arkadaki mırıltı yol boyunca kayar
+    var k = ep > .33 && yakin ? yakin-1 : -1;
+    if (k !== son){ son = k; lab.classList.toggle('on', k >= 0); if (k >= 0){ labB.textContent = metin[k][0]; labS.textContent = metin[k][1]; } }
+  }
+  addEventListener('scroll', ciz, {passive:true}); addEventListener('resize', function(){ yolKur(); ortaBul(); ciz(); }); yolKur(); ortaBul(); ciz();
+})();
+</script>
+</body>
+</html>
