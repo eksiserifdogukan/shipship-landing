@@ -391,8 +391,8 @@
   /* Dar/orta ekranda ortadaki "kaydır" işareti metnin üstüne biniyordu → blok yukarı alınır. */
   @media (max-width:1099px){.hero-copy{bottom:calc(8.5svh + 72px)}} /* işaret hero'da 8.5vh yukarıda durur (cueGuncelle) */
 
-  /* Hareket azaltma: süs animasyonları ve geçişler durur (kaydırmaya bağlı sahneler
-     kullanıcının kendi hareketidir, onlar kalır). */
+  /* Hareket azaltma: yalnız süs animasyonları ve geçişler durur. Hero filmi HER ZAMAN
+     otomatik oynar (tasarımcı kararı 2026-09-21); ❚❚ düğmesi durdurma yoludur. */
   @media (prefers-reduced-motion: reduce){
     .scroll-cue svg{animation:none}
     *{transition-duration:.01ms !important}
@@ -689,12 +689,8 @@
     if (vid.paused){ vid.play(); pauseBtn.textContent = '❚❚'; }
     else { vid.pause(); pauseBtn.textContent = '▶'; }
   });
-  /* Hareket azaltma tercihi (erişilebilirlik): film otomatik OYNAMAZ, afiş karesi kalır;
-     ▶ ile kullanıcı isterse başlatır. Süs animasyonları aşağıdaki CSS ile durur. */
-  var azHareket = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
   var kick = function(){ vid.play().catch(function(){}); };
-  if (azHareket) { vid.removeAttribute('autoplay'); vid.pause(); pauseBtn.textContent = '▶'; }
-  else { vid.addEventListener('canplay', kick, {once:true}); kick(); }
+  vid.addEventListener('canplay', kick, {once:true}); kick();
 
   /* F2: kelimelere böl — güvenli DOM kurulumu (innerHTML yok) */
   document.querySelectorAll('[data-fill]').forEach(function(el){
