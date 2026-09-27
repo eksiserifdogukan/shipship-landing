@@ -397,6 +397,7 @@
     .scroll-cue svg{animation:none}
     *{transition-duration:.01ms !important}
   }
+
   /* MOBİL:BAŞ — telefonda yalnız hero + "Nasıl çalışıyor" + alt bilgi (tasarımcı 09-27).
      Hero tek ekran (kaydırmayla küçülüp soru soran sahne mobilde yok: cevabı hikâye bölümündeydi).
      Diğer bölümler ve onların sabit renk perdeleri gizli. Adımlar soluk değil; her adımın
@@ -419,7 +420,7 @@
     .step-shot .k img{display:block;width:100%;height:100%;object-fit:cover}
     .step-shot .k.a{left:3.18%;top:11.99%;width:93.56%;height:38.63%}
     .step-shot .k.b{left:3.18%;top:51.46%;width:93.56%;height:38.77%}
-    footer.mega{background:#191a1b;padding-top:40px}
+    footer.mega{background:#191a1b;padding-top:40px;padding-bottom:env(safe-area-inset-bottom)}
     /* "KAYDIR" işareti işini hero'da yapar; kaydırma başlayınca metnin üstünde asılı kalmasın. */
     html.wl-bar-on .scroll-cue{opacity:0;pointer-events:none}
     /* Mobilde düz beyaz (tasarımcı 09-27) — fark karışımı video üstünde parçalı görünüyordu. */
@@ -430,7 +431,7 @@
   /* Telefonda sayfa yana taşıyordu (evrim bölümü öğeleri) → yerleşim görünümü genişliyor, sabit
      öğeler ekran dışına düşüyordu. clip (hidden değil): kaydırma kabı KURMAZ, sticky sahneler bozulmaz. */
   html,body{overflow-x:clip}
-  html.wl-open{overflow:hidden;background:#fdf7f4}
+  html.wl-open{overflow:hidden;background:#fdf7f4 !important}   /* mobil alt bilgi betiği kök zemini koyulaştırabilir; form açıkken krem kazanır */
   /* Form açıkken arkada TÜM ekranı taşan krem zemin: iPhone klavye açılırken görünür alanı
      kaydırır, kutu bu kaymayı bir an geriden izler → kalan şeritte arkadaki koyu sayfa
      görünüyordu (siyah bantlar, 09-27 cihaz). Zemin kutunun hemen altında durur. */
@@ -738,7 +739,7 @@
             <h1>Topluluk yakıştırır, son söz senin.</h1>
             <p>Adayını sen aramazsın. Profiline uyanlarla ve arkadaşlarının önerdikleriyle ikili olursun, topluluk oylar.</p>
             <!-- WL:BAŞ --><a class="wl-hero-btn" href="#katil" data-wl-open>Listeye katıl</a><!-- WL:SON -->
-                                                                                                                                                          </div>
+                                                                                                                                                                      </div>
           <button class="hero-pause" id="heroPause" aria-label="Videoyu durdur">❚❚</button>
         </div>
       </div>
@@ -1554,6 +1555,13 @@
 <script></script>
 <script></script>
 <script></script>
+<script></script>
+<script>/* MOBİL:BAŞ */(function(){
+  var mq = window.matchMedia && matchMedia('(max-width: 879px)'), f = document.querySelector('footer.mega'), r = document.documentElement;
+  if (!mq || !f) return;
+  function s(){ r.style.backgroundColor = (mq.matches && f.getBoundingClientRect().top < innerHeight) ? '#191a1b' : ''; }
+  addEventListener('scroll', s, {passive: true}); addEventListener('resize', s); s();
+})();/* MOBİL:SON */</script>
 <script>/* WL:BAŞ */
 /* ─── BEKLEME LİSTESİ (2026-09-27) ─────────────────────────────────────────
    Tablo istemciye kapalı; yalnız üç fonksiyon çağrılır (crowdmatch-rn
