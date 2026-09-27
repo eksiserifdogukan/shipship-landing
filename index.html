@@ -397,9 +397,113 @@
     .scroll-cue svg{animation:none}
     *{transition-duration:.01ms !important}
   }
+
+  /* Telefonda sayfa yana taşıyordu (evrim bölümü öğeleri) → yerleşim görünümü genişliyor, sabit
+     öğeler ekran dışına düşüyordu. clip (hidden değil): kaydırma kabı KURMAZ, sticky sahneler bozulmaz. */
+  html,body{overflow-x:clip}
+  /* ─── BEKLEME LİSTESİ (2026-09-27) — sağ üstte sabit düğme + TAM SAYFA form ───
+     Tam sayfa + düz zemin (tasarımcı 09-27): arkadaki film yazıyı okunmaz yapıyordu. */
+  .wl-cta{position:fixed;top:max(14px,env(safe-area-inset-top));right:clamp(14px,2.4vw,26px);z-index:70;
+    font-family:inherit;font-weight:800;font-size:14px;line-height:1;padding:11px 18px;border-radius:999px;cursor:pointer;
+    background:#fff7f4;color:var(--ink);border:1px solid rgba(42,26,36,.16);
+    box-shadow:0 6px 18px rgba(20,8,16,.18);transition:transform .2s}
+  .wl-cta:active{transform:scale(.97)}
+  .wl{position:fixed;inset:0;z-index:90;background:var(--night);color:#f7ecf1;
+    display:flex;flex-direction:column;overflow-y:auto;-webkit-overflow-scrolling:touch;
+    opacity:0;visibility:hidden;transition:opacity .25s,visibility 0s .25s}
+  .wl.on{opacity:1;visibility:visible;transition:opacity .25s}
+  .wl-top{position:sticky;top:0;z-index:2;display:flex;align-items:center;justify-content:space-between;
+    padding:max(14px,env(safe-area-inset-top)) clamp(18px,3vw,32px) 14px;background:var(--night)}
+  .wl-wm{font-size:clamp(22px,2.4vw,26px);letter-spacing:-.025em;color:#f7ecf1}
+  .wl-x{display:inline-flex;align-items:center;gap:8px;font:inherit;font-size:15px;font-weight:700;
+    color:#f7ecf1;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.22);
+    border-radius:999px;padding:10px 16px 10px 18px;cursor:pointer}
+  .wl-x span{font-size:17px;line-height:1}
+  .wl-main{flex:1;display:flex;align-items:center;justify-content:center;
+    padding:clamp(12px,4vh,48px) 22px calc(28px + env(safe-area-inset-bottom))}
+  .wl-col{width:100%;max-width:460px;transform:translateY(12px);transition:transform .35s cubic-bezier(.22,1,.36,1)}
+  .wl.on .wl-col{transform:none}
+  .wl h2{font-size:clamp(32px,4.4vw,46px);font-weight:800;letter-spacing:-.04em;line-height:1.08;margin:0 0 14px}
+  .wl p.wl-sub{font-size:clamp(16px,1.5vw,18px);line-height:1.55;color:#e8d6e1;margin:0 0 30px}
+  .wl label.wl-l{display:block;font-size:14px;font-weight:600;color:#e8d6e1;margin:0 0 8px}
+  .wl input[type=email],.wl select{width:100%;box-sizing:border-box;font:inherit;font-size:17px;color:#fff7f4;
+    background:#2b1d27;border:1px solid #5a4352;border-radius:14px;padding:15px 16px;margin:0 0 20px;
+    -webkit-appearance:none;appearance:none}
+  .wl input::placeholder{color:#a08b98}
+  .wl select{background-image:linear-gradient(45deg,transparent 50%,#c9a6c0 50%),linear-gradient(135deg,#c9a6c0 50%,transparent 50%);
+    background-position:calc(100% - 22px) 55%,calc(100% - 16px) 55%;background-size:6px 6px;background-repeat:no-repeat}
+  .wl select:invalid{color:#a08b98}
+  .wl input:focus,.wl select:focus{outline:none;border-color:#f7ecf1;box-shadow:0 0 0 3px rgba(247,236,241,.16)}
+  .wl .wl-hint{font-size:13.5px;color:#c9a6c0;margin:-12px 0 20px}
+  .wl .wl-chk{display:flex;align-items:center;gap:12px;font-size:16px;margin:4px 0 26px;cursor:pointer}
+  .wl .wl-chk input{width:22px;height:22px;margin:0;accent-color:#fff7f4;flex-shrink:0}
+  .wl .wl-go{width:100%;font:inherit;font-weight:800;font-size:17px;padding:17px;border:0;border-radius:999px;
+    background:#fff7f4;color:var(--ink);cursor:pointer}
+  .wl .wl-go[aria-busy=true]{opacity:.6}
+  .wl .wl-err{min-height:20px;font-size:14.5px;color:#ffb3bd;margin:12px 0 0;text-align:center}
+  .wl .wl-fine{font-size:13.5px;line-height:1.55;color:#bfa9b6;text-align:center;margin:10px 0 0}
+  .wl a{color:#f7ecf1}
+  .wl .wl-ig{display:block;text-align:center;font-size:14.5px;color:#e8d6e1;margin-top:28px}
+  .wl .wl-hp{position:absolute;left:-9999px;width:1px;height:1px;opacity:0}
+  .wl .wl-ok-ic{width:52px;height:52px;border-radius:50%;border:2px solid var(--ok);color:var(--ok);
+    display:flex;align-items:center;justify-content:center;font-size:24px;margin:0 0 22px}
+  .wl .wl-sec{width:100%;font:inherit;font-size:16px;font-weight:700;padding:16px;border-radius:999px;cursor:pointer;
+    background:transparent;color:#f7ecf1;border:1px solid #6b5462}
+  .wl .wl-links{display:flex;justify-content:center;gap:22px;margin-top:20px;font-size:15px}
+  .wl .wl-links button{background:none;border:0;padding:0;font:inherit;color:#e8d6e1;text-decoration:underline;cursor:pointer}
+  .wl [hidden]{display:none !important}
 </style>
 </head>
 <body>
+<!-- ─── BEKLEME LİSTESİ (2026-09-27) ─── -->
+<button class="wl-cta" type="button" data-wl-open>Listeye katıl</button>
+<div class="wl" id="wl" role="dialog" aria-modal="true" aria-labelledby="wlH" aria-hidden="true">
+  <div class="wl-top">
+    <span class="wl-wm">shipship</span>
+    <button class="wl-x" type="button" data-wl-close>Kapat <span aria-hidden="true">✕</span></button>
+  </div>
+  <div class="wl-main"><div class="wl-col">
+
+    <form id="wlForm" novalidate>
+      <h2 id="wlH">Şehrini açanlardan ol</h2>
+      <p class="wl-sub">shipship şehir şehir açılıyor. Şehrin açıldığında önce listedekiler girer.</p>
+      <label class="wl-l" for="wlEmail">E-posta</label>
+      <input id="wlEmail" type="email" inputmode="email" autocomplete="email" placeholder="adin@ornek.com" required>
+      <label class="wl-l" for="wlCity">Şehrin</label>
+      <select id="wlCity" required><option value="" disabled selected>Şehrini seç</option></select>
+      <p class="wl-hint">İlk açılacak şehir: Eskişehir</p>
+      <input class="wl-hp" id="wlHp" type="text" tabindex="-1" autocomplete="off" aria-hidden="true">
+      <label class="wl-chk"><input id="wlAdult" type="checkbox"> 18 yaşından büyüğüm</label>
+      <button class="wl-go" type="submit">Listeye katıl</button>
+      <p class="wl-err" id="wlErr" role="alert"></p>
+      <p class="wl-fine">Sana yalnızca şehrin açıldığında tek bir e-posta atarız. Bilgilerini nasıl kullandığımızı <a href="/bekleme-listesi/" target="_blank" rel="noopener">bilgilendirme metninde</a> anlattık.</p>
+    </form>
+
+    <div id="wlDone" hidden>
+      <div class="wl-ok-ic" aria-hidden="true">✓</div>
+      <h2 tabindex="-1" id="wlDoneH">Listedesin</h2>
+      <p class="wl-sub" id="wlDoneP"></p>
+      <button class="wl-sec" type="button" id="wlShare">Bağlantıyı arkadaşına gönder</button>
+      <div id="wlEdit">
+        <div class="wl-links"><button type="button" id="wlChange">Şehrini değiştir</button><button type="button" id="wlLeave">Listeden çık</button></div>
+        <div id="wlCityBox" hidden style="margin-top:20px">
+          <select id="wlCity2" aria-label="Yeni şehrin"></select>
+          <button class="wl-go" type="button" id="wlCitySave">Kaydet</button>
+        </div>
+      </div>
+      <p class="wl-fine" id="wlNoEdit" hidden>Şehrini değiştirmek ya da listeden çıkmak için <a href="mailto:kvkk@shipshipapp.com">kvkk@shipshipapp.com</a> adresine yazabilirsin.</p>
+      <p class="wl-err" id="wlErr2" role="alert"></p>
+    </div>
+
+    <div id="wlLeft" hidden>
+      <h2 tabindex="-1" id="wlLeftH">Listeden çıktın</h2>
+      <p class="wl-sub">Kaydını sildik. Fikrin değişirse istediğin zaman yeniden katılabilirsin.</p>
+    </div>
+
+    <a class="wl-ig" href="https://www.instagram.com/shipshipapp/" target="_blank" rel="noopener">Gelişmeler Instagram'da · @shipshipapp</a>
+  </div></div>
+</div>
+
 
 
 <div class="scroll-cue" id="scrollCue" aria-hidden="true">
@@ -656,7 +760,7 @@
       </div>
       <div class="fin-copy">
         <h2 id="finH">Yakında</h2>
-        <a class="indir" id="finBtn" href="https://www.instagram.com/shipshipapp/" target="_blank" rel="noopener">Instagram’da takip et</a>
+        <a class="indir" id="finBtn" href="#" data-wl-open>Listeye katıl</a>
         <span class="not" id="finNot">Türkiye’de başlıyoruz</span>
       </div>
     </div>
@@ -1225,6 +1329,142 @@
   addEventListener('resize', onScroll);
   ciz();
   cueGuncelle();   // ilk boyada da doğru konumda doğsun
+})();
+</script>
+<script>
+/* ─── BEKLEME LİSTESİ (2026-09-27) ─────────────────────────────────────────
+   Tablo istemciye kapalı; yalnız üç fonksiyon çağrılır (crowdmatch-rn
+   BACKEND.md §waitlist). Anahtar herkese açık "publishable" anahtardır. */
+(function(){
+  var WL_URL = 'https://gfdfzfsbyihiprpqkwxx.supabase.co';
+  var WL_KEY = 'sb_publishable_UthZWAxQIcl_YL6mZ6CuaQ_cbEtlTiC';
+  var TOKEN_KEY = 'shipship.wl';
+
+  var ILLER = ['Adana','Adıyaman','Afyonkarahisar','Ağrı','Aksaray','Amasya','Ankara','Antalya','Ardahan','Artvin','Aydın','Balıkesir','Bartın','Batman','Bayburt','Bilecik','Bingöl','Bitlis','Bolu','Burdur','Bursa','Çanakkale','Çankırı','Çorum','Denizli','Diyarbakır','Düzce','Edirne','Elazığ','Erzincan','Erzurum','Eskişehir','Gaziantep','Giresun','Gümüşhane','Hakkari','Hatay','Iğdır','Isparta','İstanbul','İzmir','Kahramanmaraş','Karabük','Karaman','Kars','Kastamonu','Kayseri','Kilis','Kırıkkale','Kırklareli','Kırşehir','Kocaeli','Konya','Kütahya','Malatya','Manisa','Mardin','Mersin','Muğla','Muş','Nevşehir','Niğde','Ordu','Osmaniye','Rize','Sakarya','Samsun','Şanlıurfa','Siirt','Sinop','Sivas','Şırnak','Tekirdağ','Tokat','Trabzon','Tunceli','Uşak','Van','Yalova','Yozgat','Zonguldak'];
+
+  var $ = function(id){ return document.getElementById(id); };
+  var wl = $('wl'), form = $('wlForm'), err = $('wlErr'), err2 = $('wlErr2');
+  var lastFocus = null, token = null, city = null;
+
+  function clear(el){ while (el.firstChild) el.removeChild(el.firstChild); }
+  function fillCities(sel, selected){
+    ILLER.forEach(function(il){
+      var o = document.createElement('option'); o.value = il; o.textContent = il;
+      if (il === selected) o.selected = true;
+      sel.appendChild(o);
+    });
+  }
+  fillCities($('wlCity'));
+
+  function store(){ try { localStorage.setItem(TOKEN_KEY, JSON.stringify({t: token, c: city})); } catch(e){} }
+  function unstore(){ try { localStorage.removeItem(TOKEN_KEY); } catch(e){} }
+  function restore(){ try { return JSON.parse(localStorage.getItem(TOKEN_KEY) || 'null'); } catch(e){ return null; } }
+
+  function rpc(fn, body){
+    return fetch(WL_URL + '/rest/v1/rpc/' + fn, {
+      method: 'POST',
+      headers: {'apikey': WL_KEY, 'Content-Type': 'application/json'},
+      body: JSON.stringify(body)
+    }).then(function(r){
+      return r.json().then(function(j){
+        if (!r.ok) { var e = new Error(j && j.message || 'hata'); e.code = j && j.message; throw e; }
+        return j;
+      });
+    });
+  }
+
+  var MSG = {
+    cm_invalid_email: 'E-posta adresini kontrol eder misin?',
+    cm_invalid_city: 'Şehrini seçer misin?',
+    cm_adult_required: 'Listeye katılmak için 18 yaşından büyük olmalısın.'
+  };
+  function msg(e){ return MSG[e && e.code] || 'Şu an gönderemedik. Bağlantını kontrol edip tekrar dener misin?'; }
+
+  function show(which){
+    form.hidden = which !== 'form';
+    $('wlDone').hidden = which !== 'done';
+    $('wlLeft').hidden = which !== 'left';
+  }
+  function showDone(){
+    $('wlDoneP').textContent = city + ' açıldığında herkesten önce sana haber vereceğiz.';
+    $('wlEdit').hidden = !token;
+    $('wlNoEdit').hidden = !!token;
+    $('wlCityBox').hidden = true;
+    err2.textContent = '';
+    show('done');
+  }
+
+  function open(){
+    lastFocus = document.activeElement;
+    var saved = restore();
+    if (saved && saved.t) { token = saved.t; city = saved.c; showDone(); } else { show('form'); }
+    wl.classList.add('on'); wl.setAttribute('aria-hidden', 'false');
+    document.documentElement.style.overflow = 'hidden';
+    setTimeout(function(){ (form.hidden ? $('wlDoneH') : $('wlEmail')).focus(); }, 60);
+  }
+  function close(){
+    wl.classList.remove('on'); wl.setAttribute('aria-hidden', 'true');
+    document.documentElement.style.overflow = '';
+    if (lastFocus && lastFocus.focus) lastFocus.focus();
+  }
+
+  document.querySelectorAll('[data-wl-open]').forEach(function(b){
+    b.addEventListener('click', function(e){ e.preventDefault(); open(); });
+  });
+  wl.querySelectorAll('[data-wl-close]').forEach(function(b){ b.addEventListener('click', close); });
+  document.addEventListener('keydown', function(e){ if (e.key === 'Escape' && wl.classList.contains('on')) close(); });
+
+  ['wlEmail','wlCity','wlAdult'].forEach(function(id){
+    $(id).addEventListener('input', function(){ err.textContent = ''; });
+    $(id).addEventListener('change', function(){ err.textContent = ''; });
+  });
+
+  form.addEventListener('submit', function(e){
+    e.preventDefault();
+    var email = $('wlEmail').value.trim(), c = $('wlCity').value, adult = $('wlAdult').checked;
+    if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) { err.textContent = MSG.cm_invalid_email; $('wlEmail').focus(); return; }
+    if (!c) { err.textContent = MSG.cm_invalid_city; $('wlCity').focus(); return; }
+    if (!adult) { err.textContent = MSG.cm_adult_required; $('wlAdult').focus(); return; }
+    var go = form.querySelector('.wl-go');
+    if (go.getAttribute('aria-busy') === 'true') return;
+    go.setAttribute('aria-busy', 'true'); go.textContent = 'Gönderiliyor…';
+    rpc('cm_waitlist_join', {p_email: email, p_city: c, p_adult: true, p_hp: $('wlHp').value})
+      .then(function(r){
+        token = r.token || null; city = c;
+        if (token) store();
+        showDone(); $('wlDoneH').focus();
+      })
+      .catch(function(x){ err.textContent = msg(x); })
+      .then(function(){ go.setAttribute('aria-busy', 'false'); go.textContent = 'Listeye katıl'; });
+  });
+
+  $('wlShare').addEventListener('click', function(){
+    var url = 'https://shipshipapp.com';
+    if (navigator.share) { navigator.share({title: 'shipship', url: url}).catch(function(){}); return; }
+    var b = this;
+    (navigator.clipboard ? navigator.clipboard.writeText(url) : Promise.reject()).then(function(){
+      b.textContent = 'Bağlantı kopyalandı';
+      setTimeout(function(){ b.textContent = 'Bağlantıyı arkadaşına gönder'; }, 2200);
+    }).catch(function(){ window.prompt('Bağlantıyı kopyala:', url); });
+  });
+
+  $('wlChange').addEventListener('click', function(){
+    var sel = $('wlCity2'); clear(sel); fillCities(sel, city);
+    $('wlCityBox').hidden = false; sel.focus();
+  });
+  $('wlCitySave').addEventListener('click', function(){
+    var c = $('wlCity2').value; err2.textContent = '';
+    rpc('cm_waitlist_set_city', {p_token: token, p_city: c}).then(function(r){
+      if (!r.ok) { unstore(); token = null; err2.textContent = 'Kaydını bulamadık. Formu yeniden doldurabilirsin.'; return; }
+      city = c; store(); showDone();
+    }).catch(function(x){ err2.textContent = msg(x); });
+  });
+  $('wlLeave').addEventListener('click', function(){
+    err2.textContent = '';
+    rpc('cm_waitlist_leave', {p_token: token}).then(function(){
+      unstore(); token = null; city = null; form.reset(); show('left'); $('wlLeftH').focus();
+    }).catch(function(x){ err2.textContent = msg(x); });
+  });
 })();
 </script>
 </body>

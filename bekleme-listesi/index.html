@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Bekleme Listesi Aydınlatma Metni — shipship</title>
+  <meta name="description" content="shipship bekleme listesi formunda verilerinin nasıl işlendiği.">
+  <meta name="robots" content="index,follow">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🚢</text></svg>">
+  <style>
+    :root { --ink:#2a1a24; --ink-soft:#5c4553; --ink-dim:#8a7280; --accent:#d05aa4; --card:#fffdfc; --line:#f0e4e9; }
+    * { box-sizing:border-box; margin:0; }
+    body {
+      min-height:100vh; display:flex; flex-direction:column;
+      font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+      -webkit-font-smoothing:antialiased; color:#fff7f4;
+      background:linear-gradient(160deg,#ff6f61 0%,#f4577d 34%,#d05aa4 68%,#8e4bbf 100%);
+      background-attachment:fixed;
+    }
+    header { padding:22px clamp(22px,5vw,48px); }
+    /* shipship wordmark — uygulamadaki kanonik hâl: DÜZ, tek kelime, beyaz. */
+    .wordmark { display:inline-block; line-height:1.18; color:#fff;
+      font-size:clamp(22px,3vw,28px); font-weight:400; letter-spacing:-0.025em;
+      text-decoration:none; text-shadow:0 1px 12px rgba(90,20,70,.25); }
+    main { flex:1; padding:0 clamp(16px,4vw,48px) 56px; }
+    .doc {
+      max-width:720px; margin:0 auto; background:var(--card); color:var(--ink);
+      border-radius:22px; padding:clamp(26px,5vw,52px);
+      box-shadow:0 24px 70px rgba(90,20,70,0.35);
+    }
+    .doc h1 { font-size:clamp(26px,4.5vw,34px); letter-spacing:-0.02em; line-height:1.15; }
+    .meta { margin-top:8px; font-size:13.5px; color:var(--ink-dim); }
+    .doc h2 { font-size:19px; margin:34px 0 10px; letter-spacing:-0.01em; }
+    .doc p, .doc li { font-size:15.5px; line-height:1.65; color:var(--ink-soft); }
+    .doc p + p { margin-top:10px; }
+    .doc ul { padding-left:22px; margin:8px 0; }
+    .doc li { margin:8px 0; }
+    .doc strong { color:var(--ink); }
+    .doc a { color:var(--accent); font-weight:600; text-decoration:none; }
+    .doc a:hover { text-decoration:underline; }
+
+    .tablewrap { overflow-x:auto; -webkit-overflow-scrolling:touch; margin:14px 0; }
+    table { border-collapse:collapse; width:100%; }
+    th, td { text-align:left; padding:10px 12px; border-bottom:1px solid var(--line); vertical-align:top; font-size:14.5px; line-height:1.55; color:var(--ink-soft); }
+    th { color:var(--ink); font-weight:700; font-size:12px; text-transform:uppercase; letter-spacing:0.05em; }
+
+    /* Dar ekranda tablo = dikey kart yığını. Bu sayfa esasen telefonda
+       (uygulama içi tarayıcıda) okunuyor; yatay kaydırma okumayı bozuyordu. */
+    @media (max-width:600px) {
+      .tablewrap { overflow-x:visible; }
+      table, tbody, tr, td { display:block; width:100%; }
+      tr:first-child { display:none; }
+      tr { border:1px solid var(--line); border-radius:14px; padding:12px 15px; margin-bottom:10px; }
+      td { border:none; padding:6px 0; }
+      td + td { border-top:1px solid var(--line); }
+      td::before {
+        content:attr(data-l); display:block; margin-bottom:3px;
+        font-size:11px; font-weight:700; text-transform:uppercase;
+        letter-spacing:0.06em; color:var(--ink-dim);
+      }
+    }
+
+    .otherdocs { margin-top:38px; padding-top:18px; border-top:1px solid var(--line); font-size:14px; color:var(--ink-dim); }
+    footer { padding:24px clamp(22px,5vw,48px); display:flex; justify-content:space-between; flex-wrap:wrap; gap:10px; font-size:13.5px; color:rgba(255,247,244,0.7); }
+    footer a { color:rgba(255,247,244,0.9); text-decoration:none; font-weight:600; }
+  </style>
+</head>
+<body>
+<header><a class="wordmark" href="/" aria-label="shipship">shipship</a></header>
+<main>
+<article class="doc">
+  <h1>Bekleme Listesi Aydınlatma Metni</h1>
+  <p class="meta">Son güncelleme: 27 Eylül 2026</p>
+  <h2>1. Veri sorumlusu</h2>
+  <p>6698 sayılı Kişisel Verilerin Korunması Kanunu ("KVKK") uyarınca veri sorumlusu Şerif Doğukan Ekşi'dir (İstanbul). KVKK kapsamındaki başvuruların için: <a href="mailto:kvkk@shipshipapp.com">kvkk@shipshipapp.com</a></p>
+  <h2>2. Bu metnin kapsamı</h2>
+  <p>Bu metin, shipshipapp.com adresindeki bekleme listesi formunu dolduranların kişisel verilerinin işlenmesine ilişkin olarak KVKK'nın 10. maddesindeki aydınlatma yükümlülüğünü yerine getirmek amacıyla hazırlanmıştır. Uygulamayı kullanmaya başladığında uygulamanın kendi Gizlilik Politikası ve KVKK Aydınlatma Metni geçerli olur. Bu metin bir rıza beyanı içermez.</p>
+  <h2>3. İşlenen veriler ve toplama yöntemi</h2>
+  <p>Formu gönderdiğinde şunları işleriz: <strong>e-posta adresin</strong>, <strong>seçtiğin şehir</strong>, <strong>18 yaşından büyük olduğuna ilişkin beyanın</strong> ve kaydın oluşturulma ve güncellenme zamanı. Veriler, formdaki girişlerinle tamamen otomatik yolla elde edilir. Adını, IP adresini ya da cihaz bilgilerini bu formla kaydetmeyiz.</p>
+  <h2>4. İşleme amaçları ve hukuki sebepler</h2>
+  <div class="tablewrap"><table>
+    <tr><th>Amaç</th><th>Veri</th><th>Hukuki sebep (KVKK)</th></tr>
+    <tr><td data-l="Amaç">shipship seçtiğin şehirde açıldığında sana bunu bildiren tek bir e-posta göndermek</td><td data-l="Veri">E-posta, şehir</td><td data-l="Hukuki sebep (KVKK)">m.5/2-c — senin talebinle, kurulacak bir sözleşmeyle doğrudan ilgili olması</td></tr>
+    <tr><td data-l="Amaç">Hangi şehrin ne zaman açılacağını planlamak (yalnızca şehir başına toplam sayılar olarak)</td><td data-l="Veri">Şehir</td><td data-l="Hukuki sebep (KVKK)">m.5/2-f — meşru menfaat</td></tr>
+    <tr><td data-l="Amaç">Hizmetin 18 yaş altına sunulmamasını sağlamak</td><td data-l="Veri">18 yaş beyanı</td><td data-l="Hukuki sebep (KVKK)">m.5/2-ç — hukuki yükümlülüğün yerine getirilmesi</td></tr>
+  </table></div>
+  <p>Bu listeye <strong>tanıtım, kampanya ya da bülten e-postası göndermeyiz.</strong> Verilerin reklam amacıyla işlenmez ve <strong>hiçbir koşulda satılmaz.</strong></p>
+  <h2>5. Aktarılan taraflar ve aktarım amaçları</h2>
+  <div class="tablewrap"><table>
+    <tr><th>Alıcı grubu</th><th>Aktarım amacı</th></tr>
+    <tr><td data-l="Alıcı grubu"><strong>Barındırma hizmeti sağlayıcısı</strong> (Supabase — altyapı: Amazon Web Services; sunucu bölgesi <strong>AB / Frankfurt</strong>)</td><td data-l="Aktarım amacı">Verilerin saklanması</td></tr>
+    <tr><td data-l="Alıcı grubu"><strong>E-posta gönderim sağlayıcısı</strong> (Resend — İrlanda/AB bölgesi)</td><td data-l="Aktarım amacı">Açılış e-postasının sana iletilmesi (yalnızca e-posta adresi ve e-postanın içeriği aktarılır)</td></tr>
+  </table></div>
+  <h2>6. Yurt dışına aktarım</h2>
+  <p>5. bölümde sayılan hizmet sağlayıcıların sunucuları yurt dışındadır; bu nedenle verilerin, orada belirtilen amaçlarla ve yalnızca o alıcılara olmak üzere yurt dışına aktarılır. Bu sağlayıcılar Kişisel Verileri Koruma Kurulu tarafından ilan edilen standart sözleşmeyi imzalamamaktadır; Kurul'un yeterlilik kararı verdiği bir ülke de bulunmamaktadır. Bu durumu açıkça belirtiyoruz. Riski azaltmak için yalnızca gerekli en az veriyi topluyor ve saklama süresini kısa tutuyoruz (7. bölüm); sağlayıcılarla veri işleme sözleşmeleri (AB standart sözleşme hükümlerini içeren) yürürlüktedir.</p>
+  <h2>7. Saklama süresi</h2>
+  <ul><li>Açılış e-postası gönderildikten sonra o şehre ait bütün kayıtlar silinir.</li><li>Seçtiğin şehir açılmazsa kaydın en geç <strong>12 ay</strong> sonunda otomatik olarak silinir.</li><li>Listeden çıktığında kaydın hemen silinir.</li></ul>
+  <h2>8. Hakların (KVKK m.11)</h2>
+  <p><strong><a href="mailto:kvkk@shipshipapp.com">kvkk@shipshipapp.com</a></strong> adresine ya da Veri Sorumlusuna Başvuru Usul ve Esasları Hakkında Tebliğ'e uygun yazılı başvuruyla şu haklarını kullanabilirsin: kişisel verilerinin işlenip işlenmediğini öğrenme; işlenmişse buna ilişkin bilgi talep etme; işlenme amacını ve amacına uygun kullanılıp kullanılmadığını öğrenme; yurt içinde ya da yurt dışında aktarıldığı üçüncü kişileri bilme; eksik ya da yanlış işlenmişse düzeltilmesini isteme; silinmesini ya da yok edilmesini isteme; düzeltme ve silme işlemlerinin aktarıldığı üçüncü kişilere bildirilmesini isteme; münhasıran otomatik sistemlerle analiz edilmesi sonucu aleyhine bir sonucun ortaya çıkmasına itiraz etme; kanuna aykırı işleme nedeniyle zarara uğradıysan zararın giderilmesini talep etme. Başvurular en geç <strong>30 gün</strong> içinde ücretsiz olarak sonuçlandırılır. Kişisel Verileri Koruma Kurulu'na şikayet hakkın saklıdır.</p>
+  <p>Listeden çıkmak için başvuru yapman gerekmez: formu gönderdikten sonraki ekrandaki "Listeden çık" bağlantısını, açılış e-postasındaki bağlantıyı kullanabilir ya da <a href="mailto:kvkk@shipshipapp.com">kvkk@shipshipapp.com</a> adresine yazabilirsin. Seçtiğin şehri aynı ekrandan değiştirebilirsin.</p>
+  <h2>9. 18 yaş</h2>
+  <p>Bu liste 18 yaşından küçükler için değildir. 18 yaşından küçük birinin listeye katıldığını öğrenirsek kaydı sileriz.</p>
+  <h2>10. Değişiklikler</h2>
+  <p>Bu metin değişirse güncel hâli bu sayfada yayımlanır ve sayfanın başındaki tarih güncellenir.</p>
+</article>
+</main>
+<footer>
+  <div>© 2026 shipship</div>
+  <div><a href="/destek">Destek</a> · <a href="/kosullar">Koşullar</a> · <a href="/gizlilik">Gizlilik</a> · <a href="/guvenlik">Güvenlik</a></div>
+</footer>
+</body>
+</html>
