@@ -1038,36 +1038,25 @@
   }
 
   /* hero video — HER ZAMAN oynar; tek durdurma yolu ❚❚ (tasarımcı 09-21 + 09-27 "mobilde otomatik oynamalı").
-     iPhone sessiz videoyu da bazen başlatmaz: Düşük Güç Modu'nda <video> hiç başlamaz (kodla aşılamaz; tasarımcının
-     cihazında teşhis edildi). O zaman aynı MP4 RESİM gibi (<img>) oynar — Safari'ye özgü, Apple'ın WebKit belgelerindeki yol.
-     Kurallar (09-27 ikinci tur — "yine oynamıyor, ortadaki oynat düğmesi çalışmıyor"):
-     · Yedeğe geçiş: oynatma REDDEDİLİRSE ya da SESSİZCE başlamazsa (1,5 sn sonra hâlâ duruyorsa).
-     · Resim oynarken sayfaya dokunmak ona DOKUNMAZ (önceden videoya dönüyordu; video başlamazsa ekran donuk kalıyordu).
-     · Karartma katmanı dokunuşu yutmaz → Safari'nin ortadaki oynat düğmesi çalışır.
-     · Kullanıcı ❚❚ ile durdurmadıkça: sayfaya dönüşte / video yeniden görününce / dokununca yeniden denenir.
-     · Teşhis: adrese ?tani=1 eklenirse olaylar ekranda yazılır (cihazda neyin olduğunu görmek için). */
+     iPhone sessiz videoyu da bazen başlatmaz: Düşük Güç Modu'nda <video> hiç başlamaz (kodla aşılamaz). O zaman aynı
+     MP4 RESİM gibi (<img>) oynar — Safari'ye özgü, Apple'ın WebKit belgelerindeki yol (tasarımcının cihazında teyitli, 09-27).
+     · Yedeğe geçiş: oynatma REDDEDİLİRSE ya da SESSİZCE başlamazsa (1,5 sn sonra hâlâ duruyorsa — iPhone play()'i
+       ne oynatıp ne reddedebiliyor; ilk sürüm bunu kaçırıp donuk kalıyordu).
+     · Resim oynarken sayfaya dokunmak ona DOKUNMAZ; karartma katmanı dokunuşu yutmaz (Safari'nin oynat düğmesi çalışır).
+     · Kullanıcı ❚❚ ile durdurmadıkça: sayfaya dönüşte / video yeniden görününce / dokununca yeniden denenir. */
   var vid = document.getElementById('heroVid');
   var pauseBtn = document.getElementById('heroPause');
   var elleDurdu = false, resim = null, bekci = 0;
-  var iz = /[?&]tani=1/.test(location.search) ? (function(){
-    var el = document.createElement('pre'), t0 = Date.now();
-    el.style.cssText = 'position:fixed;left:6px;right:6px;top:64px;z-index:999;max-height:42vh;overflow:auto;margin:0;padding:8px;'
-      + 'background:rgba(0,0,0,.8);color:#fff;font:11px/1.35 ui-monospace,monospace;border-radius:8px;pointer-events:none;white-space:pre-wrap';
-    document.body.appendChild(el);
-    return function(s){ el.textContent += ((Date.now() - t0) / 1000).toFixed(1) + 's  ' + s + '\n'; };
-  })() : function(){};
   function simge(){
     var d = !resim && vid.paused;
     pauseBtn.textContent = d ? '▶' : '❚❚';
     pauseBtn.setAttribute('aria-label', d ? 'Videoyu oynat' : 'Videoyu durdur');
   }
-  function resmeGec(neden){
+  function resmeGec(){
     if (resim || elleDurdu) return;
-    iz('resim yedeğine geç (' + neden + ')');
     resim = document.createElement('img');
     resim.className = 'hero-vid-img'; resim.alt = ''; resim.setAttribute('aria-hidden', 'true');
-    resim.onload = function(){ iz('resim yüklendi'); };
-    resim.onerror = function(){ iz('resim HATA'); resimdenCik(); };
+    resim.onerror = resimdenCik;
     resim.src = (vid.currentSrc || vid.getAttribute('src')).split('?')[0] + '?img=1';   // videodan ayrı önbellek kaydı
     vid.parentNode.insertBefore(resim, vid); vid.style.display = 'none';
     simge();
@@ -1077,30 +1066,25 @@
     resim.remove(); resim = null; vid.style.display = '';
     simge();
   }
-  vid.addEventListener('playing', function(){ iz('video oynuyor'); resimdenCik(); simge(); });
-  vid.addEventListener('pause', function(){ iz('video durdu'); simge(); });
-  function oynat(neden){
+  vid.addEventListener('playing', function(){ resimdenCik(); simge(); });
+  vid.addEventListener('pause', simge);
+  function oynat(){
     if (elleDurdu || resim || !vid.paused) return;
-    iz('oynat: ' + neden);
     var p = vid.play();
-    if (p && p.then) p.then(function(){ iz('play tamam'); }, function(e){
-      iz('play RED: ' + (e && e.name));
-      if (e && e.name === 'NotAllowedError') resmeGec('red');
-      simge();
-    });
+    if (p && p.then) p.then(null, function(e){ if (e && e.name === 'NotAllowedError') resmeGec(); simge(); });
     clearTimeout(bekci);
-    bekci = setTimeout(function(){ if (!document.hidden && vid.paused && !elleDurdu && !resim) resmeGec('sessiz engel'); }, 1500);
+    bekci = setTimeout(function(){ if (!document.hidden && vid.paused && !elleDurdu && !resim) resmeGec(); }, 1500);
   }
   pauseBtn.addEventListener('click', function(){
-    if (resim || !vid.paused){ elleDurdu = true; clearTimeout(bekci); resimdenCik(); vid.pause(); simge(); iz('elle durduruldu'); }
-    else { elleDurdu = false; oynat('düğme'); }
+    if (resim || !vid.paused){ elleDurdu = true; clearTimeout(bekci); resimdenCik(); vid.pause(); simge(); }
+    else { elleDurdu = false; oynat(); }
   });
-  vid.addEventListener('canplay', function(){ oynat('canplay'); }, {once:true}); oynat('ilk');
-  ['touchend','click','keydown'].forEach(function(ev){ document.addEventListener(ev, function(){ oynat(ev); }, {passive:true}); });
-  document.addEventListener('visibilitychange', function(){ iz('görünürlük: ' + document.visibilityState); if (!document.hidden) oynat('dönüş'); });
-  addEventListener('pageshow', function(e){ iz('pageshow' + (e.persisted ? ' (önbellekten)' : '')); oynat('pageshow'); });
+  vid.addEventListener('canplay', oynat, {once:true}); oynat();
+  ['touchend','click','keydown'].forEach(function(ev){ document.addEventListener(ev, oynat, {passive:true}); });
+  document.addEventListener('visibilitychange', function(){ if (!document.hidden) oynat(); });
+  addEventListener('pageshow', oynat);
   if ('IntersectionObserver' in window)
-    new IntersectionObserver(function(es){ if (es[0].isIntersecting) oynat('görünür'); }).observe(vid);
+    new IntersectionObserver(function(es){ if (es[0].isIntersecting) oynat(); }).observe(vid);
 
   /* F2: kelimelere böl — güvenli DOM kurulumu (innerHTML yok) */
   document.querySelectorAll('[data-fill]').forEach(function(el){
