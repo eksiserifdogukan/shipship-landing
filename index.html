@@ -397,6 +397,33 @@
     .scroll-cue svg{animation:none}
     *{transition-duration:.01ms !important}
   }
+
+  /* MOBİL:BAŞ — telefonda yalnız hero + "Nasıl çalışıyor" + alt bilgi (tasarımcı 09-27).
+     Hero tek ekran (kaydırmayla küçülüp soru soran sahne mobilde yok: cevabı hikâye bölümündeydi).
+     Diğer bölümler ve onların sabit renk perdeleri gizli. Adımlar soluk değil; her adımın
+     altında kendi uygulama ekranı (masaüstünde telefonun içinde dönen görseller). */
+  .step-shot{display:none}
+  @media (max-width:879px){
+    .hero-scroll{height:100svh}
+    .hero-say{display:none}
+    .story,.wheel,.gal,.trust,.fin,.wheel-perde,.yesil-perde,.trust-perde,.fade-dark{display:none !important}
+    .spine-col{padding:8px 0 56px}
+    .step{min-height:0;opacity:1 !important;padding:26px 0 32px}
+    .step + .step{border-top:1px solid #eadde3}
+    .step-shot{display:block;position:relative;width:min(58vw,232px);aspect-ratio:9/19.5;margin-top:20px;
+      border-radius:28px;overflow:hidden;background:#241820;border:6px solid #1b1b20;
+      box-shadow:0 2px 3px rgba(20,12,18,.2),0 18px 40px rgba(20,12,18,.18)}
+    .step-shot > img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:top}
+    .step-shot .k{position:absolute;border-radius:9px;overflow:hidden;box-shadow:0 8px 20px rgba(0,0,0,.4)}
+    .step-shot .k img{display:block;width:100%;height:100%;object-fit:cover}
+    .step-shot .k.a{left:3.18%;top:11.99%;width:93.56%;height:38.63%}
+    .step-shot .k.b{left:3.18%;top:51.46%;width:93.56%;height:38.77%}
+    footer.mega{background:#191a1b;padding-top:40px}
+    /* "KAYDIR" işareti işini hero'da yapar; kaydırma başlayınca metnin üstünde asılı kalmasın. */
+    html.wl-bar-on .scroll-cue{opacity:0;pointer-events:none}
+  }
+  /* MOBİL:SON */
+
   /* WL:BAŞ */
   /* Telefonda sayfa yana taşıyordu (evrim bölümü öğeleri) → yerleşim görünümü genişliyor, sabit
      öğeler ekran dışına düşüyordu. clip (hidden değil): kaydırma kabı KURMAZ, sticky sahneler bozulmaz. */
@@ -787,12 +814,12 @@
       <div class="spine-col">
         <div class="stage-head"><h2>Nasıl çalışıyor?</h2></div>
         <div class="steps" id="steps">
-          <div class="step"><h3>Profilini doldurursun</h3><p>Birkaç fotoğraf, ne aradığın ve seni anlatan birkaç satır. Her şey buradan başlar.</p></div>
-          <div class="step"><h3>Adayların belirlenir</h3><p>Sistem herkesin girdiği bilgilere bakar, sana uyanları aday olarak seçer. Profilin doldukça adayların isabetlenir.</p></div>
-          <div class="step"><h3>İkilileri oylarsın, oyladıkça sen de oylanırsın</h3><p>Akış’ta karşına ikili gelir; oy kişiye değil, ikilinin uyumuna verilir. Oy verdikçe aday olduğun ikililer Akış’ta öne geçer, daha hızlı oylanırsın.</p></div>
-          <div class="step"><h3>Yeterli “Uygun” oyu gelince yakıştırılırsın</h3><p>Topluluk yeterince “Uygun” derse seni yakıştırır. Tanışmak ya da geçmek sana kalmış; ikiniz de Tanış derseniz eşleşirsiniz, sohbet açılır.</p></div>
-          <div class="step"><h3>Arkadaşlarınla birbirinize aday önerebilirsiniz</h3><p>Yakın arkadaşlarını çevrene eklersin; onlar sana, sen onlara aday çıkarırsın. Arkadaşlar birbirini daha iyi tanır.</p></div>
-          <div class="step"><h3>Görünürlüğünü gizleyebilirsin</h3><p>Profilini oylamalardan çekebilirsin; kimse seni oylamaz ama sen oylamaya devam edersin. İstediğin an geri dönersin.</p></div>
+          <div class="step"><h3>Profilini doldurursun</h3><p>Birkaç fotoğraf, ne aradığın ve seni anlatan birkaç satır. Her şey buradan başlar.</p><!-- MOBİL:BAŞ --><div class="step-shot" aria-hidden="true"><img src="img/s-06b-duzenle.jpg" alt="" loading="lazy" decoding="async"></div><!-- MOBİL:SON --></div>
+          <div class="step"><h3>Adayların belirlenir</h3><p>Sistem herkesin girdiği bilgilere bakar, sana uyanları aday olarak seçer. Profilin doldukça adayların isabetlenir.</p><!-- MOBİL:BAŞ --><div class="step-shot" aria-hidden="true"><img src="img/s-03-adaylar.jpg" alt="" loading="lazy" decoding="async"></div><!-- MOBİL:SON --></div>
+          <div class="step"><h3>İkilileri oylarsın, oyladıkça sen de oylanırsın</h3><p>Akış’ta karşına ikili gelir; oy kişiye değil, ikilinin uyumuna verilir. Oy verdikçe aday olduğun ikililer Akış’ta öne geçer, daha hızlı oylanırsın.</p><!-- MOBİL:BAŞ --><div class="step-shot" aria-hidden="true"><img src="img/oy-zemin.jpg" alt="" loading="lazy" decoding="async"><span class="k a"><img src="img/oy-kart-a.jpg" alt="" loading="lazy" decoding="async"></span><span class="k b"><img src="img/oy-kart-b.jpg" alt="" loading="lazy" decoding="async"></span></div><!-- MOBİL:SON --></div>
+          <div class="step"><h3>Yeterli “Uygun” oyu gelince yakıştırılırsın</h3><p>Topluluk yeterince “Uygun” derse seni yakıştırır. Tanışmak ya da geçmek sana kalmış; ikiniz de Tanış derseniz eşleşirsiniz, sohbet açılır.</p><!-- MOBİL:BAŞ --><div class="step-shot" aria-hidden="true"><img src="img/s-04-sira-sende.jpg" alt="" loading="lazy" decoding="async"></div><!-- MOBİL:SON --></div>
+          <div class="step"><h3>Arkadaşlarınla birbirinize aday önerebilirsiniz</h3><p>Yakın arkadaşlarını çevrene eklersin; onlar sana, sen onlara aday çıkarırsın. Arkadaşlar birbirini daha iyi tanır.</p><!-- MOBİL:BAŞ --><div class="step-shot" aria-hidden="true"><img src="img/s-08-oneri.jpg" alt="" loading="lazy" decoding="async"></div><!-- MOBİL:SON --></div>
+          <div class="step"><h3>Görünürlüğünü gizleyebilirsin</h3><p>Profilini oylamalardan çekebilirsin; kimse seni oylamaz ama sen oylamaya devam edersin. İstediğin an geri dönersin.</p><!-- MOBİL:BAŞ --><div class="step-shot" aria-hidden="true"><img src="img/s-07-tercihler.jpg" alt="" loading="lazy" decoding="async"></div><!-- MOBİL:SON --></div>
         </div>
       </div>
     </div>
@@ -1454,7 +1481,7 @@
     ciz(); cueGuncelle(); tick = true;         // aynı karede çiz; scroll olayı bir daha çizmesin
     animId = requestAnimationFrame(function(t){ tick = false; sur(t); });
   }
-  var DURAK_ACIK = !/durak=0/.test(location.search);
+  var DURAK_ACIK = !/durak=0/.test(location.search) && !(window.matchMedia && matchMedia('(max-width: 879px), (hover: none) and (pointer: coarse)').matches); /* MOBİL: telefonda doğal kaydırma (tasarımcı 09-27) */
   addEventListener('wheel', function(e){
     if (!DURAK_ACIK || e.ctrlKey) return;                 // pinch-zoom'a dokunma
     e.preventDefault();
