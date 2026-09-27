@@ -13,7 +13,7 @@
   --line: #eadde3;        /* ayraç */
   --line-strong: #cdb9c4; /* alan kenarı */
   --tint: #f6ecf0;        /* bilgi kutusu zemini */
-  --pink: #E6336E;        /* TEK marka pembesi — yalnız bekleme listesi düğmeleri */
+  --pink: #E6336E;        /* marka pembesi — yalnız ana eylemler: bekleme listesi düğmeleri + paylaş */
   --ok: #2f8a5b;
   --err: #b8304a;
   --bar-h: 64px;
