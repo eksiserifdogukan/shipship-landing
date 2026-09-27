@@ -465,6 +465,30 @@
     .scroll-cue{mix-blend-mode:normal;color:#fff;transform:translateX(-50%);bottom:26px}   /* kartın içinde, alt kenardan 12px */
   }
   /* MOBİL:SON */
+  /* MENU:BAŞ — masaüstü üst menü + başa dön (tasarımcı 09-27, BACKLOG 45).
+     Menü başlık camının DIŞINDA ayrı sabit katman: cam kendi yığın bağlamını kurduğu için içindeki yazı
+     alttaki sayfayla karışamazdı; "fark" karışımıyla krem bölümde koyu, koyu bölümde açık (wordmark'la aynı yöntem). */
+  .mn-nav{position:fixed;top:0;left:50%;transform:translateX(-50%);z-index:83;height:64px;
+    display:flex;align-items:center;gap:30px;mix-blend-mode:difference;pointer-events:none}
+  .mn-nav a{pointer-events:auto;color:#fff;font-size:15px;font-weight:600;letter-spacing:-.005em;text-decoration:none;
+    padding:8px 2px;border-bottom:1.5px solid transparent}
+  .mn-nav a:hover,.mn-nav a[aria-current=true]{border-bottom-color:#fff}
+  .mn-nav a:focus-visible{outline:2px solid #fff;outline-offset:4px}
+  html.wl-open .mn-nav{display:none}
+  @media (max-width:879px){ .mn-nav{display:none} }
+  /* Başa dön: ilk ekran geçilince belirir; krem daire (koyu bölümde de seçilir), sağ altta. */
+  .mn-fab{position:fixed;right:24px;bottom:24px;z-index:84;width:48px;height:48px;border-radius:999px;border:0;
+    display:flex;align-items:center;justify-content:center;background:#fdf7f4;color:#2a1a24;cursor:pointer;
+    box-shadow:0 1px 2px rgba(20,12,18,.18),0 10px 28px rgba(20,12,18,.22);
+    opacity:0;transform:translateY(10px);pointer-events:none;transition:opacity .25s,transform .25s;
+    -webkit-tap-highlight-color:transparent}
+  .mn-fab.on{opacity:1;transform:none;pointer-events:auto}
+  .mn-fab:active{transform:scale(.94)}
+  .mn-fab:focus-visible{outline:2px solid #2a1a24;outline-offset:3px}
+  html.wl-open .mn-fab{display:none}
+  @media (max-width:879px){ .mn-fab{right:16px;bottom:calc(16px + env(safe-area-inset-bottom));width:44px;height:44px} }
+  /* MENU:SON */
+
   /* WL:BAŞ */
   /* Telefonda sayfa yana taşıyordu (evrim bölümü öğeleri) → yerleşim görünümü genişliyor, sabit
      öğeler ekran dışına düşüyordu. clip (hidden değil): kaydırma kabı KURMAZ, sticky sahneler bozulmaz. */
@@ -586,6 +610,7 @@
     cursor:pointer;-webkit-user-select:none;user-select:none;-webkit-tap-highlight-color:transparent}
   .wl .wl-chip input{position:absolute;opacity:0;width:1px;height:1px;margin:0;pointer-events:none}
   .wl .wl-chip-other{border-style:dashed;color:#5c4553}
+  .wl .wl-opt{font-weight:400;color:#8a7280;margin-left:4px}
   .wl .wl-chip.on{background:#2a1a24;border:1px solid #2a1a24;color:#fdf7f4}
   .wl .wl-chip.focus{outline:2px solid #2a1a24;outline-offset:3px}
   .wl #wlCity{margin-top:10px}
@@ -666,44 +691,9 @@
     .wl-illu-rows{transform:translateY(-12px)} .wl-illu-first{opacity:0} .wl-illu-you{opacity:1}
   }
   /* WL:SON */
-
-  /* MENU:BAŞ — masaüstü üst menü + başa dön (tasarımcı 09-27, BACKLOG 45).
-     Menü başlık camının DIŞINDA ayrı sabit katman: cam kendi yığın bağlamını kurduğu için içindeki yazı
-     alttaki sayfayla karışamazdı; "fark" karışımıyla krem bölümde koyu, koyu bölümde açık (wordmark'la aynı yöntem). */
-  .mn-nav{position:fixed;top:0;left:50%;transform:translateX(-50%);z-index:83;height:64px;
-    display:flex;align-items:center;gap:30px;mix-blend-mode:difference;pointer-events:none}
-  .mn-nav a{pointer-events:auto;color:#fff;font-size:15px;font-weight:600;letter-spacing:-.005em;text-decoration:none;
-    padding:8px 2px;border-bottom:1.5px solid transparent}
-  .mn-nav a:hover,.mn-nav a[aria-current=true]{border-bottom-color:#fff}
-  .mn-nav a:focus-visible{outline:2px solid #fff;outline-offset:4px}
-  html.wl-open .mn-nav{display:none}
-  @media (max-width:879px){ .mn-nav{display:none} }
-  /* Başa dön: ilk ekran geçilince belirir; krem daire (koyu bölümde de seçilir), sağ altta. */
-  .mn-fab{position:fixed;right:24px;bottom:24px;z-index:84;width:48px;height:48px;border-radius:999px;border:0;
-    display:flex;align-items:center;justify-content:center;background:#fdf7f4;color:#2a1a24;cursor:pointer;
-    box-shadow:0 1px 2px rgba(20,12,18,.18),0 10px 28px rgba(20,12,18,.22);
-    opacity:0;transform:translateY(10px);pointer-events:none;transition:opacity .25s,transform .25s;
-    -webkit-tap-highlight-color:transparent}
-  .mn-fab.on{opacity:1;transform:none;pointer-events:auto}
-  .mn-fab:active{transform:scale(.94)}
-  .mn-fab:focus-visible{outline:2px solid #2a1a24;outline-offset:3px}
-  html.wl-open .mn-fab{display:none}
-  @media (max-width:879px){ .mn-fab{right:16px;bottom:calc(16px + env(safe-area-inset-bottom));width:44px;height:44px} }
-  /* MENU:SON */
 </style>
 </head>
 <body>
-<!-- MENU:BAŞ -->
-<nav class="mn-nav" aria-label="Bölümler">
-  <a href="#nasil" data-mn=".spine">Nasıl çalışıyor</a>
-  <a href="#niyetler" data-mn=".gal">Niyetler</a>
-  <a href="#guven" data-mn=".trust">Güven</a>
-</nav>
-<button class="mn-fab" id="mnFab" type="button" aria-label="Başa dön" tabindex="-1">
-  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19V5"/><path d="M5 12l7-7 7 7"/></svg>
-</button>
-<!-- MENU:SON -->
-
 <!-- WL:BAŞ -->
 <header class="wl-bar" id="wlBar" inert>
   <a class="wl-btn wl-btn-sm wl-btn-pink" href="#katil" data-wl-open>Bekleme listesine katıl</a>
@@ -757,6 +747,15 @@
         <select id="wlCity" aria-label="Şehrini seç" aria-describedby="wlCityErr" hidden><option value="" disabled selected>Şehrini seç</option></select>
         <p class="wl-ferr" id="wlCityErr"></p>
       </div>
+      <!-- Cinsiyet İSTEĞE BAĞLI (tasarımcı 09-27): yalnız toplam oran için; seçenekler uygulamanın sözlüğüyle aynı. -->
+      <div class="wl-field" id="wlGenderF" role="radiogroup" aria-labelledby="wlGenderL">
+        <span class="wl-lbl" id="wlGenderL">Cinsiyetin <span class="wl-opt">isteğe bağlı</span></span>
+        <div class="wl-chips">
+          <label class="wl-chip"><input type="radio" name="wlGender" value="woman">Kadın</label>
+          <label class="wl-chip"><input type="radio" name="wlGender" value="man">Erkek</label>
+          <label class="wl-chip"><input type="radio" name="wlGender" value="nonbinary">Non-binary</label>
+        </div>
+      </div>
       <input class="wl-hp" id="wlHp" type="text" tabindex="-1" autocomplete="off" aria-hidden="true">
       <label class="wl-check" id="wlAdultL"><input id="wlAdult" type="checkbox" aria-describedby="wlAdultErr"> 18 yaşından büyüğüm</label>
       <span class="wl-sr" id="wlAdultErr"></span>
@@ -801,6 +800,17 @@
   </div></div>
 </div>
 <!-- WL:SON -->
+
+<!-- MENU:BAŞ -->
+<nav class="mn-nav" aria-label="Bölümler">
+  <a href="#nasil" data-mn=".spine">Nasıl çalışıyor</a>
+  <a href="#niyetler" data-mn=".gal">Niyetler</a>
+  <a href="#guven" data-mn=".trust">Güven</a>
+</nav>
+<button class="mn-fab" id="mnFab" type="button" aria-label="Başa dön" tabindex="-1">
+  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19V5"/><path d="M5 12l7-7 7 7"/></svg>
+</button>
+<!-- MENU:SON -->
 
 
 
@@ -1685,6 +1695,33 @@
   }
   addEventListener('scroll', s, {passive: true}); addEventListener('resize', s); s();
 })();/* MOBİL:SON */</script>
+<script>/* MENU:BAŞ */(function(){
+  /* Tıklayınca bölüme yumuşak kaydırma. Durak kaydırması kaydırma olayında hedefini kendisi eşitler
+     (animasyon yokken hedef = scrollY) → programla kaydırma onunla çakışmaz. */
+  var linkler = [].slice.call(document.querySelectorAll('.mn-nav a'));
+  function ust(el){ return Math.round(el.getBoundingClientRect().top + scrollY); }
+  function git(y){ scrollTo({top: y, behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth'}); }
+  linkler.forEach(function(a){
+    a.addEventListener('click', function(e){
+      var el = document.querySelector(a.getAttribute('data-mn')); if (!el) return;
+      e.preventDefault(); git(ust(el));
+      try { history.replaceState(null, '', a.getAttribute('href')); } catch(x){}
+    });
+  });
+  /* Adresle gelen (#nasil vb.) doğrudan o bölümde açılır. */
+  var ilk = linkler.filter(function(a){ return a.getAttribute('href') === location.hash; })[0];
+  if (ilk) addEventListener('load', function(){ var el = document.querySelector(ilk.getAttribute('data-mn')); if (el) scrollTo(0, ust(el)); });
+  var fab = document.getElementById('mnFab');
+  fab.addEventListener('click', function(){ git(0); });
+  function guncelle(){
+    var on = scrollY > innerHeight * .9;
+    fab.classList.toggle('on', on); fab.tabIndex = on ? 0 : -1;
+    var orta = scrollY + innerHeight * .4, aktif = null;
+    linkler.forEach(function(a){ var el = document.querySelector(a.getAttribute('data-mn')); if (el && el.offsetParent !== null && ust(el) <= orta && ust(el) + el.offsetHeight > orta) aktif = a; });
+    linkler.forEach(function(a){ a.setAttribute('aria-current', a === aktif ? 'true' : 'false'); });
+  }
+  addEventListener('scroll', guncelle, {passive: true}); addEventListener('resize', guncelle); guncelle();
+})();/* MENU:SON */</script>
 <script>/* WL:BAŞ */
 /* ─── BEKLEME LİSTESİ (2026-09-27) ─────────────────────────────────────────
    Tablo istemciye kapalı; yalnız üç fonksiyon çağrılır (crowdmatch-rn
@@ -1726,6 +1763,20 @@
     r.addEventListener('focus', function(){ if (r.matches(':focus-visible')) r.parentNode.classList.add('focus'); });
     r.addEventListener('blur', function(){ r.parentNode.classList.remove('focus'); });
   });
+  /* Cinsiyet — İSTEĞE BAĞLI (tasarımcı 09-27): yalnız toplam oran için. Seçiliye yeniden dokununca seçim
+     kalkar (boş bırakmak her zaman mümkün; radyo düğmesi normalde bunu yapmaz). */
+  var gPicks = [].slice.call(document.querySelectorAll('input[name="wlGender"]'));
+  function syncGender(){ gPicks.forEach(function(r){ r.parentNode.classList.toggle('on', r.checked); }); }
+  gPicks.forEach(function(r){
+    var secili = false;
+    r.parentNode.addEventListener('pointerdown', function(){ secili = r.checked; });
+    r.addEventListener('click', function(){ if (secili) { r.checked = false; secili = false; } syncGender(); });
+    r.addEventListener('change', syncGender);
+    r.addEventListener('focus', function(){ if (r.matches(':focus-visible')) r.parentNode.classList.add('focus'); });
+    r.addEventListener('blur', function(){ r.parentNode.classList.remove('focus'); });
+  });
+  function pickedGender(){ var r = gPicks.filter(function(x){ return x.checked; })[0]; return r ? r.value : null; }
+
   function formReady(){
     return /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test($('wlEmail').value.trim()) && !!pickedCity() && $('wlAdult').checked;
   }
@@ -1942,11 +1993,13 @@
     go.setAttribute('aria-busy', 'true'); go.textContent = 'Gönderiliyor…';
     var govde = {p_email: email, p_city: c, p_adult: true, p_hp: $('wlHp').value};
     if (kanal) govde.p_source = kanal;
+    var cins = pickedGender(); if (cins) govde.p_gender = cins;
     rpc('cm_waitlist_join', govde)
-      .catch(function(x){
-        // Veritabanı kanal alanını henüz tanımıyorsa (fonksiyon bulunamadı) kayıt kanalsız alınır —
-        // kayıt ASLA kanal yüzünden düşmez; yayın sırası (önce veritabanı) kaçırılsa da güvenli.
-        if (govde.p_source && x && (x.pg === 'PGRST202' || x.status === 404)) { delete govde.p_source; return rpc('cm_waitlist_join', govde); }
+      .catch(function yeniden(x){
+        // Veritabanı yeni alanı henüz tanımıyorsa (fonksiyon bulunamadı) o alan düşürülüp yeniden denenir —
+        // önce cinsiyet, sonra kanal. Kayıt ASLA isteğe bağlı bir alan yüzünden düşmez; yayın sırası kaçırılsa da güvenli.
+        var ek = ['p_gender', 'p_source'].filter(function(k){ return k in govde; })[0];
+        if (ek && x && (x.pg === 'PGRST202' || x.status === 404)) { delete govde[ek]; return rpc('cm_waitlist_join', govde).catch(yeniden); }
         throw x;
       })
       .then(function(r){
@@ -1981,32 +2034,5 @@
   });
 })();
 /* WL:SON */</script>
-<script>/* MENU:BAŞ */(function(){
-  /* Tıklayınca bölüme yumuşak kaydırma. Durak kaydırması kaydırma olayında hedefini kendisi eşitler
-     (animasyon yokken hedef = scrollY) → programla kaydırma onunla çakışmaz. */
-  var linkler = [].slice.call(document.querySelectorAll('.mn-nav a'));
-  function ust(el){ return Math.round(el.getBoundingClientRect().top + scrollY); }
-  function git(y){ scrollTo({top: y, behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth'}); }
-  linkler.forEach(function(a){
-    a.addEventListener('click', function(e){
-      var el = document.querySelector(a.getAttribute('data-mn')); if (!el) return;
-      e.preventDefault(); git(ust(el));
-      try { history.replaceState(null, '', a.getAttribute('href')); } catch(x){}
-    });
-  });
-  /* Adresle gelen (#nasil vb.) doğrudan o bölümde açılır. */
-  var ilk = linkler.filter(function(a){ return a.getAttribute('href') === location.hash; })[0];
-  if (ilk) addEventListener('load', function(){ var el = document.querySelector(ilk.getAttribute('data-mn')); if (el) scrollTo(0, ust(el)); });
-  var fab = document.getElementById('mnFab');
-  fab.addEventListener('click', function(){ git(0); });
-  function guncelle(){
-    var on = scrollY > innerHeight * .9;
-    fab.classList.toggle('on', on); fab.tabIndex = on ? 0 : -1;
-    var orta = scrollY + innerHeight * .4, aktif = null;
-    linkler.forEach(function(a){ var el = document.querySelector(a.getAttribute('data-mn')); if (el && el.offsetParent !== null && ust(el) <= orta && ust(el) + el.offsetHeight > orta) aktif = a; });
-    linkler.forEach(function(a){ a.setAttribute('aria-current', a === aktif ? 'true' : 'false'); });
-  }
-  addEventListener('scroll', guncelle, {passive: true}); addEventListener('resize', guncelle); guncelle();
-})();/* MENU:SON */</script>
 </body>
 </html>
