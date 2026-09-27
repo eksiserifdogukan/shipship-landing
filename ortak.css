@@ -1,0 +1,132 @@
+/* shipship — alt sayfaların ORTAK görünümü (2026-09-27, tasarımcı: "bütün ekranlar tutarlı
+   ve standart"). Ana sayfanın dilinden türer: krem zemin, koyu mürekkep, düz wordmark.
+   Eski pembe→mor degrade + beyaz kart düzeni EMEKLİ (ana sayfada "pembe ışıma" zaten
+   kaldırılmıştı). Ana sayfadaki bekleme listesi formu aynı değerleri kendi içinde taşır
+   (lab/bekleme-listesi/wl.css) — bir değer değişirse İKİSİ birlikte değişir. */
+
+:root {
+  --bg: #fdf7f4;          /* ana sayfa krem */
+  --surface: #fffdfc;     /* giriş alanı / kutu zemini */
+  --ink: #2a1a24;         /* birincil yazı + birincil düğme */
+  --soft: #5c4553;        /* gövde metni */
+  --dim: #8a7280;         /* ikincil bilgi */
+  --line: #eadde3;        /* ayraç */
+  --line-strong: #cdb9c4; /* alan kenarı */
+  --tint: #f6ecf0;        /* bilgi kutusu zemini */
+  --ok: #2f8a5b;
+  --err: #b8304a;
+  --bar-h: 64px;
+  --gutter: clamp(18px, 4vw, 40px);
+}
+@media (max-width: 600px) { :root { --bar-h: 56px; } }
+
+* { box-sizing: border-box; margin: 0; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  min-height: 100vh; min-height: 100dvh; display: flex; flex-direction: column;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  -webkit-font-smoothing: antialiased; background: var(--bg); color: var(--ink);
+  overflow-x: clip;
+}
+[hidden] { display: none !important; }
+
+/* ─── Üst başlık: her sayfada aynı ─── */
+.bar {
+  position: sticky; top: 0; z-index: 20; height: var(--bar-h);
+  display: flex; align-items: center; justify-content: space-between; gap: 12px;
+  padding: 0 var(--gutter); padding-top: env(safe-area-inset-top);
+  background: rgba(253, 247, 244, .9); border-bottom: 1px solid var(--line);
+  -webkit-backdrop-filter: saturate(1.4) blur(12px); backdrop-filter: saturate(1.4) blur(12px);
+}
+.wordmark {
+  font-size: clamp(22px, 2.4vw, 26px); font-weight: 400; letter-spacing: -.025em;
+  color: var(--ink); text-decoration: none; line-height: 1;
+}
+
+/* ─── Düğmeler ─── */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  min-height: 52px; padding: 0 26px; border-radius: 999px; border: 0; cursor: pointer;
+  font: inherit; font-size: 16px; font-weight: 700; line-height: 1.2; text-decoration: none;
+  background: var(--ink); color: var(--bg); -webkit-tap-highlight-color: transparent;
+}
+.btn:active { transform: scale(.98); }
+.btn-line { background: transparent; color: var(--ink); box-shadow: inset 0 0 0 1.5px var(--ink); }
+.btn-sm { min-height: 40px; padding: 0 18px; font-size: 14.5px; }
+.btn-block { width: 100%; }
+.btn[aria-busy="true"] { opacity: .6; }
+.btn:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible, button:focus-visible {
+  outline: 2px solid var(--ink); outline-offset: 3px;
+}
+
+/* ─── Sayfa gövdesi ─── */
+main { flex: 1; width: 100%; max-width: 720px; margin: 0 auto; padding: clamp(28px, 6vw, 60px) var(--gutter) 80px; }
+main.center { display: flex; flex-direction: column; justify-content: center; max-width: 480px; text-align: left; }
+
+h1 { font-size: clamp(30px, 5vw, 42px); font-weight: 800; letter-spacing: -.03em; line-height: 1.1; text-wrap: balance; }
+.meta { margin-top: 10px; font-size: 14px; color: var(--dim); }
+.lede { margin-top: 14px; font-size: 17px; line-height: 1.65; color: var(--soft); }
+.doc h2 { font-size: 20px; font-weight: 700; letter-spacing: -.01em; margin: 40px 0 10px; }
+.doc h3 { font-size: 17px; font-weight: 700; margin: 24px 0 6px; }
+.doc p, .doc li { font-size: 16px; line-height: 1.7; color: var(--soft); }
+.doc p + p { margin-top: 12px; }
+.doc ul, .doc ol { padding-left: 22px; margin: 8px 0; }
+.doc li { margin: 6px 0; }
+.doc strong, .lede strong { color: var(--ink); }
+main a:not(.btn) { color: var(--ink); font-weight: 600; text-decoration: underline;
+  text-decoration-color: var(--line-strong); text-underline-offset: 3px; }
+main a:not(.btn):hover { text-decoration-color: var(--ink); }
+
+.tablewrap { overflow-x: auto; -webkit-overflow-scrolling: touch; margin: 14px 0; }
+table { border-collapse: collapse; width: 100%; }
+th, td { text-align: left; padding: 12px; border-bottom: 1px solid var(--line); vertical-align: top;
+  font-size: 15px; line-height: 1.55; color: var(--soft); }
+th { color: var(--ink); font-weight: 700; font-size: 12px; text-transform: uppercase; letter-spacing: .05em; }
+/* Dar ekranda tablo = dikey kart yığını (telefonda yatay kaydırma okumayı bozuyordu). */
+@media (max-width: 600px) {
+  .tablewrap { overflow-x: visible; }
+  table, tbody, tr, td { display: block; width: 100%; }
+  tr:first-child { display: none; }
+  tr { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 12px 15px; margin-bottom: 10px; }
+  td { border: none; padding: 6px 0; }
+  td + td { border-top: 1px solid var(--line); }
+  td::before { content: attr(data-l); display: block; margin-bottom: 3px; font-size: 11px; font-weight: 700;
+    text-transform: uppercase; letter-spacing: .06em; color: var(--dim); }
+}
+
+.box { margin: 18px 0 0; padding: 18px 20px; border-radius: 16px; background: var(--tint); }
+.box h2 { margin: 0 0 12px; font-size: 18px; }
+.box p { color: var(--soft); }
+.path { display: inline-block; padding: 1px 8px; border-radius: 6px; background: var(--tint);
+  color: var(--ink); font-weight: 600; font-size: 15px; }
+.box .path { background: var(--surface); box-shadow: inset 0 0 0 1px var(--line); }
+.otherdocs { margin-top: 44px; padding-top: 18px; border-top: 1px solid var(--line); font-size: 14.5px; color: var(--dim); }
+
+/* ─── Form alanları: YERLİ (native) kontroller — seçim kutusu telefonda sistemin
+   seçicisini, bilgisayarda tarayıcının listesini açar; biçim yalnız çerçeve. ─── */
+.field { margin: 0 0 20px; }
+.lbl { display: block; font-size: 14.5px; font-weight: 600; color: var(--ink); margin: 0 0 8px; }
+.hint { font-size: 14px; line-height: 1.5; color: var(--dim); margin-top: 8px; }
+input[type=email], input[type=text], select {
+  display: block; width: 100%; min-height: 52px; padding: 0 16px;
+  font: inherit; font-size: 16px; /* 16px altı iOS'ta yakınlaştırma yapar */
+  color: var(--ink); background-color: var(--surface);
+  border: 1px solid var(--line-strong); border-radius: 14px;
+}
+input::placeholder { color: #a08b98; }
+.check { display: flex; align-items: center; gap: 12px; font-size: 16px; color: var(--ink); cursor: pointer; }
+.check input { width: 22px; height: 22px; margin: 0; flex: none; accent-color: var(--ink); }
+.msg { min-height: 22px; margin-top: 12px; font-size: 15px; color: var(--soft); }
+.msg.err { color: var(--err); }
+.msg:empty { min-height: 0; margin-top: 0; }
+.row { display: flex; gap: 10px; flex-wrap: wrap; }
+.row > select { flex: 1 1 200px; width: auto; }
+
+/* ─── Alt bilgi: her sayfada aynı ─── */
+.foot {
+  display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;
+  padding: 22px var(--gutter) calc(22px + env(safe-area-inset-bottom));
+  border-top: 1px solid var(--line); font-size: 14px; color: var(--dim);
+}
+.foot a { color: var(--soft); font-weight: 600; text-decoration: none; }
+.foot a:hover { color: var(--ink); }

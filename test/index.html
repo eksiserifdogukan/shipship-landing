@@ -11,120 +11,29 @@
   <meta property="og:type" content="website">
   <meta name="robots" content="noindex,nofollow">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🚢</text></svg>">
+  <link rel="stylesheet" href="/ortak.css">
   <style>
-    :root { --ink:#fff7f4; --ink-soft:rgba(255,247,244,0.85); --ink-dim:rgba(255,247,244,0.62); }
-    * { box-sizing:border-box; margin:0; }
-    body {
-      min-height:100vh; display:flex; flex-direction:column;
-      font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
-      -webkit-font-smoothing:antialiased; color:var(--ink);
-      background:linear-gradient(160deg,#ff6f61 0%,#f4577d 34%,#d05aa4 68%,#8e4bbf 100%);
-      background-attachment:fixed; overflow-x:hidden;
-    }
-    .aura {
-      position:fixed; inset:-20%; pointer-events:none;
-      background:
-        radial-gradient(ellipse 45% 38% at 22% 24%, rgba(255,255,255,0.16), transparent 70%),
-        radial-gradient(ellipse 40% 34% at 82% 78%, rgba(70,20,120,0.25), transparent 70%);
-      animation:drift 16s ease-in-out infinite alternate;
-    }
-    @keyframes drift {
-      from { transform:translate3d(-1.5%,-1%,0) scale(1); }
-      to   { transform:translate3d(1.5%,1.5%,0) scale(1.04); }
-    }
-    header { position:relative; padding:24px clamp(22px,5vw,48px); }
-    .wordmark { position:relative; display:inline-block; line-height:1;
-      font-size:19px; font-weight:800; letter-spacing:-0.04em; color:#fff7f4;
-      text-decoration:none; padding:0 .16em .42em 0; }
-    .wordmark .f, .wordmark .b { display:block; }
-    .wordmark .b { position:absolute; left:0; top:0; color:#e0909e;
-      transform:translate(.10em,.32em) rotate(-13deg); }
-    .wordmark .f { position:relative; color:#fff7f4; transform:rotate(-13deg); }
-
-    main { position:relative; flex:1; width:100%; max-width:680px; margin:0 auto;
-           padding:12px clamp(22px,5vw,40px) 64px; }
-
-    .kicker {
-      display:inline-block; font-size:12px; font-weight:800; letter-spacing:0.12em;
-      text-transform:uppercase; color:var(--ink);
-      background:rgba(255,255,255,0.16); border:1px solid rgba(255,255,255,0.28);
-      padding:7px 14px; border-radius:999px; margin-bottom:22px;
-      animation:rise 0.8s cubic-bezier(0.22,1,0.36,1) both;
-    }
-    h1 {
-      font-size:clamp(34px,7vw,58px); line-height:1.06; font-weight:800;
-      letter-spacing:-0.03em; text-wrap:balance;
-      text-shadow:0 2px 24px rgba(110,25,85,0.26);
-      animation:rise 0.8s 0.08s cubic-bezier(0.22,1,0.36,1) both;
-    }
-    .lede { margin-top:20px; font-size:clamp(16.5px,2.4vw,19px); line-height:1.6;
-            color:var(--ink-soft); animation:rise 0.8s 0.16s cubic-bezier(0.22,1,0.36,1) both; }
-    .lede + .lede { margin-top:14px; }
-    .lede strong { color:var(--ink); font-weight:700; }
-
-    .card {
-      margin-top:34px; background:rgba(255,255,255,0.13);
-      border:1px solid rgba(255,255,255,0.24); border-radius:20px;
-      padding:clamp(20px,4vw,28px);
-      -webkit-backdrop-filter:blur(8px); backdrop-filter:blur(8px);
-      animation:rise 0.8s 0.24s cubic-bezier(0.22,1,0.36,1) both;
-    }
-    .card h2 { font-size:17px; letter-spacing:-0.01em; margin-bottom:14px; }
-    .facts { list-style:none; display:grid; gap:12px; }
-    .facts li { display:flex; gap:11px; align-items:flex-start; font-size:15.5px;
-                line-height:1.5; color:var(--ink-soft); }
-    .facts .ico { flex:none; width:22px; text-align:center; font-size:16px; }
-    .facts b { color:var(--ink); font-weight:700; }
-
-    form { margin-top:34px; animation:rise 0.8s 0.32s cubic-bezier(0.22,1,0.36,1) both; }
-    .field { display:grid; gap:6px; margin-bottom:14px; }
-    .label { font-size:14px; font-weight:700; color:var(--ink); }
-    .hint { font-size:13px; line-height:1.5; color:var(--ink-dim); }
-    input[type="text"], input[type="email"] {
-      width:100%; font:inherit; font-size:16px; color:#2a1a24;
-      background:#fffdfc; border:1px solid rgba(255,255,255,0.4);
-      border-radius:14px; padding:15px 17px; outline:none;
-    }
-    input::placeholder { color:#a2909a; }
-    input:focus { box-shadow:0 0 0 3px rgba(255,255,255,0.45); }
-
-    .radios { display:flex; gap:10px; flex-wrap:wrap; }
-    .radio {
-      flex:1 1 140px; display:flex; align-items:center; gap:9px; cursor:pointer;
-      background:rgba(255,255,255,0.12); border:1px solid rgba(255,255,255,0.26);
-      border-radius:14px; padding:13px 15px; font-size:15.5px; color:var(--ink);
-      transition:background 0.2s, border-color 0.2s;
-    }
-    .radio:hover { background:rgba(255,255,255,0.2); }
-    .radio input { accent-color:#fffdfc; width:17px; height:17px; flex:none; }
-    .radio:has(input:checked) { background:rgba(255,255,255,0.26); border-color:rgba(255,255,255,0.55); }
-
-    button {
-      margin-top:8px; width:100%; font:inherit; font-size:16.5px; font-weight:800;
-      color:#b0357d; background:#fffdfc; border:none; border-radius:999px;
-      padding:16px 22px; cursor:pointer; letter-spacing:-0.01em;
-      transition:transform 0.2s, box-shadow 0.2s;
-      box-shadow:0 10px 26px rgba(90,20,70,0.24);
-    }
-    button:hover { transform:translateY(-2px); box-shadow:0 14px 32px rgba(90,20,70,0.3); }
-    button:active { transform:translateY(0); }
-    .fineprint { margin-top:14px; font-size:13px; line-height:1.55; color:var(--ink-dim); }
-    .honey { position:absolute; left:-9999px; opacity:0; }
-
-    footer { position:relative; padding:22px clamp(22px,5vw,48px);
-             font-size:13px; color:var(--ink-dim); }
-
-    @keyframes rise { from { opacity:0; transform:translateY(20px); } to { opacity:1; transform:none; } }
-    @media (prefers-reduced-motion:reduce) {
-      .aura, .kicker, h1, .lede, .card, form { animation:none; }
-    }
+    .kicker { display: inline-block; margin-bottom: 18px; font-size: 12px; font-weight: 700; letter-spacing: .12em;
+      text-transform: uppercase; color: var(--soft); background: var(--tint); padding: 7px 14px; border-radius: 999px; }
+    .lede + .lede { margin-top: 12px; }
+    .facts { list-style: none; padding: 0; display: grid; gap: 12px; }
+    .facts li { display: flex; gap: 11px; align-items: flex-start; font-size: 16px; line-height: 1.55; color: var(--soft); }
+    .facts .ico { flex: none; width: 22px; text-align: center; }
+    .facts b { color: var(--ink); }
+    form { margin-top: 34px; }
+    .radios { display: flex; gap: 10px; flex-wrap: wrap; }
+    .radio { flex: 1 1 140px; display: flex; align-items: center; gap: 10px; min-height: 52px; padding: 0 16px; cursor: pointer;
+      background: var(--surface); border: 1px solid var(--line-strong); border-radius: 14px; font-size: 16px; }
+    .radio input { width: 20px; height: 20px; margin: 0; accent-color: var(--ink); }
+    .radio:has(input:checked) { box-shadow: inset 0 0 0 1.5px var(--ink); border-color: var(--ink); }
+    .honey { position: absolute; left: -9999px; opacity: 0; }
+    .fineprint { margin-top: 14px; font-size: 13.5px; line-height: 1.55; color: var(--dim); }
+    form .btn { margin-top: 8px; }
   </style>
 </head>
 <body>
 
-<div class="aura"></div>
-
-<header><span class="wordmark" role="img" aria-label="shipship"><span class="b" aria-hidden="true">ship</span><span class="f" aria-hidden="true">ship</span></span></header>
+<header class="bar"><a class="wordmark" href="/" aria-label="shipship ana sayfa">shipship</a><a class="btn btn-sm" href="/#katil" id="barCta">Listeye katıl</a></header>
 
 <main>
   <span class="kicker">Kullanıcı testi daveti</span>
@@ -146,7 +55,7 @@
     istediğimiz şey.
   </p>
 
-  <div class="card">
+  <div class="box">
     <h2>Nasıl olacak?</h2>
     <ul class="facts">
       <li><span class="ico">💻</span><span><b>Online.</b> Görüntülü görüşme; telefonunun ekranını paylaşacaksın.</span></li>
@@ -159,12 +68,12 @@
 
   <form action="https://formsubmit.co/shipshipappco@gmail.com" method="POST">
     <div class="field">
-      <label class="label" for="ad">Adın <span class="hint">(isteğe bağlı)</span></label>
+      <label class="lbl" for="ad">Adın <span style="font-weight:400;color:var(--dim)">(isteğe bağlı)</span></label>
       <input id="ad" type="text" name="Ad" placeholder="Adın" autocomplete="name">
     </div>
 
     <div class="field">
-      <label class="label" for="mail">Apple ID (iCloud) e-posta adresin</label>
+      <label class="lbl" for="mail">Apple ID (iCloud) e-posta adresin</label>
       <p class="hint">
         Uygulamayı sana <b>TestFlight</b> ile göndereceğiz; bu yüzden
         <b>Apple ID'ne bağlı</b> e-posta adresini yaz (genelde
@@ -175,7 +84,7 @@
     </div>
 
     <div class="field">
-      <span class="label">Telefonun</span>
+      <span class="lbl">Telefonun</span>
       <div class="radios">
         <label class="radio"><input type="radio" name="Telefon" value="iPhone" required> iPhone</label>
         <label class="radio"><input type="radio" name="Telefon" value="Android"> Android</label>
@@ -188,7 +97,7 @@
     <input type="hidden" name="_template" value="table">
     <input type="hidden" name="_captcha" value="false">
     <input type="hidden" name="_next" value="https://shipshipapp.com/test/tesekkurler/">
-    <button type="submit">Teste katılmak istiyorum</button>
+    <button class="btn btn-block" type="submit">Teste katılmak istiyorum</button>
     <p class="fineprint">
       E-postanı yalnız bu testin daveti ve bilgilendirmesi için kullanacağız;
       başka hiçbir şey için kullanmayacak, kimseyle paylaşmayacağız.
@@ -199,7 +108,7 @@
   </form>
 </main>
 
-<footer>© 2026 shipship</footer>
+<footer class="foot"><span>© 2026 shipship</span><span><a href="/destek">Destek</a> · <a href="/kosullar">Koşullar</a> · <a href="/gizlilik">Gizlilik</a> · <a href="/guvenlik">Güvenlik</a></span></footer>
 
 </body>
 </html>

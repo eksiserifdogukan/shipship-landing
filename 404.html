@@ -21,83 +21,46 @@
        (Safari app-id'yi doğrular); beta'da görünmez, lansmanda otomatik aktif. -->
   <meta name="apple-itunes-app" content="app-id=6789615007">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🚢</text></svg>">
+  <link rel="stylesheet" href="/ortak.css">
   <style>
-    :root { --ink: #fff7f4; --ink-soft: rgba(255,247,244,0.82); --ink-dim: rgba(255,247,244,0.6); }
-    * { box-sizing: border-box; margin: 0; }
-    html, body { height: 100%; }
-    body {
-      min-height: 100vh; display: flex; flex-direction: column;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-      -webkit-font-smoothing: antialiased; color: var(--ink);
-      background: linear-gradient(160deg, #ff6f61 0%, #f4577d 34%, #d05aa4 68%, #8e4bbf 100%);
-      background-attachment: fixed; overflow-x: hidden;
-    }
-    .aura {
-      position: fixed; inset: -20%; pointer-events: none;
-      background:
-        radial-gradient(ellipse 45% 38% at 22% 24%, rgba(255,255,255,0.16), transparent 70%),
-        radial-gradient(ellipse 40% 34% at 82% 78%, rgba(70,20,120,0.25), transparent 70%);
-      animation: drift 16s ease-in-out infinite alternate;
-    }
-    @keyframes drift { from { transform: translate3d(-1.5%,-1%,0) scale(1); } to { transform: translate3d(1.5%,1.5%,0) scale(1.04); } }
-    @media (prefers-reduced-motion: reduce) { .aura { animation: none; } }
-    header { position: relative; padding: 26px clamp(22px,5vw,48px); }
-    .wordmark { font-size: 21px; font-weight: 800; letter-spacing: -0.02em; text-shadow: 0 1px 12px rgba(120,30,90,0.25); }
-    main {
-      flex: 1; position: relative; display: flex; flex-direction: column;
-      justify-content: center; align-items: center; text-align: center;
-      padding: 24px clamp(22px,5vw,48px) 56px;
-    }
-    .wrap { width: 100%; max-width: 380px; }
-    h1 { font-size: clamp(26px,7vw,34px); line-height: 1.15; letter-spacing: -0.02em; margin-bottom: 14px; text-wrap: balance; }
-    p.sub { font-size: 16px; line-height: 1.55; color: var(--ink-soft); margin-bottom: 28px; }
-    .codebox {
-      background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.22);
-      border-radius: 16px; padding: 16px 18px; margin-bottom: 22px; backdrop-filter: blur(6px);
-    }
-    .codelabel { font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-dim); margin-bottom: 8px; }
-    .code { font-size: 15px; font-weight: 700; word-break: break-all; font-variant-numeric: tabular-nums; }
-    .cta {
-      display: block; width: 100%; height: 54px; line-height: 54px; border-radius: 27px;
-      background: var(--ink); color: #c0356a; font-size: 16px; font-weight: 700; text-decoration: none;
-      box-shadow: 0 8px 26px rgba(120,30,90,0.28);
-    }
-    .hint { font-size: 12.5px; color: var(--ink-dim); margin-top: 16px; line-height: 1.5; }
-    a.home { color: var(--ink); font-weight: 700; text-decoration: none; border-bottom: 1px solid rgba(255,247,244,0.4); }
+    .wrap .btn { margin-top: 28px; }
+    .wrap .hint { margin-top: 14px; }
   </style>
 </head>
 <body>
-  <div class="aura"></div>
-  <header><div class="wordmark">shipship</div></header>
-  <main>
-    <div class="wrap" id="invite" style="display:none">
-      <!-- İki varyant (2026-09-20): /invite/yakistirma ya da #y → arkadaşı onu BİRİYLE
-           yakıştırmış (uygulamada "Listede yok mu? Davet et" yolu). Linkte ad/kişisel
-           veri YOK; aday adı yalnız arkadaşın gönderdiği mesajda geçer. -->
-      <h1 id="invTitle">Bir arkadaşın seni shipship'e davet ediyor</h1>
-      <p class="sub" id="invSub">Topluluğun yakıştırdığı tanışma uygulaması. Arkadaşlarınla birbirinize aday önerirsiniz; tanışıp tanışmamak senin kararın.</p>
-      <a class="cta" href="https://apps.apple.com/app/id6789615007">App Store'dan indir</a>
-      <p class="hint">Kendi numaranla giriş yapman yeter, davet kendiliğinden bağlanır. Numaran kimseyle paylaşılmaz.</p>
-    </div>
+<header class="bar"><a class="wordmark" href="/" aria-label="shipship ana sayfa">shipship</a><a class="btn btn-sm" href="/#katil" id="barCta">Listeye katıl</a></header>
+<main class="center">
+  <div class="wrap" id="invite" hidden>
+    <!-- İki varyant (2026-09-20): /invite/yakistirma ya da #y → arkadaşı onu BİRİYLE
+         yakıştırmış (uygulamada "Listede yok mu? Davet et" yolu). Linkte ad/kişisel
+         veri YOK; aday adı yalnız arkadaşın gönderdiği mesajda geçer. -->
+    <h1 id="invTitle">Bir arkadaşın seni shipship'e davet ediyor</h1>
+    <p class="lede" id="invSub">Topluluğun yakıştırdığı tanışma uygulaması. Arkadaşlarınla birbirinize aday önerirsiniz; tanışıp tanışmamak senin kararın.</p>
+    <a class="btn btn-block" href="https://apps.apple.com/app/id6789615007">App Store'dan indir</a>
+    <p class="hint">Kendi numaranla giriş yapman yeter, davet kendiliğinden bağlanır. Numaran kimseyle paylaşılmaz.</p>
+  </div>
 
-    <div class="wrap" id="notfound" style="display:none">
-      <h1>Sayfa bulunamadı</h1>
-      <p class="sub">Aradığın sayfa burada değil.</p>
-      <a class="home" href="/">shipship ana sayfasına dön →</a>
-    </div>
-  </main>
+  <div class="wrap" id="notfound" hidden>
+    <h1>Sayfa bulunamadı</h1>
+    <p class="lede">Aradığın sayfa burada değil.</p>
+    <a class="btn btn-line" href="/">Ana sayfaya dön</a>
+  </div>
+</main>
+<footer class="foot"><span>© 2026 shipship</span><span><a href="/destek">Destek</a> · <a href="/kosullar">Koşullar</a> · <a href="/gizlilik">Gizlilik</a> · <a href="/guvenlik">Güvenlik</a></span></footer>
 
-  <script>
-    (function () {
-      // /invite veya /invite/<herhangi> → davet landing (kod yok; bağlantı
-      // telefon eşleşmesiyle kurulur). Diğer yollar → sade 404.
-      var invite = /^\/invite(\/|$)/.test(location.pathname);
-      if (invite && (/^\/invite\/yakistirma\/?$/.test(location.pathname) || location.hash === "#y")) {
-        document.getElementById("invTitle").textContent = "Bir arkadaşın seni biriyle yakıştırdı";
-        document.getElementById("invSub").textContent = "shipship'te ikilileri topluluk oylar. Uygulamayı indir, kendi numaranla gir; yakıştırıldığın kişiyle oylamaya çık. Tanışıp tanışmamak senin kararın.";
-      }
-      document.getElementById(invite ? "invite" : "notfound").style.display = "";
-    })();
-  </script>
+<script>
+  (function () {
+    // /invite veya /invite/<herhangi> → davet karşılaması (kod yok; bağlantı
+    // telefon eşleşmesiyle kurulur). Diğer yollar → sade 404.
+    var invite = /^\/invite(\/|$)/.test(location.pathname);
+    if (invite && (/^\/invite\/yakistirma\/?$/.test(location.pathname) || location.hash === "#y")) {
+      document.getElementById("invTitle").textContent = "Bir arkadaşın seni biriyle yakıştırdı";
+      document.getElementById("invSub").textContent = "shipship'te ikilileri topluluk oylar. Uygulamayı indir, kendi numaranla gir; yakıştırıldığın kişiyle oylamaya çık. Tanışıp tanışmamak senin kararın.";
+    }
+    // Davet karşılamasında tek eylem App Store — üstteki "Listeye katıl" onunla yarışmasın.
+    if (invite) document.getElementById("barCta").hidden = true;
+    document.getElementById(invite ? "invite" : "notfound").hidden = false;
+  })();
+</script>
 </body>
 </html>
