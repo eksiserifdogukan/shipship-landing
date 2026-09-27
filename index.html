@@ -46,6 +46,7 @@
   /* Düşük Güç Modu yedeği (aynı film resim olarak): videoyla aynı kutu; ilk kare gelene kadar kapak görseli. */
   .hero-card .hero-vid-img{display:block;width:100%;height:100%;object-fit:cover;
     background:var(--night) url(/video/poster.jpg) center/cover no-repeat}
+  .hero-card::after{pointer-events:none}   /* karartma dokunuşu yutmasın: Safari'nin ortadaki oynat düğmesi çalışsın */
   .hero-card::after{content:"";position:absolute;inset:0;
     background:linear-gradient(180deg,rgba(27,17,25,.28) 0%,rgba(27,17,25,.05) 35%,
       rgba(27,17,25,.55) 82%,rgba(27,17,25,.82) 100%)}
@@ -1037,28 +1038,37 @@
   }
 
   /* hero video — HER ZAMAN oynar; tek durdurma yolu ❚❚ (tasarımcı 09-21 + 09-27 "mobilde otomatik oynamalı").
-     iPhone sessiz videoyu da bazen başlatmaz ya da durdurur: başka uygulamadan dönüş, ekran dışına çıkıp
-     geri gelme → kullanıcı ELLE durdurmadıkça video durmuşsa sayfaya dönüşte ve yeniden görününce başlatılır.
-     Düşük Güç Modu'nda iPhone <video>'yu HİÇ başlatmaz (kodla aşılamaz) ama aynı MP4'ü RESİM gibi (<img>)
-     oynatır — Safari'ye özgü, Apple'ın WebKit belgelerindeki yol. Yedek YALNIZ otomatik oynatma
-     reddedilince devreye girer; resim açılamazsa (Safari dışı) video kapak görseliyle kalır. İlk dokunuşta
-     (tıklama = kullanıcı hareketi, video artık izinli) gerçek videoya aynı saniyeden geçilir.
-     Düğmenin simgesi GERÇEK durumu gösterir (durmuşsa ▶). */
+     iPhone sessiz videoyu da bazen başlatmaz: Düşük Güç Modu'nda <video> hiç başlamaz (kodla aşılamaz; tasarımcının
+     cihazında teşhis edildi). O zaman aynı MP4 RESİM gibi (<img>) oynar — Safari'ye özgü, Apple'ın WebKit belgelerindeki yol.
+     Kurallar (09-27 ikinci tur — "yine oynamıyor, ortadaki oynat düğmesi çalışmıyor"):
+     · Yedeğe geçiş: oynatma REDDEDİLİRSE ya da SESSİZCE başlamazsa (1,5 sn sonra hâlâ duruyorsa).
+     · Resim oynarken sayfaya dokunmak ona DOKUNMAZ (önceden videoya dönüyordu; video başlamazsa ekran donuk kalıyordu).
+     · Karartma katmanı dokunuşu yutmaz → Safari'nin ortadaki oynat düğmesi çalışır.
+     · Kullanıcı ❚❚ ile durdurmadıkça: sayfaya dönüşte / video yeniden görününce / dokununca yeniden denenir.
+     · Teşhis: adrese ?tani=1 eklenirse olaylar ekranda yazılır (cihazda neyin olduğunu görmek için). */
   var vid = document.getElementById('heroVid');
   var pauseBtn = document.getElementById('heroPause');
-  var elleDurdu = false, resim = null, resimBas = 0;
+  var elleDurdu = false, resim = null, bekci = 0;
+  var iz = /[?&]tani=1/.test(location.search) ? (function(){
+    var el = document.createElement('pre'), t0 = Date.now();
+    el.style.cssText = 'position:fixed;left:6px;right:6px;top:64px;z-index:999;max-height:42vh;overflow:auto;margin:0;padding:8px;'
+      + 'background:rgba(0,0,0,.8);color:#fff;font:11px/1.35 ui-monospace,monospace;border-radius:8px;pointer-events:none;white-space:pre-wrap';
+    document.body.appendChild(el);
+    return function(s){ el.textContent += ((Date.now() - t0) / 1000).toFixed(1) + 's  ' + s + '\n'; };
+  })() : function(){};
   function simge(){
     var d = !resim && vid.paused;
     pauseBtn.textContent = d ? '▶' : '❚❚';
     pauseBtn.setAttribute('aria-label', d ? 'Videoyu oynat' : 'Videoyu durdur');
   }
-  function resmeGec(){
+  function resmeGec(neden){
     if (resim || elleDurdu) return;
+    iz('resim yedeğine geç (' + neden + ')');
     resim = document.createElement('img');
     resim.className = 'hero-vid-img'; resim.alt = ''; resim.setAttribute('aria-hidden', 'true');
-    resim.onerror = resimdenCik;
-    resim.src = vid.currentSrc || vid.getAttribute('src');
-    resimBas = Date.now();
+    resim.onload = function(){ iz('resim yüklendi'); };
+    resim.onerror = function(){ iz('resim HATA'); resimdenCik(); };
+    resim.src = (vid.currentSrc || vid.getAttribute('src')).split('?')[0] + '?img=1';   // videodan ayrı önbellek kaydı
     vid.parentNode.insertBefore(resim, vid); vid.style.display = 'none';
     simge();
   }
@@ -1067,27 +1077,30 @@
     resim.remove(); resim = null; vid.style.display = '';
     simge();
   }
-  vid.addEventListener('playing', simge); vid.addEventListener('pause', simge);
-  var kick = function(ev){
-    if (elleDurdu || !vid.paused) return;
-    if (resim){
-      if (!ev || ev.type !== 'click') return;             // resim oynuyor; yalnız gerçek dokunuşta videoya geç
-      if (vid.duration) vid.currentTime = ((Date.now() - resimBas) / 1000) % vid.duration;
-      resimdenCik();
-    }
+  vid.addEventListener('playing', function(){ iz('video oynuyor'); resimdenCik(); simge(); });
+  vid.addEventListener('pause', function(){ iz('video durdu'); simge(); });
+  function oynat(neden){
+    if (elleDurdu || resim || !vid.paused) return;
+    iz('oynat: ' + neden);
     var p = vid.play();
-    if (p && p.catch) p.catch(function(e){ if (e && e.name === 'NotAllowedError') resmeGec(); simge(); });
-  };
+    if (p && p.then) p.then(function(){ iz('play tamam'); }, function(e){
+      iz('play RED: ' + (e && e.name));
+      if (e && e.name === 'NotAllowedError') resmeGec('red');
+      simge();
+    });
+    clearTimeout(bekci);
+    bekci = setTimeout(function(){ if (!document.hidden && vid.paused && !elleDurdu && !resim) resmeGec('sessiz engel'); }, 1500);
+  }
   pauseBtn.addEventListener('click', function(){
-    if (resim || !vid.paused){ elleDurdu = true; resimdenCik(); vid.pause(); simge(); }
-    else { elleDurdu = false; kick({ type: 'click' }); }
+    if (resim || !vid.paused){ elleDurdu = true; clearTimeout(bekci); resimdenCik(); vid.pause(); simge(); iz('elle durduruldu'); }
+    else { elleDurdu = false; oynat('düğme'); }
   });
-  vid.addEventListener('canplay', function(){ kick(); }, {once:true}); kick();
-  ['touchend','pointerup','click','keydown'].forEach(function(ev){ document.addEventListener(ev, kick, {passive:true}); });
-  document.addEventListener('visibilitychange', function(){ if (!document.hidden) kick(); });
-  addEventListener('pageshow', function(){ kick(); });
+  vid.addEventListener('canplay', function(){ oynat('canplay'); }, {once:true}); oynat('ilk');
+  ['touchend','click','keydown'].forEach(function(ev){ document.addEventListener(ev, function(){ oynat(ev); }, {passive:true}); });
+  document.addEventListener('visibilitychange', function(){ iz('görünürlük: ' + document.visibilityState); if (!document.hidden) oynat('dönüş'); });
+  addEventListener('pageshow', function(e){ iz('pageshow' + (e.persisted ? ' (önbellekten)' : '')); oynat('pageshow'); });
   if ('IntersectionObserver' in window)
-    new IntersectionObserver(function(es){ if (es[0].isIntersecting) kick(); }).observe(vid);
+    new IntersectionObserver(function(es){ if (es[0].isIntersecting) oynat('görünür'); }).observe(vid);
 
   /* F2: kelimelere böl — güvenli DOM kurulumu (innerHTML yok) */
   document.querySelectorAll('[data-fill]').forEach(function(el){
