@@ -397,7 +397,6 @@
     .scroll-cue svg{animation:none}
     *{transition-duration:.01ms !important}
   }
-
   /* MOBİL:BAŞ — telefonda yalnız hero + "Nasıl çalışıyor" + alt bilgi (tasarımcı 09-27).
      Hero tek ekran (kaydırmayla küçülüp soru soran sahne mobilde yok: cevabı hikâye bölümündeydi).
      Diğer bölümler ve onların sabit renk perdeleri gizli. Adımlar soluk değil; her adımın
@@ -423,6 +422,8 @@
     footer.mega{background:#191a1b;padding-top:40px}
     /* "KAYDIR" işareti işini hero'da yapar; kaydırma başlayınca metnin üstünde asılı kalmasın. */
     html.wl-bar-on .scroll-cue{opacity:0;pointer-events:none}
+    /* Mobilde düz beyaz (tasarımcı 09-27) — fark karışımı video üstünde parçalı görünüyordu. */
+    .scroll-cue{mix-blend-mode:normal;color:#fff}
   }
   /* MOBİL:SON */
   /* WL:BAŞ */
@@ -737,7 +738,7 @@
             <h1>Topluluk yakıştırır, son söz senin.</h1>
             <p>Adayını sen aramazsın. Profiline uyanlarla ve arkadaşlarının önerdikleriyle ikili olursun, topluluk oylar.</p>
             <!-- WL:BAŞ --><a class="wl-hero-btn" href="#katil" data-wl-open>Listeye katıl</a><!-- WL:SON -->
-                                                                                                                                              </div>
+                                                                                                                                                          </div>
           <button class="hero-pause" id="heroPause" aria-label="Videoyu durdur">❚❚</button>
         </div>
       </div>
@@ -1552,6 +1553,7 @@
 <script></script>
 <script></script>
 <script></script>
+<script></script>
 <script>/* WL:BAŞ */
 /* ─── BEKLEME LİSTESİ (2026-09-27) ─────────────────────────────────────────
    Tablo istemciye kapalı; yalnız üç fonksiyon çağrılır (crowdmatch-rn
@@ -1664,7 +1666,7 @@
   function close(){
     wl.classList.remove('on'); wl.setAttribute('aria-hidden', 'true');
     root.classList.remove('wl-open'); background(false); syncBar();
-    wl.style.top = ''; wl.style.height = '';
+    wl.style.top = ''; wl.style.height = ''; vvTop = -1; vvH = -1;
     if (location.hash === '#katil') history.replaceState(null, '', location.pathname + location.search);
     if (lastFocus && lastFocus.focus) lastFocus.focus({preventScroll: true});
   }
@@ -1681,15 +1683,21 @@
     if (r.top < b.top + 8) sc.scrollBy({top: r.top - b.top - 12});
     else if (r.bottom > b.bottom - 8) sc.scrollBy({top: r.bottom - b.bottom + 12});
   }
+  /* Kareye bir kez + yalnız değer değişince yaz: iPhone görünür alanı kaydırırken her olayda
+     kutuyu yeniden yazmak ekranı titretiyordu (09-27 cihaz bulgusu). "Odaklı alanı görünür tut"
+     yalnız klavye açılıp kapanırken (resize) — kaydırma sırasında değil (geri besleme döngüsü). */
+  var vvRaf = 0, vvTop = -1, vvH = -1;
   function fitVV(){
-    if (!wl.classList.contains('on') || !window.visualViewport) return;
-    var vv = window.visualViewport;
-    wl.style.top = Math.max(0, vv.offsetTop) + 'px';
-    wl.style.height = vv.height + 'px';
-    keepFocusedInView();
+    if (vvRaf || !wl.classList.contains('on') || !window.visualViewport) return;
+    vvRaf = requestAnimationFrame(function(){
+      vvRaf = 0;
+      var vv = window.visualViewport, t = Math.max(0, Math.round(vv.offsetTop)), h = Math.round(vv.height);
+      if (t !== vvTop) { wl.style.top = t + 'px'; vvTop = t; }
+      if (h !== vvH) { wl.style.height = h + 'px'; vvH = h; }
+    });
   }
   if (window.visualViewport) {
-    visualViewport.addEventListener('resize', fitVV);
+    visualViewport.addEventListener('resize', function(){ fitVV(); setTimeout(keepFocusedInView, 80); });
     visualViewport.addEventListener('scroll', fitVV);
   }
   sc.addEventListener('focusin', function(){ setTimeout(keepFocusedInView, 60); });
@@ -1709,6 +1717,24 @@
   ['wheel', 'touchstart', 'touchmove', 'touchend'].forEach(function(ev){
     wl.addEventListener(ev, function(e){ e.stopPropagation(); }, {passive: true});
   });
+  /* Klavye açıkken form ekrana sığınca sürükleme formu değil GÖRÜNÜR ALANI kaydırıyordu → kutu onu
+     kovalıyor, ekran titriyordu. Sürükleme ancak içinde kayacak yer olan bir alanı kaydırabilir;
+     alan yoksa ya da uca gelindiyse hareket burada durur (görünür alan hiç kaymaz). */
+  var touchY = 0;
+  wl.addEventListener('touchstart', function(e){ touchY = e.touches[0].clientY; }, {passive: true});
+  wl.addEventListener('touchmove', function(e){
+    if (e.touches.length > 1) return;                       // iki parmak yakınlaştırmaya dokunma
+    var y = e.touches[0].clientY, dy = y - touchY, box = null; touchY = y;   // anlık yön (geri dönüşü de yakalar)
+    for (var n = e.target; n && n !== wl; n = n.parentNode) {
+      if (n.nodeType === 1 && n.scrollHeight > n.clientHeight + 1) {
+        var oy = getComputedStyle(n).overflowY;
+        if (oy === 'auto' || oy === 'scroll') { box = n; break; }
+      }
+    }
+    if (!box) { e.preventDefault(); return; }
+    var atTop = box.scrollTop <= 0, atEnd = box.scrollTop + box.clientHeight >= box.scrollHeight - 1;
+    if ((dy > 0 && atTop) || (dy < 0 && atEnd)) e.preventDefault();
+  }, {passive: false});
 
   /* Sabit üst başlık: kaydırma başladığı an iner; en üstte hero'nun kendi düğmesi var. */
   var barWm = $('wlBarWm');
