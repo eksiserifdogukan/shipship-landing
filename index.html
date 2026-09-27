@@ -430,13 +430,17 @@
   /* Form eksikken SOLUK (tasarımcı 09-27) — yine de basılabilir: basınca neyin eksik olduğunu söyler. */
   .wl-btn[aria-disabled=true]{background:#d9cad2;color:#fffdfc;box-shadow:none}
   .wl-btn[aria-disabled=true]:active{transform:none}
+  /* "Listeye katıl" = uygulamanın TEK marka pembesi (#E6336E, BRAND_PINK) — tasarımcı 09-27. */
+  .wl-btn-pink{background:#E6336E;color:#fff}
+  .wl-btn-pink[aria-disabled=true]{background:#E6336E;color:#fff;opacity:.4}
+  .fin-copy .indir[data-wl-open]{background:#E6336E;color:#fff}
   .wl-bar a:focus-visible,.wl a:focus-visible,.wl button:focus-visible,.wl input:focus-visible,.wl select:focus-visible,
   .wl-hero-btn:focus-visible{outline:2px solid #2a1a24;outline-offset:3px}
   /* Hero'daki düğme: koyu film karartmasının üstünde → açık hap */
   .wl-hero-btn{position:relative;z-index:2;display:inline-flex;align-items:center;justify-content:center;
     margin-top:clamp(16px,2.4svh,24px);min-height:52px;padding:0 30px;border-radius:999px;
     font-family:inherit;font-size:16px;font-weight:700;text-decoration:none;
-    background:#fff7f4;color:#2a1a24;box-shadow:0 10px 30px rgba(0,0,0,.28)}
+    background:#E6336E;color:#fff;box-shadow:0 10px 30px rgba(0,0,0,.28)}
   .wl-hero-btn:active{transform:scale(.98)}
 
   .wl{position:fixed;inset:0;z-index:90;background:#fdf7f4;color:#2a1a24;
@@ -448,17 +452,17 @@
     padding:env(safe-area-inset-top) clamp(18px,4vw,40px) 0;background:#fdf7f4;border-bottom:1px solid #eadde3}
   @media (max-width:600px){.wl-top{height:calc(54px + env(safe-area-inset-top))}}
   .wl-main{flex:1;display:flex;justify-content:center;align-items:center;
-    padding:clamp(18px,4vh,48px) clamp(18px,4vw,40px) calc(28px + env(safe-area-inset-bottom))}
+    padding:clamp(32px,6vh,64px) clamp(18px,4vw,40px) calc(32px + env(safe-area-inset-bottom))}
   @media (max-height:760px),(max-width:600px){.wl-main{align-items:flex-start}}
   .wl-col{width:100%;max-width:440px}
-  .wl h2{font-size:clamp(25px,3.2vw,32px);font-weight:800;letter-spacing:-.03em;line-height:1.12;margin:0 0 8px;text-wrap:balance}
+  .wl h2{font-size:clamp(25px,3.2vw,32px);font-weight:800;letter-spacing:-.03em;line-height:1.12;margin:0 0 12px;text-wrap:balance}
   .wl .wl-sub{font-size:15.5px;line-height:1.55;color:#5c4553;margin:0 0 22px}
-  .wl form .wl-sub{margin-bottom:14px}
-  .wl .wl-list{list-style:none;padding:0;margin:0 0 22px;display:grid;gap:7px}
+  .wl form .wl-sub{margin-bottom:24px}
+  .wl .wl-list{list-style:none;padding:0;margin:0 0 40px;display:grid;gap:12px}
   .wl .wl-list li{display:flex;gap:10px;font-size:14.5px;line-height:1.45;color:#2a1a24}
   .wl .wl-list li::before{content:"✓";flex:none;color:#2f8a5b;font-weight:700;font-size:13px;line-height:1.6}
-  .wl .wl-field{margin:0 0 16px}
-  .wl .wl-lbl{display:block;font-size:13.5px;font-weight:600;color:#2a1a24;margin:0 0 6px}
+  .wl .wl-field{margin:0 0 28px}
+  .wl .wl-lbl{display:block;font-size:13.5px;font-weight:600;color:#2a1a24;margin:0 0 10px}
   /* YERLİ seçici: seçim kutusu telefonda sistemin seçicisini, bilgisayarda tarayıcının
      listesini açar; kutunun görünümü bizim (aşağıda). 16px altı yazı iOS'ta yakınlaştırır. */
   .wl input[type=email],.wl select{display:block;width:100%;min-height:48px;padding:0 14px;
@@ -472,7 +476,7 @@
   .wl select:invalid{color:#a08b98}
   .wl select option{color:#2a1a24}
   .wl .wl-hint{font-size:13px;line-height:1.45;color:#8a7280;margin:7px 0 0}
-  .wl .wl-chips{display:flex;flex-wrap:wrap;gap:7px}
+  .wl .wl-chips{display:flex;flex-wrap:wrap;gap:8px}
   .wl .wl-chip{position:relative;display:inline-flex;align-items:center;min-height:38px;padding:0 14px;
     border-radius:999px;background:#fffdfc;border:1px solid #cdb9c4;font-size:14.5px;color:#2a1a24;
     cursor:pointer;-webkit-user-select:none;user-select:none;-webkit-tap-highlight-color:transparent}
@@ -481,7 +485,7 @@
   .wl .wl-chip.on{background:#2a1a24;border:1px solid #2a1a24;color:#fdf7f4}
   .wl .wl-chip.focus{outline:2px solid #2a1a24;outline-offset:3px}
   .wl #wlCity{margin-top:10px}
-  .wl .wl-check{display:flex;align-items:center;gap:10px;font-size:15px;color:#2a1a24;margin:2px 0 6px;cursor:pointer}
+  .wl .wl-check{display:flex;align-items:center;gap:10px;font-size:15px;color:#2a1a24;margin:4px 0 16px;cursor:pointer}
   .wl .wl-check input{width:20px;height:20px;margin:0;flex:none;accent-color:#2a1a24}
   .wl .wl-err{font-size:14px;line-height:1.4;color:#b8304a;margin:8px 0 0}
   .wl .wl-err:empty{margin:0}
@@ -494,7 +498,7 @@
   .wl .wl-check.bad{color:#b8304a}
   .wl .wl-check.bad input{outline:2px solid #b8304a;outline-offset:1px}
   .wl .wl-sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
-  .wl .wl-fine{font-size:13px;line-height:1.5;color:#8a7280;margin:6px 0 0}
+  .wl .wl-fine{font-size:13px;line-height:1.5;color:#8a7280;margin:16px 0 0}
   .wl a{color:#2a1a24;font-weight:600;text-decoration:underline;text-decoration-color:#cdb9c4;text-underline-offset:3px}
   .wl .wl-ig{display:inline-block;margin-top:22px;font-size:13.5px}
   .wl .wl-hp{position:absolute;left:-9999px;width:1px;height:1px;opacity:0}
@@ -506,7 +510,7 @@
   .wl .wl-citybox{margin-top:20px}
   /* Gönder düğmesi ekranın altında kalmasın: form ekrana sığmazsa altta yapışık durur. */
   .wl .wl-actions{position:sticky;bottom:0;z-index:1;margin:0 -8px;
-    padding:12px 8px calc(12px + env(safe-area-inset-bottom));
+    padding:16px 8px calc(16px + env(safe-area-inset-bottom));
     background:linear-gradient(to bottom,rgba(253,247,244,0),#fdf7f4 22%)}
   .wl h2:focus{outline:none}
   .wl [hidden],.wl-bar[hidden]{display:none !important}
@@ -517,7 +521,7 @@
 <!-- WL:BAŞ -->
 <header class="wl-bar" id="wlBar" inert>
   <a class="wl-wm" href="/" aria-label="shipship ana sayfa">shipship</a>
-  <a class="wl-btn wl-btn-sm" href="#katil" data-wl-open>Listeye katıl</a>
+  <a class="wl-btn wl-btn-sm wl-btn-pink" href="#katil" data-wl-open>Listeye katıl</a>
 </header>
 <div class="wl" id="wl" role="dialog" aria-modal="true" aria-labelledby="wlH" aria-hidden="true">
   <div class="wl-top">
@@ -556,7 +560,7 @@
       <label class="wl-check" id="wlAdultL"><input id="wlAdult" type="checkbox" aria-describedby="wlAdultErr"> 18 yaşından büyüğüm</label>
       <span class="wl-sr" id="wlAdultErr"></span>
       <div class="wl-actions">
-        <button class="wl-btn wl-btn-block" type="submit" aria-disabled="true">Listeye katıl</button>
+        <button class="wl-btn wl-btn-block wl-btn-pink" type="submit" aria-disabled="true">Listeye katıl</button>
         <p class="wl-err" id="wlErr" role="alert"></p>
       </div>
       <p class="wl-fine">Yalnız iki e-posta atarız: onay ve açılış. <a href="/bekleme-listesi/" target="_blank" rel="noopener">Bilgilendirme metni</a></p>
@@ -617,7 +621,7 @@
             <h1>Topluluk yakıştırır, son söz senin.</h1>
             <p>Adayını sen aramazsın. Profiline uyanlarla ve arkadaşlarının önerdikleriyle ikili olursun, topluluk oylar.</p>
             <!-- WL:BAŞ --><a class="wl-hero-btn" href="#katil" data-wl-open>Listeye katıl</a><!-- WL:SON -->
-                                                          </div>
+                                                                      </div>
           <button class="hero-pause" id="heroPause" aria-label="Videoyu durdur">❚❚</button>
         </div>
       </div>
@@ -1419,6 +1423,7 @@
   cueGuncelle();   // ilk boyada da doğru konumda doğsun
 })();
 </script>
+<script></script>
 <script></script>
 <script></script>
 <script></script>

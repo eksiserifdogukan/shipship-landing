@@ -13,6 +13,7 @@
   --line: #eadde3;        /* ayraç */
   --line-strong: #cdb9c4; /* alan kenarı */
   --tint: #f6ecf0;        /* bilgi kutusu zemini */
+  --pink: #E6336E;        /* TEK marka pembesi — yalnız "Listeye katıl" */
   --ok: #2f8a5b;
   --err: #b8304a;
   --bar-h: 64px;
@@ -54,6 +55,7 @@ body {
 .btn-line { background: transparent; color: var(--ink); box-shadow: inset 0 0 0 1.5px var(--ink); }
 .btn-sm { min-height: 40px; padding: 0 18px; font-size: 14.5px; }
 .btn-block { width: 100%; }
+.btn-pink, #barCta { background: var(--pink); color: #fff; }
 .btn[aria-busy="true"] { opacity: .6; }
 .btn:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible, button:focus-visible {
   outline: 2px solid var(--ink); outline-offset: 3px;
