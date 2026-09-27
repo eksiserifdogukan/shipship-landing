@@ -43,6 +43,9 @@
     overflow:hidden;background:var(--night);transform-origin:50% 32%;
     will-change:transform;box-shadow:0 30px 80px rgba(90,20,70,.22)}
   .hero-card video{width:100%;height:100%;object-fit:cover}
+  /* Düşük Güç Modu yedeği (aynı film resim olarak): videoyla aynı kutu; ilk kare gelene kadar kapak görseli. */
+  .hero-card .hero-vid-img{display:block;width:100%;height:100%;object-fit:cover;
+    background:var(--night) url(/video/poster.jpg) center/cover no-repeat}
   .hero-card::after{content:"";position:absolute;inset:0;
     background:linear-gradient(180deg,rgba(27,17,25,.28) 0%,rgba(27,17,25,.05) 35%,
       rgba(27,17,25,.55) 82%,rgba(27,17,25,.82) 100%)}
@@ -410,7 +413,7 @@
        alanı doldurur, yazı altında düz koyu zeminde (videodan yumuşak geçişle). Ekran boyundan
        bağımsız: kısa ekranda video küçülür, yazı her karede okunur. Karşılaştırma: lab/hero-mobil-deneme.html */
     .hero-card{display:flex;flex-direction:column}
-    .hero-card video{flex:1 1 auto;min-height:0;height:auto}
+    .hero-card video,.hero-card .hero-vid-img{flex:1 1 auto;min-height:0;height:auto}
     .hero-card::after{background:linear-gradient(180deg,rgba(27,17,25,.28) 0%,rgba(27,17,25,0) 18%)}
     /* Oran (tasarımcı 09-27): düğme kartın DİBİNDE, yazı ona yaslanır, video kalan yüksekliği alır.
        Altta yalnız "kaydır" işaretine yer: işaret ekranın en altında (hero'daki yukarı kaldırma iptal),
@@ -1019,31 +1022,55 @@
   }
 
   /* hero video — HER ZAMAN oynar; tek durdurma yolu ❚❚ (tasarımcı 09-21 + 09-27 "mobilde otomatik oynamalı").
-     iPhone sessiz videoyu da bazen başlatmaz ya da durdurur: Düşük Güç Modu, başka uygulamadan dönüş,
-     ekran dışına çıkıp geri gelme. Tek seferlik deneme yetmiyordu → kullanıcı ELLE durdurmadıkça
-     video durmuşsa şu anlarda yeniden başlatılır: ilk dokunuş (engeli kaldıran kullanıcı hareketi),
-     sayfaya dönüş, video yeniden görününce. Düğmenin simgesi videonun GERÇEK durumunu gösterir. */
+     iPhone sessiz videoyu da bazen başlatmaz ya da durdurur: başka uygulamadan dönüş, ekran dışına çıkıp
+     geri gelme → kullanıcı ELLE durdurmadıkça video durmuşsa sayfaya dönüşte ve yeniden görününce başlatılır.
+     Düşük Güç Modu'nda iPhone <video>'yu HİÇ başlatmaz (kodla aşılamaz) ama aynı MP4'ü RESİM gibi (<img>)
+     oynatır — Safari'ye özgü, Apple'ın WebKit belgelerindeki yol. Yedek YALNIZ otomatik oynatma
+     reddedilince devreye girer; resim açılamazsa (Safari dışı) video kapak görseliyle kalır. İlk dokunuşta
+     (tıklama = kullanıcı hareketi, video artık izinli) gerçek videoya aynı saniyeden geçilir.
+     Düğmenin simgesi GERÇEK durumu gösterir (durmuşsa ▶). */
   var vid = document.getElementById('heroVid');
   var pauseBtn = document.getElementById('heroPause');
-  var elleDurdu = false;
+  var elleDurdu = false, resim = null, resimBas = 0;
   function simge(){
-    var d = vid.paused;
+    var d = !resim && vid.paused;
     pauseBtn.textContent = d ? '▶' : '❚❚';
     pauseBtn.setAttribute('aria-label', d ? 'Videoyu oynat' : 'Videoyu durdur');
   }
+  function resmeGec(){
+    if (resim || elleDurdu) return;
+    resim = document.createElement('img');
+    resim.className = 'hero-vid-img'; resim.alt = ''; resim.setAttribute('aria-hidden', 'true');
+    resim.onerror = resimdenCik;
+    resim.src = vid.currentSrc || vid.getAttribute('src');
+    resimBas = Date.now();
+    vid.parentNode.insertBefore(resim, vid); vid.style.display = 'none';
+    simge();
+  }
+  function resimdenCik(){
+    if (!resim) return;
+    resim.remove(); resim = null; vid.style.display = '';
+    simge();
+  }
   vid.addEventListener('playing', simge); vid.addEventListener('pause', simge);
-  var kick = function(){
+  var kick = function(ev){
     if (elleDurdu || !vid.paused) return;
-    var p = vid.play(); if (p && p.catch) p.catch(simge);   // engellendi → ▶ görünür, dokununca oynar
+    if (resim){
+      if (!ev || ev.type !== 'click') return;             // resim oynuyor; yalnız gerçek dokunuşta videoya geç
+      if (vid.duration) vid.currentTime = ((Date.now() - resimBas) / 1000) % vid.duration;
+      resimdenCik();
+    }
+    var p = vid.play();
+    if (p && p.catch) p.catch(function(e){ if (e && e.name === 'NotAllowedError') resmeGec(); simge(); });
   };
   pauseBtn.addEventListener('click', function(){
-    if (vid.paused){ elleDurdu = false; kick(); }
-    else { elleDurdu = true; vid.pause(); }
+    if (resim || !vid.paused){ elleDurdu = true; resimdenCik(); vid.pause(); simge(); }
+    else { elleDurdu = false; kick({ type: 'click' }); }
   });
-  vid.addEventListener('canplay', kick, {once:true}); kick();
+  vid.addEventListener('canplay', function(){ kick(); }, {once:true}); kick();
   ['touchend','pointerup','click','keydown'].forEach(function(ev){ document.addEventListener(ev, kick, {passive:true}); });
   document.addEventListener('visibilitychange', function(){ if (!document.hidden) kick(); });
-  addEventListener('pageshow', kick);
+  addEventListener('pageshow', function(){ kick(); });
   if ('IntersectionObserver' in window)
     new IntersectionObserver(function(es){ if (es[0].isIntersecting) kick(); }).observe(vid);
 
