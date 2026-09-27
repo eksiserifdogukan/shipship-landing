@@ -1018,15 +1018,34 @@
     return t <= 0 ? 0 : c01((-r.top) / t);
   }
 
-  /* hero video */
+  /* hero video — HER ZAMAN oynar; tek durdurma yolu ❚❚ (tasarımcı 09-21 + 09-27 "mobilde otomatik oynamalı").
+     iPhone sessiz videoyu da bazen başlatmaz ya da durdurur: Düşük Güç Modu, başka uygulamadan dönüş,
+     ekran dışına çıkıp geri gelme. Tek seferlik deneme yetmiyordu → kullanıcı ELLE durdurmadıkça
+     video durmuşsa şu anlarda yeniden başlatılır: ilk dokunuş (engeli kaldıran kullanıcı hareketi),
+     sayfaya dönüş, video yeniden görününce. Düğmenin simgesi videonun GERÇEK durumunu gösterir. */
   var vid = document.getElementById('heroVid');
   var pauseBtn = document.getElementById('heroPause');
+  var elleDurdu = false;
+  function simge(){
+    var d = vid.paused;
+    pauseBtn.textContent = d ? '▶' : '❚❚';
+    pauseBtn.setAttribute('aria-label', d ? 'Videoyu oynat' : 'Videoyu durdur');
+  }
+  vid.addEventListener('playing', simge); vid.addEventListener('pause', simge);
+  var kick = function(){
+    if (elleDurdu || !vid.paused) return;
+    var p = vid.play(); if (p && p.catch) p.catch(simge);   // engellendi → ▶ görünür, dokununca oynar
+  };
   pauseBtn.addEventListener('click', function(){
-    if (vid.paused){ vid.play(); pauseBtn.textContent = '❚❚'; }
-    else { vid.pause(); pauseBtn.textContent = '▶'; }
+    if (vid.paused){ elleDurdu = false; kick(); }
+    else { elleDurdu = true; vid.pause(); }
   });
-  var kick = function(){ vid.play().catch(function(){}); };
   vid.addEventListener('canplay', kick, {once:true}); kick();
+  ['touchend','pointerup','click','keydown'].forEach(function(ev){ document.addEventListener(ev, kick, {passive:true}); });
+  document.addEventListener('visibilitychange', function(){ if (!document.hidden) kick(); });
+  addEventListener('pageshow', kick);
+  if ('IntersectionObserver' in window)
+    new IntersectionObserver(function(es){ if (es[0].isIntersecting) kick(); }).observe(vid);
 
   /* F2: kelimelere böl — güvenli DOM kurulumu (innerHTML yok) */
   document.querySelectorAll('[data-fill]').forEach(function(el){
