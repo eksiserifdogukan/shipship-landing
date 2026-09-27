@@ -398,6 +398,7 @@
     *{transition-duration:.01ms !important}
   }
 
+  /* WL:BAŞ */
   /* Telefonda sayfa yana taşıyordu (evrim bölümü öğeleri) → yerleşim görünümü genişliyor, sabit
      öğeler ekran dışına düşüyordu. clip (hidden değil): kaydırma kabı KURMAZ, sticky sahneler bozulmaz. */
   html,body{overflow-x:clip}
@@ -452,9 +453,11 @@
   .wl .wl-links{display:flex;justify-content:center;gap:22px;margin-top:20px;font-size:15px}
   .wl .wl-links button{background:none;border:0;padding:0;font:inherit;color:#e8d6e1;text-decoration:underline;cursor:pointer}
   .wl [hidden]{display:none !important}
+  /* WL:SON */
 </style>
 </head>
 <body>
+<!-- WL:BAŞ -->
 <!-- ─── BEKLEME LİSTESİ (2026-09-27) ─── -->
 <button class="wl-cta" type="button" data-wl-open>Listeye katıl</button>
 <div class="wl" id="wl" role="dialog" aria-modal="true" aria-labelledby="wlH" aria-hidden="true">
@@ -476,7 +479,7 @@
       <label class="wl-chk"><input id="wlAdult" type="checkbox"> 18 yaşından büyüğüm</label>
       <button class="wl-go" type="submit">Listeye katıl</button>
       <p class="wl-err" id="wlErr" role="alert"></p>
-      <p class="wl-fine">Sana yalnızca şehrin açıldığında tek bir e-posta atarız. Bilgilerini nasıl kullandığımızı <a href="/bekleme-listesi/" target="_blank" rel="noopener">bilgilendirme metninde</a> anlattık.</p>
+      <p class="wl-fine">Kaydını onaylayan bir e-posta ve şehrin açıldığında bir e-posta atarız. Başka bir şey göndermeyiz. Bilgilerini nasıl kullandığımızı <a href="/bekleme-listesi/" target="_blank" rel="noopener">bilgilendirme metninde</a> anlattık.</p>
     </form>
 
     <div id="wlDone" hidden>
@@ -503,6 +506,7 @@
     <a class="wl-ig" href="https://www.instagram.com/shipshipapp/" target="_blank" rel="noopener">Gelişmeler Instagram'da · @shipshipapp</a>
   </div></div>
 </div>
+<!-- WL:SON -->
 
 
 
@@ -1331,7 +1335,7 @@
   cueGuncelle();   // ilk boyada da doğru konumda doğsun
 })();
 </script>
-<script>
+<script>/* WL:BAŞ */
 /* ─── BEKLEME LİSTESİ (2026-09-27) ─────────────────────────────────────────
    Tablo istemciye kapalı; yalnız üç fonksiyon çağrılır (crowdmatch-rn
    BACKEND.md §waitlist). Anahtar herkese açık "publishable" anahtardır. */
@@ -1386,7 +1390,8 @@
     $('wlLeft').hidden = which !== 'left';
   }
   function showDone(){
-    $('wlDoneP').textContent = city + ' açıldığında herkesten önce sana haber vereceğiz.';
+    $('wlDoneP').textContent = city + ' açıldığında herkesten önce sana haber vereceğiz.'
+      + (token ? ' Onay e-postası birazdan gelir; göremezsen gereksiz klasörüne bak.' : '');
     $('wlEdit').hidden = !token;
     $('wlNoEdit').hidden = !!token;
     $('wlCityBox').hidden = true;
@@ -1466,6 +1471,6 @@
     }).catch(function(x){ err2.textContent = msg(x); });
   });
 })();
-</script>
+/* WL:SON */</script>
 </body>
 </html>

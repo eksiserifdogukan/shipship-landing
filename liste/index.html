@@ -1,0 +1,172 @@
+<!doctype html>
+<html lang="tr">
+<head>
+  <meta name="robots" content="noindex">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Bekleme listesi kaydın — shipship</title>
+  <meta name="description" content="shipship bekleme listesi kaydını yönet.">
+  <meta name="robots" content="index,follow">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🚢</text></svg>">
+  <style>
+    :root { --ink:#2a1a24; --ink-soft:#5c4553; --ink-dim:#8a7280; --accent:#d05aa4; --card:#fffdfc; --line:#f0e4e9; }
+    * { box-sizing:border-box; margin:0; }
+    body {
+      min-height:100vh; display:flex; flex-direction:column;
+      font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+      -webkit-font-smoothing:antialiased; color:#fff7f4;
+      background:linear-gradient(160deg,#ff6f61 0%,#f4577d 34%,#d05aa4 68%,#8e4bbf 100%);
+      background-attachment:fixed;
+    }
+    header { padding:22px clamp(22px,5vw,48px); }
+    /* shipship wordmark — uygulamadaki kanonik hâl: DÜZ, tek kelime, beyaz. */
+    .wordmark { display:inline-block; line-height:1.18; color:#fff;
+      font-size:clamp(22px,3vw,28px); font-weight:400; letter-spacing:-0.025em;
+      text-decoration:none; text-shadow:0 1px 12px rgba(90,20,70,.25); }
+    main { flex:1; padding:0 clamp(16px,4vw,48px) 56px; }
+    .doc {
+      max-width:720px; margin:0 auto; background:var(--card); color:var(--ink);
+      border-radius:22px; padding:clamp(26px,5vw,52px);
+      box-shadow:0 24px 70px rgba(90,20,70,0.35);
+    }
+    .doc h1 { font-size:clamp(26px,4.5vw,34px); letter-spacing:-0.02em; line-height:1.15; }
+    .meta { margin-top:8px; font-size:13.5px; color:var(--ink-dim); }
+    .doc h2 { font-size:19px; margin:34px 0 10px; letter-spacing:-0.01em; }
+    .doc p, .doc li { font-size:15.5px; line-height:1.65; color:var(--ink-soft); }
+    .doc p + p { margin-top:10px; }
+    .doc ul { padding-left:22px; margin:8px 0; }
+    .doc li { margin:8px 0; }
+    .doc strong { color:var(--ink); }
+    .doc a { color:var(--accent); font-weight:600; text-decoration:none; }
+    .doc a:hover { text-decoration:underline; }
+
+    .tablewrap { overflow-x:auto; -webkit-overflow-scrolling:touch; margin:14px 0; }
+    table { border-collapse:collapse; width:100%; }
+    th, td { text-align:left; padding:10px 12px; border-bottom:1px solid var(--line); vertical-align:top; font-size:14.5px; line-height:1.55; color:var(--ink-soft); }
+    th { color:var(--ink); font-weight:700; font-size:12px; text-transform:uppercase; letter-spacing:0.05em; }
+
+    /* Dar ekranda tablo = dikey kart yığını. Bu sayfa esasen telefonda
+       (uygulama içi tarayıcıda) okunuyor; yatay kaydırma okumayı bozuyordu. */
+    @media (max-width:600px) {
+      .tablewrap { overflow-x:visible; }
+      table, tbody, tr, td { display:block; width:100%; }
+      tr:first-child { display:none; }
+      tr { border:1px solid var(--line); border-radius:14px; padding:12px 15px; margin-bottom:10px; }
+      td { border:none; padding:6px 0; }
+      td + td { border-top:1px solid var(--line); }
+      td::before {
+        content:attr(data-l); display:block; margin-bottom:3px;
+        font-size:11px; font-weight:700; text-transform:uppercase;
+        letter-spacing:0.06em; color:var(--ink-dim);
+      }
+    }
+
+    .otherdocs { margin-top:38px; padding-top:18px; border-top:1px solid var(--line); font-size:14px; color:var(--ink-dim); }
+    footer { padding:24px clamp(22px,5vw,48px); display:flex; justify-content:space-between; flex-wrap:wrap; gap:10px; font-size:13.5px; color:rgba(255,247,244,0.7); }
+    footer a { color:rgba(255,247,244,0.9); text-decoration:none; font-weight:600; }
+      .ls-row { display:flex; gap:10px; flex-wrap:wrap; margin-top:6px; }
+    .ls-row select { flex:1; min-width:180px; font:inherit; font-size:16px; padding:12px 14px; border-radius:12px;
+      border:1px solid var(--line); background:#fff; color:var(--ink); }
+    .ls-btn { font:inherit; font-weight:700; font-size:15px; padding:12px 22px; border-radius:999px; cursor:pointer;
+      border:0; background:var(--ink); color:#fff7f4; }
+    .ls-btn-line { background:transparent; color:var(--ink); border:1px solid var(--ink); margin-top:4px; }
+    .ls-msg { min-height:22px; font-size:14.5px; }
+    [hidden] { display:none !important; }
+  </style>
+</head>
+<body>
+<header><a class="wordmark" href="/" aria-label="shipship">shipship</a></header>
+<main>
+<article class="doc">
+  <h1>Bekleme listesi kaydın</h1>
+  <p class="meta">shipship bekleme listesi</p>
+
+  <div id="lsLoading"><p>Kaydın yükleniyor…</p></div>
+
+  <div id="lsOk" hidden>
+    <p>Kayıtlı şehrin: <strong id="lsCity"></strong></p>
+
+    <h2 id="lsCityH">Şehrini değiştir</h2>
+    <div class="ls-row">
+      <select id="lsSel" aria-labelledby="lsCityH"></select>
+      <button class="ls-btn" type="button" id="lsSave">Kaydet</button>
+    </div>
+    <p class="ls-msg" id="lsMsg" role="status"></p>
+
+    <h2 id="lsLeaveH">Listeden çık</h2>
+    <p>Kaydın hemen silinir ve sana başka e-posta gelmez.</p>
+    <button class="ls-btn ls-btn-line" type="button" id="lsLeave">Listeden çık</button>
+    <p class="ls-msg" id="lsMsg2" role="status"></p>
+  </div>
+
+  <div id="lsLeft" hidden>
+    <h2 tabindex="-1" id="lsLeftH">Listeden çıktın</h2>
+    <p>Kaydını sildik. Fikrin değişirse <a href="/">shipshipapp.com</a> üzerinden yeniden katılabilirsin.</p>
+  </div>
+
+  <div id="lsBad" hidden>
+    <p>Bu bağlantı artık geçerli değil. Listeden zaten çıkmış olabilirsin. Bir sorun olduğunu düşünüyorsan <a href="mailto:kvkk@shipshipapp.com">kvkk@shipshipapp.com</a> adresine yaz.</p>
+  </div>
+</article>
+
+</main>
+<footer>
+  <div>© 2026 shipship</div>
+  <div><a href="/destek">Destek</a> · <a href="/kosullar">Koşullar</a> · <a href="/gizlilik">Gizlilik</a> · <a href="/guvenlik">Güvenlik</a></div>
+</footer>
+<script>
+/* Bekleme listesi kaydını yönet (e-postadaki bağlantılar buraya gelir).
+   Token URL'nin # kısmında durur — sunucu kayıtlarına düşmez.
+   Bağlantıyı AÇMAK hiçbir şey silmez: e-posta tarayıcıları bağlantıları
+   önceden açabildiği için silme yalnız düğmeye basınca olur. */
+(function(){
+  var WL_URL = 'https://gfdfzfsbyihiprpqkwxx.supabase.co';
+  var WL_KEY = 'sb_publishable_UthZWAxQIcl_YL6mZ6CuaQ_cbEtlTiC';
+  var ILLER = ['Adana','Adıyaman','Afyonkarahisar','Ağrı','Aksaray','Amasya','Ankara','Antalya','Ardahan','Artvin','Aydın','Balıkesir','Bartın','Batman','Bayburt','Bilecik','Bingöl','Bitlis','Bolu','Burdur','Bursa','Çanakkale','Çankırı','Çorum','Denizli','Diyarbakır','Düzce','Edirne','Elazığ','Erzincan','Erzurum','Eskişehir','Gaziantep','Giresun','Gümüşhane','Hakkari','Hatay','Iğdır','Isparta','İstanbul','İzmir','Kahramanmaraş','Karabük','Karaman','Kars','Kastamonu','Kayseri','Kilis','Kırıkkale','Kırklareli','Kırşehir','Kocaeli','Konya','Kütahya','Malatya','Manisa','Mardin','Mersin','Muğla','Muş','Nevşehir','Niğde','Ordu','Osmaniye','Rize','Sakarya','Samsun','Şanlıurfa','Siirt','Sinop','Sivas','Şırnak','Tekirdağ','Tokat','Trabzon','Tunceli','Uşak','Van','Yalova','Yozgat','Zonguldak'];
+  var $ = function(id){ return document.getElementById(id); };
+  var q = {};
+  location.hash.replace(/^#/, '').split('&').forEach(function(kv){
+    var p = kv.split('='); if (p[0]) q[p[0]] = decodeURIComponent(p[1] || '');
+  });
+  var token = /^[0-9a-f-]{36}$/i.test(q.t || '') ? q.t : null;
+
+  function rpc(fn, body){
+    return fetch(WL_URL + '/rest/v1/rpc/' + fn, {
+      method: 'POST', headers: {'apikey': WL_KEY, 'Content-Type': 'application/json'}, body: JSON.stringify(body)
+    }).then(function(r){ return r.json().then(function(j){ if (!r.ok) throw new Error(j && j.message); return j; }); });
+  }
+  function show(id){ ['lsLoading','lsOk','lsLeft','lsBad'].forEach(function(x){ $(x).hidden = x !== id; }); }
+  var NET = 'Şu an bağlanamadık. Bağlantını kontrol edip tekrar dener misin?';
+
+  if (!token) { show('lsBad'); return; }
+  rpc('cm_waitlist_get', {p_token: token}).then(function(r){
+    if (!r.ok) { show('lsBad'); return; }
+    $('lsCity').textContent = r.city;
+    var sel = $('lsSel');
+    ILLER.forEach(function(il){
+      var o = document.createElement('option'); o.value = il; o.textContent = il;
+      if (il === r.city) o.selected = true; sel.appendChild(o);
+    });
+    show('lsOk');
+    if (q.a === 'cik') { $('lsLeaveH').scrollIntoView({block: 'center'}); $('lsLeave').focus(); }
+    else if (q.a === 'sehir') { sel.focus(); }
+  }).catch(function(){ show('lsLoading'); $('lsLoading').firstElementChild.textContent = NET; });
+
+  $('lsSave').addEventListener('click', function(){
+    var c = $('lsSel').value; $('lsMsg').textContent = '';
+    rpc('cm_waitlist_set_city', {p_token: token, p_city: c}).then(function(r){
+      if (!r.ok) { show('lsBad'); return; }
+      $('lsCity').textContent = c; $('lsMsg').textContent = 'Kaydettik. ' + c + ' açıldığında sana haber vereceğiz.';
+    }).catch(function(){ $('lsMsg').textContent = NET; });
+  });
+  $('lsLeave').addEventListener('click', function(){
+    $('lsMsg2').textContent = '';
+    rpc('cm_waitlist_leave', {p_token: token}).then(function(){
+      try { var s = JSON.parse(localStorage.getItem('shipship.wl') || 'null'); if (s && s.t === token) localStorage.removeItem('shipship.wl'); } catch(e){}
+      show('lsLeft'); $('lsLeftH').focus();
+    }).catch(function(){ $('lsMsg2').textContent = NET; });
+  });
+})();
+</script>
+</body>
+</html>
