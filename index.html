@@ -453,6 +453,12 @@
     color:#fff;mix-blend-mode:difference;
     transform:translateY(-101%);transition:transform .35s cubic-bezier(.22,1,.36,1)}
   .wl-bar-wm.on{transform:none}
+  /* Mobil (tasarımcı 09-27): fark karışımı fotoğraf/ekran görüntüsü geçerken harfleri parça parça
+     boyuyordu → logo TEK RENK BEYAZ; okunması için cam hafif FÜME (hâlâ saydam + bulanık). */
+  @media (max-width:879px){
+    .wl-bar{background:rgba(24,16,22,.42);border-bottom-color:rgba(255,255,255,.08);box-shadow:none}
+    .wl-bar-wm{mix-blend-mode:normal;color:#fff}
+  }
   /* "Nasıl çalışıyor" bandı camın ALTINA uzanır: bölümdeyken cam hep krem bandın üstünde
      durur → iki ayrı başlık (cam + bant) görünmez, altından görsel kaymaz. Bant boyu sabit
      (cam durumuna bağlı değil) → sayfa yerleşimi kaydırmayla oynamaz. */
@@ -731,7 +737,7 @@
             <h1>Topluluk yakıştırır, son söz senin.</h1>
             <p>Adayını sen aramazsın. Profiline uyanlarla ve arkadaşlarının önerdikleriyle ikili olursun, topluluk oylar.</p>
             <!-- WL:BAŞ --><a class="wl-hero-btn" href="#katil" data-wl-open>Listeye katıl</a><!-- WL:SON -->
-                                                                                                                                  </div>
+                                                                                                                                              </div>
           <button class="hero-pause" id="heroPause" aria-label="Videoyu durdur">❚❚</button>
         </div>
       </div>
@@ -1533,6 +1539,7 @@
   cueGuncelle();   // ilk boyada da doğru konumda doğsun
 })();
 </script>
+<script></script>
 <script></script>
 <script></script>
 <script></script>
