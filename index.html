@@ -607,9 +607,9 @@
   .wl .wl-hp{position:absolute;left:-9999px;width:1px;height:1px;opacity:0}
   .wl .wl-ok-ic{width:44px;height:44px;border-radius:50%;border:2px solid #2f8a5b;color:#2f8a5b;
     display:flex;align-items:center;justify-content:center;font-size:20px;margin:0 0 18px}
-  .wl #wlDone h2,.wl #wlLeft h2{margin:0 0 8px}
+  .wl #wlDone h2{margin:0 0 8px}
   .wl #wlDone .wl-sub{margin-bottom:22px}
-  .wl .wl-links{display:flex;gap:20px;flex-wrap:wrap;margin-top:18px;font-size:14.5px}
+  .wl .wl-links{display:flex;justify-content:center;gap:20px;flex-wrap:wrap;margin-top:18px;font-size:14.5px}
   .wl .wl-links button{background:none;border:0;padding:0;font:inherit;font-weight:600;color:#2a1a24;
     text-decoration:underline;text-decoration-color:#cdb9c4;text-underline-offset:3px;cursor:pointer}
   .wl .wl-citybox{margin-top:20px}
@@ -727,7 +727,7 @@
       <p class="wl-sub" id="wlDoneP"></p>
       <button class="wl-btn wl-btn-block wl-btn-pink" type="button" id="wlShare"><svg class="wl-ic" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 3v12"/><path d="M8 7l4-4 4 4"/><path d="M8 11H6.5A2.5 2.5 0 0 0 4 13.5v5A2.5 2.5 0 0 0 6.5 21h11a2.5 2.5 0 0 0 2.5-2.5v-5a2.5 2.5 0 0 0-2.5-2.5H16"/></svg><span id="wlShareT">Uygulamayı arkadaşınla paylaş</span></button>
       <div id="wlEdit">
-        <div class="wl-links"><button type="button" id="wlChange">Şehrini değiştir</button><button type="button" id="wlLeave">Listeden çık</button></div>
+        <div class="wl-links"><button type="button" id="wlChange">Şehrini değiştir</button></div>
         <div class="wl-citybox" id="wlCityBox" hidden>
           <div class="wl-field">
             <label class="wl-lbl" for="wlCity2">Yeni şehrin</label>
@@ -740,10 +740,6 @@
       <p class="wl-err" id="wlErr2" role="alert"></p>
     </div>
 
-    <div id="wlLeft" hidden>
-      <h2 tabindex="-1" id="wlLeftH">Listeden çıktın</h2>
-      <p class="wl-sub">Kaydını sildik. Fikrin değişirse istediğin zaman yeniden katılabilirsin.</p>
-    </div>
   </div></div>
   <!-- Instagram: "Listedesin" ekranının ALTINDA sabit şerit (tasarımcı 09-27: "daha profesyonel, ekranın altında, logoyla").
        Logo Instagram'ın kendi işareti, KENDİ renk geçişinde (tasarımcı 09-27; marka kuralı: biçimi değiştirilmez, kutuya konmaz). -->
@@ -1720,7 +1716,6 @@
     form.hidden = which !== 'form';
     $('wlBody').hidden = which === 'form';
     $('wlDone').hidden = which !== 'done';
-    $('wlLeft').hidden = which !== 'left';
     $('wlIgFoot').hidden = which !== 'done';
   }
   function showDone(){
@@ -1909,12 +1904,6 @@
     rpc('cm_waitlist_set_city', {p_token: token, p_city: c}).then(function(r){
       if (!r.ok) { unstore(); token = null; err2.textContent = 'Kaydını bulamadık. Formu yeniden doldurabilirsin.'; return; }
       city = c; store(); showDone();
-    }).catch(function(x){ err2.textContent = msg(x); });
-  });
-  $('wlLeave').addEventListener('click', function(){
-    err2.textContent = '';
-    rpc('cm_waitlist_leave', {p_token: token}).then(function(){
-      unstore(); token = null; city = null; form.reset(); syncPicks(); syncReady(); show('left'); $('wlLeftH').focus();
     }).catch(function(x){ err2.textContent = msg(x); });
   });
 })();
