@@ -397,12 +397,12 @@
     .scroll-cue svg{animation:none}
     *{transition-duration:.01ms !important}
   }
-
   /* MOBİL:BAŞ — telefonda yalnız hero + "Nasıl çalışıyor" + alt bilgi (tasarımcı 09-27).
      Hero tek ekran (kaydırmayla küçülüp soru soran sahne mobilde yok: cevabı hikâye bölümündeydi).
      Diğer bölümler ve onların sabit renk perdeleri gizli. Adımlar soluk değil; her adımın
      altında kendi uygulama ekranı (masaüstünde telefonun içinde dönen görseller). */
   .step-shot{display:none}
+  #mTintBottom{display:none}
   @media (max-width:879px){
     .hero-scroll{height:100svh}
     .hero-say{display:none}
@@ -423,6 +423,12 @@
     footer.mega{background:#191a1b;padding-top:40px;padding-bottom:env(safe-area-inset-bottom)}
     /* "KAYDIR" işareti işini hero'da yapar; kaydırma başlayınca metnin üstünde asılı kalmasın. */
     html.wl-bar-on .scroll-cue{opacity:0;pointer-events:none}
+    /* Safari 26 alt çubuğu renk için ÖNCE ekranın altına yapışık (≤3px), ≥%80 genişlikte sabit bir öğeye
+       bakar, yoksa body öğesinin rengine (html'e DEĞİL; theme-color yok sayılır). Alt bilgi görününce bu ince
+       koyu şerit açılır → çubuk koyulaşır. Gizlerken display:none (opaklık değil — Safari yine sayar). */
+    #mTintBottom{position:fixed;left:0;bottom:-8px;width:100%;min-height:12px;background:#191a1b;pointer-events:none;display:none}
+    html.m-dip #mTintBottom{display:block}
+    html.wl-open #mTintBottom{display:none !important}
     /* Mobilde düz beyaz (tasarımcı 09-27) — fark karışımı video üstünde parçalı görünüyordu. */
     .scroll-cue{mix-blend-mode:normal;color:#fff}
   }
@@ -431,7 +437,8 @@
   /* Telefonda sayfa yana taşıyordu (evrim bölümü öğeleri) → yerleşim görünümü genişliyor, sabit
      öğeler ekran dışına düşüyordu. clip (hidden değil): kaydırma kabı KURMAZ, sticky sahneler bozulmaz. */
   html,body{overflow-x:clip}
-  html.wl-open{overflow:hidden;background:#fdf7f4 !important}   /* mobil alt bilgi betiği kök zemini koyulaştırabilir; form açıkken krem kazanır */
+  html.wl-open{overflow:hidden;background:#fdf7f4 !important}
+  html.wl-open body{background-color:#fdf7f4 !important}   /* Safari 26 çubuk rengini body öğesinden alır — form açıkken krem */   /* mobil alt bilgi betiği kök zemini koyulaştırabilir; form açıkken krem kazanır */
   /* Form açıkken arkada TÜM ekranı taşan krem zemin: iPhone klavye açılırken görünür alanı
      kaydırır, kutu bu kaymayı bir an geriden izler → kalan şeritte arkadaki koyu sayfa
      görünüyordu (siyah bantlar, 09-27 cihaz). Zemin kutunun hemen altında durur. */
@@ -739,7 +746,7 @@
             <h1>Topluluk yakıştırır, son söz senin.</h1>
             <p>Adayını sen aramazsın. Profiline uyanlarla ve arkadaşlarının önerdikleriyle ikili olursun, topluluk oylar.</p>
             <!-- WL:BAŞ --><a class="wl-hero-btn" href="#katil" data-wl-open>Listeye katıl</a><!-- WL:SON -->
-                                                                                                                                                                      </div>
+                                                                                                                                                                                              </div>
           <button class="hero-pause" id="heroPause" aria-label="Videoyu durdur">❚❚</button>
         </div>
       </div>
@@ -1556,10 +1563,17 @@
 <script></script>
 <script></script>
 <script></script>
-<script>/* MOBİL:BAŞ */(function(){
+<script></script>
+<script></script>
+<div id="mTintBottom" aria-hidden="true"></div><script>/* MOBİL:BAŞ */(function(){
   var mq = window.matchMedia && matchMedia('(max-width: 879px)'), f = document.querySelector('footer.mega'), r = document.documentElement;
   if (!mq || !f) return;
-  function s(){ r.style.backgroundColor = (mq.matches && f.getBoundingClientRect().top < innerHeight) ? '#191a1b' : ''; }
+  function s(){
+    var on = mq.matches && f.getBoundingClientRect().top < innerHeight;
+    r.classList.toggle('m-dip', on);
+    r.style.backgroundColor = on ? '#191a1b' : '';
+    document.body.style.backgroundColor = on ? '#191a1b' : '';   // Safari 26 yedek kaynak: body rengi
+  }
   addEventListener('scroll', s, {passive: true}); addEventListener('resize', s); s();
 })();/* MOBİL:SON */</script>
 <script>/* WL:BAŞ */
