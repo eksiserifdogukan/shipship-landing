@@ -114,6 +114,13 @@ input[type=email], input[type=text], select {
   border: 1px solid var(--line-strong); border-radius: 14px;
 }
 input::placeholder { color: #a08b98; }
+/* Tarayıcının kendi oku kenara yapışık çiziliyor ve iç boşluğa uymuyordu (Chrome/macOS):
+   görünüm bizim, SEÇİCİ yine sistemin (telefonda sistem seçicisi, bilgisayarda liste). */
+select { -webkit-appearance: none; appearance: none; padding-right: 46px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1.5l5 5 5-5' fill='none' stroke='%235c4553' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat; background-position: right 18px center; background-size: 12px 8px; }
+select:invalid { color: #a08b98; }
+select option { color: var(--ink); }
 .check { display: flex; align-items: center; gap: 12px; font-size: 16px; color: var(--ink); cursor: pointer; }
 .check input { width: 22px; height: 22px; margin: 0; flex: none; accent-color: var(--ink); }
 .msg { min-height: 22px; margin-top: 12px; font-size: 15px; color: var(--soft); }

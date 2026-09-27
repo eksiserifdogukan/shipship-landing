@@ -452,12 +452,18 @@
   .wl .wl-sub{font-size:17px;line-height:1.65;color:#5c4553;margin:0 0 28px}
   .wl .wl-field{margin:0 0 20px}
   .wl .wl-lbl{display:block;font-size:14.5px;font-weight:600;color:#2a1a24;margin:0 0 8px}
-  /* YERLİ kontroller: seçim kutusu telefonda sistemin seçicisini, bilgisayarda tarayıcının
-     listesini açar (görünümü gizlenmez); 16px altı yazı iOS'ta sayfayı yakınlaştırır. */
+  /* YERLİ seçici: seçim kutusu telefonda sistemin seçicisini, bilgisayarda tarayıcının
+     listesini açar; kutunun görünümü bizim (aşağıda). 16px altı yazı iOS'ta yakınlaştırır. */
   .wl input[type=email],.wl select{display:block;width:100%;min-height:52px;padding:0 16px;
     font-family:inherit;font-size:16px;color:#2a1a24;background-color:#fffdfc;
     border:1px solid #cdb9c4;border-radius:14px}
   .wl input::placeholder{color:#a08b98}
+  /* Tarayıcının oku kenara yapışık ve boşluğa uymuyordu: görünüm bizim, seçici yine sistemin. */
+  .wl select{-webkit-appearance:none;appearance:none;padding-right:46px;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1.5l5 5 5-5' fill='none' stroke='%235c4553' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+    background-repeat:no-repeat;background-position:right 18px center;background-size:12px 8px}
+  .wl select:invalid{color:#a08b98}
+  .wl select option{color:#2a1a24}
   .wl .wl-hint{font-size:14px;line-height:1.5;color:#8a7280;margin:8px 0 0}
   .wl .wl-check{display:flex;align-items:center;gap:12px;font-size:16px;color:#2a1a24;margin:4px 0 26px;cursor:pointer}
   .wl .wl-check input{width:22px;height:22px;margin:0;flex:none;accent-color:#2a1a24}
@@ -564,7 +570,7 @@
             <h1>Topluluk yakıştırır, son söz senin.</h1>
             <p>Adayını sen aramazsın. Profiline uyanlarla ve arkadaşlarının önerdikleriyle ikili olursun, topluluk oylar.</p>
             <!-- WL:BAŞ --><a class="wl-hero-btn" href="#katil" data-wl-open>Listeye katıl</a><!-- WL:SON -->
-          </div>
+                      </div>
           <button class="hero-pause" id="heroPause" aria-label="Videoyu durdur">❚❚</button>
         </div>
       </div>
@@ -1366,6 +1372,7 @@
   cueGuncelle();   // ilk boyada da doğru konumda doğsun
 })();
 </script>
+<script></script>
 <script></script>
 <script></script>
 <script>/* WL:BAŞ */
