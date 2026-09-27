@@ -28,7 +28,7 @@
   </style>
 </head>
 <body>
-<header class="bar"><a class="wordmark" href="/" aria-label="shipship ana sayfa">shipship</a><a class="btn btn-sm" href="/#katil" id="barCta">Listeye katıl</a></header>
+<header class="bar"><a class="wordmark" href="/" aria-label="shipship ana sayfa">shipship</a><a class="btn btn-sm" href="/#katil" id="barCta">Bekleme listesine katıl</a></header>
 <main class="center">
   <div class="wrap" id="invite" hidden>
     <!-- İki varyant (2026-09-20): /invite/yakistirma ya da #y → arkadaşı onu BİRİYLE
@@ -57,7 +57,7 @@
       document.getElementById("invTitle").textContent = "Bir arkadaşın seni biriyle yakıştırdı";
       document.getElementById("invSub").textContent = "shipship'te ikilileri topluluk oylar. Uygulamayı indir, kendi numaranla gir; yakıştırıldığın kişiyle oylamaya çık. Tanışıp tanışmamak senin kararın.";
     }
-    // Davet karşılamasında tek eylem App Store — üstteki "Listeye katıl" onunla yarışmasın.
+    // Davet karşılamasında tek eylem App Store — üstteki bekleme listesi düğmesi onunla yarışmasın.
     if (invite) document.getElementById("barCta").hidden = true;
     document.getElementById(invite ? "invite" : "notfound").hidden = false;
   })();

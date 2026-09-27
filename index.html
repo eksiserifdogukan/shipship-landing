@@ -491,7 +491,7 @@
   .wl-btn-line{background:transparent;color:#2a1a24;box-shadow:inset 0 0 0 1.5px #2a1a24}
   .wl-btn[aria-busy=true]{opacity:.6}
   .wl-btn[aria-disabled=true]:active{transform:none}
-  /* "Listeye katıl" = uygulamanın TEK marka pembesi (#E6336E, BRAND_PINK) — tasarımcı 09-27.
+  /* Bekleme listesi düğmeleri = uygulamanın TEK marka pembesi (#E6336E, BRAND_PINK) — tasarımcı 09-27.
      Form eksikken SOLUK — yine de basılabilir: basınca eksik alana kayar ve onu gösterir. */
   .wl-btn-pink{background:#E6336E;color:#fff}
   .wl-btn-pink[aria-disabled=true]{opacity:.4}
@@ -628,7 +628,7 @@
 <body>
 <!-- WL:BAŞ -->
 <header class="wl-bar" id="wlBar" inert>
-  <a class="wl-btn wl-btn-sm wl-btn-pink" href="#katil" data-wl-open>Listeye katıl</a>
+  <a class="wl-btn wl-btn-sm wl-btn-pink" href="#katil" data-wl-open>Bekleme listesine katıl</a>
 </header>
 <!-- Wordmark başlığın DIŞINDA ayrı katman: başlık (cam) kendi yığın bağlamını kurduğu için
      içindeki yazı alttaki sayfayla karışamazdı. Ayrı katmanda "fark" karışımıyla krem
@@ -745,8 +745,8 @@
             <span class="eyebrow">Topluluk destekli tanışma uygulaması</span>
             <h1>Topluluk yakıştırır, son söz senin.</h1>
             <p>Adayını sen aramazsın. Profiline uyanlarla ve arkadaşlarının önerdikleriyle ikili olursun, topluluk oylar.</p>
-            <!-- WL:BAŞ --><a class="wl-hero-btn" href="#katil" data-wl-open>Listeye katıl</a><!-- WL:SON -->
-                                                                                                                                                                                              </div>
+            <!-- WL:BAŞ --><a class="wl-hero-btn" href="#katil" data-wl-open>Bekleme listesine katıl</a><!-- WL:SON -->
+                                                                                                                                                                                                          </div>
           <button class="hero-pause" id="heroPause" aria-label="Videoyu durdur">❚❚</button>
         </div>
       </div>
@@ -977,7 +977,7 @@
       </div>
       <div class="fin-copy">
         <h2 id="finH">Yakında</h2>
-        <a class="indir" id="finBtn" href="#" data-wl-open>Listeye katıl</a>
+        <a class="indir" id="finBtn" href="#" data-wl-open>Bekleme listesine katıl</a>
         <span class="not" id="finNot">Türkiye’de başlıyoruz</span>
       </div>
     </div>
@@ -1576,6 +1576,7 @@
   }
   addEventListener('scroll', s, {passive: true}); addEventListener('resize', s); s();
 })();/* MOBİL:SON */</script>
+<script></script>
 <script>/* WL:BAŞ */
 /* ─── BEKLEME LİSTESİ (2026-09-27) ─────────────────────────────────────────
    Tablo istemciye kapalı; yalnız üç fonksiyon çağrılır (crowdmatch-rn
@@ -1773,7 +1774,7 @@
   document.querySelectorAll('[data-wl-open]').forEach(function(b){
     b.addEventListener('click', function(e){ e.preventDefault(); open(); });
   });
-  /* Alt sayfalardaki "Listeye katıl" → /#katil → form kendiliğinden açılır. */
+  /* Alt sayfalardaki "Bekleme listesine katıl" → /#katil → form kendiliğinden açılır. */
   if (location.hash === '#katil') open();
   addEventListener('hashchange', function(){ if (location.hash === '#katil') open(); });
   wl.querySelectorAll('[data-wl-close]').forEach(function(b){ b.addEventListener('click', close); });
