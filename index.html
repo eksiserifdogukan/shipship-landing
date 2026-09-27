@@ -773,8 +773,12 @@
       </div>
       <div class="hero-card-wrap">
         <div class="hero-card" id="heroCard">
-          <video id="heroVid" src="/video/loop16x9.mp4" poster="/video/poster.jpg"
-                 muted playsinline loop autoplay preload="metadata"></video>
+          <!-- Telefonda aynı film, kırpılmadan 720p (1,5 MB; asıl 1080p 4 MB) — telefon ekranında gözle fark yok
+               (tasarımcı 09-27: "kırpmadan daha hızlı yüklensin"). Bilgisayarda film büyük gösterildiği için 1080p. -->
+          <video id="heroVid" poster="/video/poster.jpg" muted playsinline loop autoplay preload="metadata">
+            <source src="/video/loop16x9-720.mp4" type="video/mp4" media="(max-width: 879px)">
+            <source src="/video/loop16x9.mp4" type="video/mp4">
+          </video>
           <div class="hero-copy">
             <span class="eyebrow">Topluluk destekli tanışma uygulaması</span>
             <h1>Topluluk yakıştırır, son söz senin.</h1>
@@ -1057,7 +1061,8 @@
     resim = document.createElement('img');
     resim.className = 'hero-vid-img'; resim.alt = ''; resim.setAttribute('aria-hidden', 'true');
     resim.onerror = resimdenCik;
-    resim.src = (vid.currentSrc || vid.getAttribute('src')).split('?')[0] + '?img=1';   // videodan ayrı önbellek kaydı
+    var kaynak = vid.currentSrc || (vid.querySelector('source') || vid).getAttribute('src');
+    resim.src = kaynak.split('?')[0] + '?img=1';   // videodan ayrı önbellek kaydı
     vid.parentNode.insertBefore(resim, vid); vid.style.display = 'none';
     simge();
   }
