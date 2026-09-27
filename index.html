@@ -6,6 +6,19 @@
 <meta name="robots" content="noindex,nofollow">
 <title>shipship — Topluluk yakıştırır, son söz senin</title>
 <meta name="description" content="Adayını sen aramazsın. Profiline uyanlarla ve arkadaşlarının önerdikleriyle ikili olursun, topluluk oylar. shipship yakında App Store'da.">
+<!-- Paylaşım önizlemesi (tasarımcı 09-27: "Hinge yaklaşımı" — filmden ikili + arkadaşları karesi). Görsel 1200×630. -->
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="shipship">
+<meta property="og:locale" content="tr_TR">
+<meta property="og:url" content="https://shipshipapp.com/">
+<meta property="og:title" content="shipship — Topluluk yakıştırır, son söz senin.">
+<meta property="og:description" content="Yakında açılıyor. Bekleme listesine katıl, sınırlı ilk gruba gir.">
+<meta property="og:image" content="https://shipshipapp.com/img/paylasim.jpg">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Birbirine bakan iki kişi, arkalarında arkadaşları; üstünde shipship yazısı">
+<meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🚢</text></svg>">
 <style>
   :root{
@@ -653,9 +666,44 @@
     .wl-illu-rows{transform:translateY(-12px)} .wl-illu-first{opacity:0} .wl-illu-you{opacity:1}
   }
   /* WL:SON */
+
+  /* MENU:BAŞ — masaüstü üst menü + başa dön (tasarımcı 09-27, BACKLOG 45).
+     Menü başlık camının DIŞINDA ayrı sabit katman: cam kendi yığın bağlamını kurduğu için içindeki yazı
+     alttaki sayfayla karışamazdı; "fark" karışımıyla krem bölümde koyu, koyu bölümde açık (wordmark'la aynı yöntem). */
+  .mn-nav{position:fixed;top:0;left:50%;transform:translateX(-50%);z-index:83;height:64px;
+    display:flex;align-items:center;gap:30px;mix-blend-mode:difference;pointer-events:none}
+  .mn-nav a{pointer-events:auto;color:#fff;font-size:15px;font-weight:600;letter-spacing:-.005em;text-decoration:none;
+    padding:8px 2px;border-bottom:1.5px solid transparent}
+  .mn-nav a:hover,.mn-nav a[aria-current=true]{border-bottom-color:#fff}
+  .mn-nav a:focus-visible{outline:2px solid #fff;outline-offset:4px}
+  html.wl-open .mn-nav{display:none}
+  @media (max-width:879px){ .mn-nav{display:none} }
+  /* Başa dön: ilk ekran geçilince belirir; krem daire (koyu bölümde de seçilir), sağ altta. */
+  .mn-fab{position:fixed;right:24px;bottom:24px;z-index:84;width:48px;height:48px;border-radius:999px;border:0;
+    display:flex;align-items:center;justify-content:center;background:#fdf7f4;color:#2a1a24;cursor:pointer;
+    box-shadow:0 1px 2px rgba(20,12,18,.18),0 10px 28px rgba(20,12,18,.22);
+    opacity:0;transform:translateY(10px);pointer-events:none;transition:opacity .25s,transform .25s;
+    -webkit-tap-highlight-color:transparent}
+  .mn-fab.on{opacity:1;transform:none;pointer-events:auto}
+  .mn-fab:active{transform:scale(.94)}
+  .mn-fab:focus-visible{outline:2px solid #2a1a24;outline-offset:3px}
+  html.wl-open .mn-fab{display:none}
+  @media (max-width:879px){ .mn-fab{right:16px;bottom:calc(16px + env(safe-area-inset-bottom));width:44px;height:44px} }
+  /* MENU:SON */
 </style>
 </head>
 <body>
+<!-- MENU:BAŞ -->
+<nav class="mn-nav" aria-label="Bölümler">
+  <a href="#nasil" data-mn=".spine">Nasıl çalışıyor</a>
+  <a href="#niyetler" data-mn=".gal">Niyetler</a>
+  <a href="#guven" data-mn=".trust">Güven</a>
+</nav>
+<button class="mn-fab" id="mnFab" type="button" aria-label="Başa dön" tabindex="-1">
+  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19V5"/><path d="M5 12l7-7 7 7"/></svg>
+</button>
+<!-- MENU:SON -->
+
 <!-- WL:BAŞ -->
 <header class="wl-bar" id="wlBar" inert>
   <a class="wl-btn wl-btn-sm wl-btn-pink" href="#katil" data-wl-open>Bekleme listesine katıl</a>
@@ -1933,5 +1981,32 @@
   });
 })();
 /* WL:SON */</script>
+<script>/* MENU:BAŞ */(function(){
+  /* Tıklayınca bölüme yumuşak kaydırma. Durak kaydırması kaydırma olayında hedefini kendisi eşitler
+     (animasyon yokken hedef = scrollY) → programla kaydırma onunla çakışmaz. */
+  var linkler = [].slice.call(document.querySelectorAll('.mn-nav a'));
+  function ust(el){ return Math.round(el.getBoundingClientRect().top + scrollY); }
+  function git(y){ scrollTo({top: y, behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth'}); }
+  linkler.forEach(function(a){
+    a.addEventListener('click', function(e){
+      var el = document.querySelector(a.getAttribute('data-mn')); if (!el) return;
+      e.preventDefault(); git(ust(el));
+      try { history.replaceState(null, '', a.getAttribute('href')); } catch(x){}
+    });
+  });
+  /* Adresle gelen (#nasil vb.) doğrudan o bölümde açılır. */
+  var ilk = linkler.filter(function(a){ return a.getAttribute('href') === location.hash; })[0];
+  if (ilk) addEventListener('load', function(){ var el = document.querySelector(ilk.getAttribute('data-mn')); if (el) scrollTo(0, ust(el)); });
+  var fab = document.getElementById('mnFab');
+  fab.addEventListener('click', function(){ git(0); });
+  function guncelle(){
+    var on = scrollY > innerHeight * .9;
+    fab.classList.toggle('on', on); fab.tabIndex = on ? 0 : -1;
+    var orta = scrollY + innerHeight * .4, aktif = null;
+    linkler.forEach(function(a){ var el = document.querySelector(a.getAttribute('data-mn')); if (el && el.offsetParent !== null && ust(el) <= orta && ust(el) + el.offsetHeight > orta) aktif = a; });
+    linkler.forEach(function(a){ a.setAttribute('aria-current', a === aktif ? 'true' : 'false'); });
+  }
+  addEventListener('scroll', guncelle, {passive: true}); addEventListener('resize', guncelle); guncelle();
+})();/* MENU:SON */</script>
 </body>
 </html>
