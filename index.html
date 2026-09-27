@@ -401,7 +401,11 @@
   /* Telefonda sayfa yana taşıyordu (evrim bölümü öğeleri) → yerleşim görünümü genişliyor, sabit
      öğeler ekran dışına düşüyordu. clip (hidden değil): kaydırma kabı KURMAZ, sticky sahneler bozulmaz. */
   html,body{overflow-x:clip}
-  html.wl-open{overflow:hidden}
+  html.wl-open{overflow:hidden;background:#fdf7f4}
+  /* Form açıkken arkada TÜM ekranı taşan krem zemin: iPhone klavye açılırken görünür alanı
+     kaydırır, kutu bu kaymayı bir an geriden izler → kalan şeritte arkadaki koyu sayfa
+     görünüyordu (siyah bantlar, 09-27 cihaz). Zemin kutunun hemen altında durur. */
+  html.wl-open body::after{content:"";position:fixed;left:0;right:0;top:-50vh;bottom:-50vh;z-index:89;background:#fdf7f4}
   /* ─── BEKLEME LİSTESİ — sabit üst başlık + hero düğmesi + tam sayfa form ───
      Değerler alt sayfaların /ortak.css'iyle AYNI (krem · mürekkep · hap düğme);
      biri değişirse ikisi birlikte değişir. */
@@ -467,10 +471,9 @@
     .wl-form::after{content:"";flex:none;height:48px}
   }
 
-  .wl-head{display:flex;align-items:center;justify-content:space-between;gap:14px;margin:0 0 8px}
-  .wl h2{font-size:clamp(23px,3vw,30px);font-weight:800;letter-spacing:-.03em;line-height:1.12;margin:0;text-wrap:balance}
+  .wl h2{font-size:clamp(23px,3vw,30px);font-weight:800;letter-spacing:-.03em;line-height:1.12;margin:0 0 6px;text-wrap:balance}
   .wl h2:focus{outline:none}
-  .wl-illu{flex:none;width:58px;height:auto}
+  .wl-illu{display:block;width:54px;height:auto;margin:0 0 14px}
   .wl .wl-sub{font-size:15px;line-height:1.5;color:#5c4553;margin:0 0 20px}
   .wl .wl-field{margin:0 0 16px}
   .wl .wl-lbl{display:block;font-size:13px;font-weight:600;color:#2a1a24;margin:0 0 7px}
@@ -480,6 +483,7 @@
     font-family:inherit;font-size:16px;color:#2a1a24;background-color:#fffdfc;
     border:1px solid #cdb9c4;border-radius:12px}
   .wl input::placeholder{color:#a08b98}
+  .wl input[type=email]:focus-visible,.wl select:focus-visible{outline:none;border-color:#2a1a24;box-shadow:0 0 0 3px rgba(42,26,36,.12)}
   .wl select{-webkit-appearance:none;appearance:none;padding-right:44px;
     background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1.5l5 5 5-5' fill='none' stroke='%235c4553' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
     background-repeat:no-repeat;background-position:right 16px center;background-size:12px 8px}
@@ -529,8 +533,6 @@
     .wl-scroll{padding:12px 16px 6px}
     .wl-foot{padding:8px 16px calc(8px + env(safe-area-inset-bottom))}
     .wl h2{font-size:21px}
-    .wl-head{margin-bottom:6px}
-    .wl-illu{width:48px}
     .wl .wl-sub{font-size:14px;line-height:1.42;margin-bottom:12px}
     .wl .wl-field{margin-bottom:11px}
     .wl .wl-lbl{font-size:12.5px;margin-bottom:5px}
@@ -541,7 +543,8 @@
     .wl-btn{min-height:44px}
     .wl .wl-fine{font-size:11.5px;margin-top:6px}
   }
-  @media (max-width:340px){ .wl-illu{display:none} }
+  /* Sığma önceliği (tasarımcı: en küçük ekranda bile kaydırma yok): kısa ekranda görsel gizlenir. */
+  @media (max-width:340px),(max-height:600px){ .wl-illu{display:none} }
 
   /* ─── Liste illüstrasyonu: satırlar yukarı kayar, en alta "sen" (mor) eklenir, sonra
      sıradan bir satıra döner → döngü dikişsiz. Yalnız kutu açıkken oynar. ─── */
@@ -579,24 +582,22 @@
        klavye açıkken de düğme her zaman klavyenin hemen üstünde (tasarımcı 09-27). -->
   <form id="wlForm" class="wl-form" novalidate>
     <div class="wl-scroll" id="wlScroll"><div class="wl-col">
-      <div class="wl-head">
-        <h2 tabindex="-1" id="wlH">Bekleme listesine katıl</h2>
-        <!-- Bekleme listesi: satırlar yukarı kayar, en alta "sen" (mor) eklenir. Uygulamanın
-             illüstrasyon dili: daire + çizgi, nötr + illüstrasyon moru; pembe YOK. -->
-        <svg class="wl-illu" width="64" height="56" viewBox="0 0 64 56" aria-hidden="true" focusable="false">
-          <defs><clipPath id="wlIlluClip"><rect x="3" y="3" width="58" height="50" rx="11"/></clipPath></defs>
-          <rect x="3" y="3" width="58" height="50" rx="11" fill="#fffdfc" stroke="rgba(42,26,36,.16)" stroke-width="1.5"/>
-          <g clip-path="url(#wlIlluClip)">
-            <g class="wl-illu-rows">
-              <g class="wl-illu-first"><circle cx="15" cy="16" r="4.5" fill="#cdb9c4"/><rect x="24" y="13.5" width="26" height="5" rx="2.5" fill="rgba(42,26,36,.12)"/></g>
-              <g><circle cx="15" cy="28" r="4.5" fill="#cdb9c4"/><rect x="24" y="25.5" width="26" height="5" rx="2.5" fill="rgba(42,26,36,.12)"/></g>
-              <g><circle cx="15" cy="40" r="4.5" fill="#cdb9c4"/><rect x="24" y="37.5" width="26" height="5" rx="2.5" fill="rgba(42,26,36,.12)"/></g>
-              <g class="wl-illu-you"><circle cx="15" cy="52" r="4.5"/><rect x="24" y="49.5" width="26" height="5" rx="2.5"/></g>
-            </g>
+      <!-- Bekleme listesi: satırlar yukarı kayar, en alta "sen" (mor) eklenir. Uygulamanın
+           illüstrasyon dili: daire + çizgi, nötr + illüstrasyon moru; pembe YOK. -->
+      <svg class="wl-illu" width="64" height="56" viewBox="0 0 64 56" aria-hidden="true" focusable="false">
+        <defs><clipPath id="wlIlluClip"><rect x="3" y="3" width="58" height="50" rx="11"/></clipPath></defs>
+        <rect x="3" y="3" width="58" height="50" rx="11" fill="#fffdfc" stroke="rgba(42,26,36,.16)" stroke-width="1.5"/>
+        <g clip-path="url(#wlIlluClip)">
+          <g class="wl-illu-rows">
+            <g class="wl-illu-first"><circle cx="15" cy="16" r="4.5" fill="#cdb9c4"/><rect x="24" y="13.5" width="26" height="5" rx="2.5" fill="rgba(42,26,36,.12)"/></g>
+            <g><circle cx="15" cy="28" r="4.5" fill="#cdb9c4"/><rect x="24" y="25.5" width="26" height="5" rx="2.5" fill="rgba(42,26,36,.12)"/></g>
+            <g><circle cx="15" cy="40" r="4.5" fill="#cdb9c4"/><rect x="24" y="37.5" width="26" height="5" rx="2.5" fill="rgba(42,26,36,.12)"/></g>
+            <g class="wl-illu-you"><circle cx="15" cy="52" r="4.5"/><rect x="24" y="49.5" width="26" height="5" rx="2.5"/></g>
           </g>
-        </svg>
-      </div>
-      <p class="wl-sub">shipship henüz yayında değil. İlk açılacak şehir Eskişehir; listedekiler önce girer.</p>
+        </g>
+      </svg>
+      <h2 tabindex="-1" id="wlH">Bekleme listesine katıl</h2>
+      <p class="wl-sub">Sınırlı ilk gruba gir.</p>
 
       <div class="wl-field" id="wlEmailF">
         <label class="wl-lbl" for="wlEmail">E-posta</label>
@@ -683,7 +684,7 @@
             <h1>Topluluk yakıştırır, son söz senin.</h1>
             <p>Adayını sen aramazsın. Profiline uyanlarla ve arkadaşlarının önerdikleriyle ikili olursun, topluluk oylar.</p>
             <!-- WL:BAŞ --><a class="wl-hero-btn" href="#katil" data-wl-open>Listeye katıl</a><!-- WL:SON -->
-                                                                                                          </div>
+                                                                                                                      </div>
           <button class="hero-pause" id="heroPause" aria-label="Videoyu durdur">❚❚</button>
         </div>
       </div>
@@ -1485,6 +1486,7 @@
   cueGuncelle();   // ilk boyada da doğru konumda doğsun
 })();
 </script>
+<script></script>
 <script></script>
 <script></script>
 <script></script>
