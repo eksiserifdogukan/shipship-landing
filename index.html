@@ -406,6 +406,17 @@
   @media (max-width:879px){
     .hero-scroll{height:100svh}
     .hero-say{display:none}
+    /* Hero okunurluğu (tasarımcı 09-27, seçenek B): yazı videonun ÜSTÜNE binmez. Video kartta kalan
+       alanı doldurur, yazı altında düz koyu zeminde (videodan yumuşak geçişle). Ekran boyundan
+       bağımsız: kısa ekranda video küçülür, yazı her karede okunur. Karşılaştırma: lab/hero-mobil-deneme.html */
+    .hero-card{display:flex;flex-direction:column}
+    .hero-card video{flex:1 1 auto;min-height:0;height:auto}
+    .hero-card::after{background:linear-gradient(180deg,rgba(27,17,25,.28) 0%,rgba(27,17,25,0) 18%)}
+    .hero-copy{position:relative;left:auto;right:auto;bottom:auto;flex:none;margin-top:-80px;
+      padding:80px clamp(20px,4vw,48px) calc(8.5svh + 72px);
+      background:linear-gradient(180deg,rgba(27,17,25,0) 0,var(--night) 80px)}
+    .hero-copy p{font-size:15.5px;line-height:1.5;color:rgba(255,247,244,.9)}
+    .hero-copy .eyebrow{letter-spacing:.1em}   /* iki satıra kırılıyordu */
     .story,.wheel,.gal,.trust,.fin,.wheel-perde,.yesil-perde,.trust-perde,.fade-dark{display:none !important}
     .spine-col{padding:8px 0 56px}
     /* Yapışkan "Nasıl çalışıyor" başlığı kenardan kenara (sütunun boşluklarında içerik görünüyordu). */
@@ -746,7 +757,7 @@
             <h1>Topluluk yakıştırır, son söz senin.</h1>
             <p>Adayını sen aramazsın. Profiline uyanlarla ve arkadaşlarının önerdikleriyle ikili olursun, topluluk oylar.</p>
             <!-- WL:BAŞ --><a class="wl-hero-btn" href="#katil" data-wl-open>Bekleme listesine katıl</a><!-- WL:SON -->
-                                                                                                                                                                                                          </div>
+          </div>
           <button class="hero-pause" id="heroPause" aria-label="Videoyu durdur">❚❚</button>
         </div>
       </div>
@@ -1548,23 +1559,6 @@
   cueGuncelle();   // ilk boyada da doğru konumda doğsun
 })();
 </script>
-<script></script>
-<script></script>
-<script></script>
-<script></script>
-<script></script>
-<script></script>
-<script></script>
-<script></script>
-<script></script>
-<script></script>
-<script></script>
-<script></script>
-<script></script>
-<script></script>
-<script></script>
-<script></script>
-<script></script>
 <div id="mTintBottom" aria-hidden="true"></div><script>/* MOBİL:BAŞ */(function(){
   var mq = window.matchMedia && matchMedia('(max-width: 879px)'), f = document.querySelector('footer.mega'), r = document.documentElement;
   if (!mq || !f) return;
@@ -1576,7 +1570,6 @@
   }
   addEventListener('scroll', s, {passive: true}); addEventListener('resize', s); s();
 })();/* MOBİL:SON */</script>
-<script></script>
 <script>/* WL:BAŞ */
 /* ─── BEKLEME LİSTESİ (2026-09-27) ─────────────────────────────────────────
    Tablo istemciye kapalı; yalnız üç fonksiyon çağrılır (crowdmatch-rn
