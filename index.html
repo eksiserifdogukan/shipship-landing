@@ -450,6 +450,10 @@
   .wl-col{width:100%;max-width:460px}
   .wl h2{font-size:clamp(30px,5vw,42px);font-weight:800;letter-spacing:-.03em;line-height:1.1;margin:0 0 12px;text-wrap:balance}
   .wl .wl-sub{font-size:17px;line-height:1.65;color:#5c4553;margin:0 0 28px}
+  .wl form .wl-sub{margin-bottom:18px}
+  .wl .wl-list{list-style:none;padding:0;margin:0 0 30px;display:grid;gap:10px}
+  .wl .wl-list li{display:flex;gap:12px;font-size:16px;line-height:1.5;color:#2a1a24}
+  .wl .wl-list li::before{content:"✓";flex:none;color:#2f8a5b;font-weight:700}
   .wl .wl-field{margin:0 0 20px}
   .wl .wl-lbl{display:block;font-size:14.5px;font-weight:600;color:#2a1a24;margin:0 0 8px}
   /* YERLİ seçici: seçim kutusu telefonda sistemin seçicisini, bilgisayarda tarayıcının
@@ -497,8 +501,13 @@
   <div class="wl-main"><div class="wl-col">
 
     <form id="wlForm" novalidate>
-      <h2 tabindex="-1" id="wlH">Şehrini açanlardan ol</h2>
-      <p class="wl-sub">shipship şehir şehir açılıyor. Şehrin açıldığında önce listedekiler girer.</p>
+      <h2 tabindex="-1" id="wlH">Bekleme listesine katıl</h2>
+      <p class="wl-sub">shipship henüz yayında değil. Şehir şehir açılıyor; seninki açıldığında ilk girenlerden ol.</p>
+      <ul class="wl-list">
+        <li>Şehrin açıldığında haberi herkesten bir gün önce alırsın.</li>
+        <li>İlk grup sınırlı, listedekiler önce alınır.</li>
+        <li>Her kayıt şehrinin açılışını yaklaştırır.</li>
+      </ul>
       <div class="wl-field">
         <label class="wl-lbl" for="wlEmail">E-posta</label>
         <input id="wlEmail" type="email" inputmode="email" autocomplete="email" autocapitalize="off" autocorrect="off" spellcheck="false" enterkeyhint="next" placeholder="adin@ornek.com" required>
@@ -570,7 +579,7 @@
             <h1>Topluluk yakıştırır, son söz senin.</h1>
             <p>Adayını sen aramazsın. Profiline uyanlarla ve arkadaşlarının önerdikleriyle ikili olursun, topluluk oylar.</p>
             <!-- WL:BAŞ --><a class="wl-hero-btn" href="#katil" data-wl-open>Listeye katıl</a><!-- WL:SON -->
-                      </div>
+                                  </div>
           <button class="hero-pause" id="heroPause" aria-label="Videoyu durdur">❚❚</button>
         </div>
       </div>
@@ -1372,6 +1381,7 @@
   cueGuncelle();   // ilk boyada da doğru konumda doğsun
 })();
 </script>
+<script></script>
 <script></script>
 <script></script>
 <script></script>
