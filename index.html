@@ -674,17 +674,30 @@
      alttaki sayfayla karışamazdı; "fark" karışımıyla krem bölümde koyu, koyu bölümde açık (wordmark'la aynı yöntem).
      SAĞDA durur: hero'da tek başına sağ kenarda; cam inince pembe düğmenin soluna kayar. Düğme genişliği
      JS'te ölçülüp --mn-shift'e yazılır; kayma camın inişiyle aynı süre ve eğri → ikisi birlikte yerleşir. */
-  .mn-nav{position:fixed;top:0;right:clamp(18px,4vw,40px);z-index:83;height:64px;
-    display:flex;align-items:center;mix-blend-mode:difference;pointer-events:none;
-    transition:transform .35s cubic-bezier(.22,1,.36,1)}
-  html.wl-bar-on .mn-nav{transform:translateX(calc(-1 * var(--mn-shift, 0px)))}
+  .mn-nav{position:fixed;top:0;right:calc(clamp(18px,4vw,40px) + var(--mn-shift, 0px));z-index:83;height:64px;
+    display:flex;align-items:center;mix-blend-mode:difference;pointer-events:none}
   .mn-nav a{pointer-events:auto;color:#fff;font-size:15px;font-weight:600;letter-spacing:-.005em;text-decoration:none;
     padding:8px 2px;border-bottom:1.5px solid transparent}
   .mn-nav a:hover{border-bottom-color:#fff}
   .mn-nav a:focus-visible{outline:2px solid #fff;outline-offset:4px}
   html.wl-open .mn-nav{display:none}
   @media (max-width:879px){ .mn-nav{display:none} }
-  @media (prefers-reduced-motion:reduce){ .mn-nav{transition:none} }
+  /* Bekleme listesi düğmesi (tasarımcı 09-28) camın DIŞINDA kendi sabit katmanında (fark karışımı YOK; pembe ters
+     dönmesin). Sayfa en üstteyken İKİNCİL (çerçeveli — birincil pembe hero'nun içinde zaten var), cam inince
+     BİRİNCİL pembe. Yer değiştirmez, yalnız ağırlığı değişir; cam arkasına iner. Telefonda da aynı (iki düğme
+     sorun değil — tasarımcı). Camın kendi düğmesi yok (wl.html); cam yalnız zemin. Çerçevenin koyu rengi hero
+     zemini KREMKEN doğru — cam, zemin koyulaşmadan çok önce iner (eşik wl.js'te, ~%15 ekran; koyulaşma ~%70). */
+  .mn-cta{position:fixed;top:0;right:clamp(18px,4vw,40px);z-index:83;height:calc(64px + env(safe-area-inset-top));
+    padding-top:env(safe-area-inset-top);display:flex;align-items:center}
+  .mn-cta .wl-btn{background:transparent;color:#2a1a24;box-shadow:inset 0 0 0 1.5px #2a1a24;
+    transition:background-color .35s cubic-bezier(.22,1,.36,1),color .35s cubic-bezier(.22,1,.36,1),box-shadow .35s cubic-bezier(.22,1,.36,1)}
+  html.wl-bar-on .mn-cta .wl-btn{background:#E6336E;color:#fff;box-shadow:none}
+  html.wl-open .mn-cta{display:none}
+  /* Hero'nun kendi üst şeridi camla AYNI yükseklikte: wordmark, bağlantı ve düğme tek çizgide; kart başlığın
+     altından başlar (eskiden şerit ~45px'ti — düğmenin altı kartın üstüne biniyordu, wordmark 10px yukarıdaydı). */
+  .hero .topbar{min-height:64px}
+  @media (max-width:879px){ .mn-cta{height:calc(56px + env(safe-area-inset-top))} .hero .topbar{min-height:56px} }
+  @media (prefers-reduced-motion:reduce){ .mn-cta .wl-btn{transition:none} }
   /* Başa dön: ilk ekran geçilince belirir; krem daire (koyu bölümde de seçilir), sağ altta. */
   .mn-fab{position:fixed;right:24px;bottom:24px;z-index:84;width:48px;height:48px;border-radius:999px;border:0;
     display:flex;align-items:center;justify-content:center;background:#fdf7f4;color:#2a1a24;cursor:pointer;
@@ -704,15 +717,16 @@
 <nav class="mn-nav" aria-label="Sayfa içi">
   <a href="#nasil" data-mn=".spine">Nasıl çalışıyor</a>
 </nav>
+<div class="mn-cta"><a class="wl-btn wl-btn-sm" href="#katil" data-wl-open>Bekleme listesine katıl</a></div>
 <button class="mn-fab" id="mnFab" type="button" aria-label="Başa dön" tabindex="-1">
   <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19V5"/><path d="M5 12l7-7 7 7"/></svg>
 </button>
 <!-- MENU:SON -->
 
 <!-- WL:BAŞ -->
-<header class="wl-bar" id="wlBar" inert>
-  <a class="wl-btn wl-btn-sm wl-btn-pink" href="#katil" data-wl-open>Bekleme listesine katıl</a>
-</header>
+<!-- Cam yalnız zemin: "Bekleme listesine katıl" düğmesi camın İÇİNDE değil, kendi sabit katmanında
+     (lab/menu.py .mn-cta) — en üstte çerçeveli ikincil, cam inince pembe birincil (tasarımcı 09-28). -->
+<header class="wl-bar" id="wlBar" inert></header>
 <!-- Wordmark başlığın DIŞINDA ayrı katman: başlık (cam) kendi yığın bağlamını kurduğu için
      içindeki yazı alttaki sayfayla karışamazdı. Ayrı katmanda "fark" karışımıyla krem
      bölümde koyu, koyu bölümde açık görünür ("KAYDIR" işaretiyle aynı yöntem). -->
@@ -815,6 +829,7 @@
   </div></div>
 </div>
 <!-- WL:SON -->
+
 
 
 
@@ -1911,10 +1926,14 @@
     if ((dy > 0 && atTop) || (dy < 0 && atEnd)) e.preventDefault();
   }, {passive: false});
 
-  /* Sabit üst başlık: kaydırma başladığı an iner; en üstte hero'nun kendi düğmesi var. */
+  /* Sabit üst başlık: ilk piksele değil, BİRAZ kaydırınca iner (tasarımcı 09-28) — ekranın ~%15'i, en az 80px.
+     Küçük histerezis: eşiğin hemen altında ileri-geri sallanınca titremesin. Düğme camın içinde değil, kendi
+     katmanında (lab/menu.py .mn-cta): en üstte çerçeveli, cam inince pembe. Zemin koyulaşması hero'nun
+     ~%35'inde başlar (ana JS ciz), eşik ondan çok önce → çerçeve hep krem üstünde kalır. */
   var barWm = $('wlBarWm');
+  function esik(){ var e = Math.max(80, innerHeight * .15); return bar.classList.contains('on') ? e - 24 : e; }
   function syncBar(){
-    var on = scrollY > 4 && !wl.classList.contains('on');
+    var on = scrollY > esik() && !wl.classList.contains('on');
     if (bar.classList.contains('on') === on) return;
     bar.classList.toggle('on', on); bar.inert = !on;
     barWm.classList.toggle('on', on); barWm.tabIndex = on ? 0 : -1;
@@ -2028,10 +2047,9 @@
   /* Adresle gelen (#nasil vb.) doğrudan o bölümde açılır. */
   var ilk = linkler.filter(function(a){ return a.getAttribute('href') === location.hash; })[0];
   if (ilk) addEventListener('load', function(){ var el = document.querySelector(ilk.getAttribute('data-mn')); if (el) scrollTo(0, ust(el)); });
-  /* Cam inince bağlantı pembe düğmenin soluna kayar: düğme genişliği + 24px boşluk. Düğme camla birlikte
-     yukarıda dururken de yerleşimi var (transform ölçüyü bozmaz) → her an ölçülebilir. Yazı tipi geç
+  /* Bağlantı düğmenin 24px solunda durur: düğme genişliği ölçülüp --mn-shift'e yazılır. Yazı tipi geç
      yüklenirse genişlik değişir → fonts.ready'de yeniden ölç. */
-  var dugme = document.querySelector('#wlBar a');
+  var dugme = document.querySelector('.mn-cta .wl-btn');
   function olc(){ document.documentElement.style.setProperty('--mn-shift', dugme ? (dugme.offsetWidth + 24) + 'px' : '0px'); }
   olc(); addEventListener('resize', olc); addEventListener('load', olc);
   if (document.fonts && document.fonts.ready) document.fonts.ready.then(olc);
