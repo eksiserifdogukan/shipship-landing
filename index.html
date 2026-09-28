@@ -465,29 +465,6 @@
     .scroll-cue{mix-blend-mode:normal;color:#fff;transform:translateX(-50%);bottom:26px}   /* kartın içinde, alt kenardan 12px */
   }
   /* MOBİL:SON */
-  /* MENU:BAŞ — masaüstü üst menü + başa dön (tasarımcı 09-27, BACKLOG 45).
-     Menü başlık camının DIŞINDA ayrı sabit katman: cam kendi yığın bağlamını kurduğu için içindeki yazı
-     alttaki sayfayla karışamazdı; "fark" karışımıyla krem bölümde koyu, koyu bölümde açık (wordmark'la aynı yöntem). */
-  .mn-nav{position:fixed;top:0;left:50%;transform:translateX(-50%);z-index:83;height:64px;
-    display:flex;align-items:center;gap:30px;mix-blend-mode:difference;pointer-events:none}
-  .mn-nav a{pointer-events:auto;color:#fff;font-size:15px;font-weight:600;letter-spacing:-.005em;text-decoration:none;
-    padding:8px 2px;border-bottom:1.5px solid transparent}
-  .mn-nav a:hover,.mn-nav a[aria-current=true]{border-bottom-color:#fff}
-  .mn-nav a:focus-visible{outline:2px solid #fff;outline-offset:4px}
-  html.wl-open .mn-nav{display:none}
-  @media (max-width:879px){ .mn-nav{display:none} }
-  /* Başa dön: ilk ekran geçilince belirir; krem daire (koyu bölümde de seçilir), sağ altta. */
-  .mn-fab{position:fixed;right:24px;bottom:24px;z-index:84;width:48px;height:48px;border-radius:999px;border:0;
-    display:flex;align-items:center;justify-content:center;background:#fdf7f4;color:#2a1a24;cursor:pointer;
-    box-shadow:0 1px 2px rgba(20,12,18,.18),0 10px 28px rgba(20,12,18,.22);
-    opacity:0;transform:translateY(10px);pointer-events:none;transition:opacity .25s,transform .25s;
-    -webkit-tap-highlight-color:transparent}
-  .mn-fab.on{opacity:1;transform:none;pointer-events:auto}
-  .mn-fab:active{transform:scale(.94)}
-  .mn-fab:focus-visible{outline:2px solid #2a1a24;outline-offset:3px}
-  html.wl-open .mn-fab{display:none}
-  @media (max-width:879px){ .mn-fab{right:16px;bottom:calc(16px + env(safe-area-inset-bottom));width:44px;height:44px} }
-  /* MENU:SON */
 
   /* WL:BAŞ */
   /* Telefonda sayfa yana taşıyordu (evrim bölümü öğeleri) → yerleşim görünümü genişliyor, sabit
@@ -691,9 +668,47 @@
     .wl-illu-rows{transform:translateY(-12px)} .wl-illu-first{opacity:0} .wl-illu-you{opacity:1}
   }
   /* WL:SON */
+
+  /* MENU:BAŞ — masaüstü "Nasıl çalışıyor" bağlantısı + başa dön (tasarımcı 09-27 → 09-28 tek bağlantı, BACKLOG 45).
+     Başlık camının DIŞINDA ayrı sabit katman: cam kendi yığın bağlamını kurduğu için içindeki yazı
+     alttaki sayfayla karışamazdı; "fark" karışımıyla krem bölümde koyu, koyu bölümde açık (wordmark'la aynı yöntem).
+     SAĞDA durur: hero'da tek başına sağ kenarda; cam inince pembe düğmenin soluna kayar. Düğme genişliği
+     JS'te ölçülüp --mn-shift'e yazılır; kayma camın inişiyle aynı süre ve eğri → ikisi birlikte yerleşir. */
+  .mn-nav{position:fixed;top:0;right:clamp(18px,4vw,40px);z-index:83;height:64px;
+    display:flex;align-items:center;mix-blend-mode:difference;pointer-events:none;
+    transition:transform .35s cubic-bezier(.22,1,.36,1)}
+  html.wl-bar-on .mn-nav{transform:translateX(calc(-1 * var(--mn-shift, 0px)))}
+  .mn-nav a{pointer-events:auto;color:#fff;font-size:15px;font-weight:600;letter-spacing:-.005em;text-decoration:none;
+    padding:8px 2px;border-bottom:1.5px solid transparent}
+  .mn-nav a:hover{border-bottom-color:#fff}
+  .mn-nav a:focus-visible{outline:2px solid #fff;outline-offset:4px}
+  html.wl-open .mn-nav{display:none}
+  @media (max-width:879px){ .mn-nav{display:none} }
+  @media (prefers-reduced-motion:reduce){ .mn-nav{transition:none} }
+  /* Başa dön: ilk ekran geçilince belirir; krem daire (koyu bölümde de seçilir), sağ altta. */
+  .mn-fab{position:fixed;right:24px;bottom:24px;z-index:84;width:48px;height:48px;border-radius:999px;border:0;
+    display:flex;align-items:center;justify-content:center;background:#fdf7f4;color:#2a1a24;cursor:pointer;
+    box-shadow:0 1px 2px rgba(20,12,18,.18),0 10px 28px rgba(20,12,18,.22);
+    opacity:0;transform:translateY(10px);pointer-events:none;transition:opacity .25s,transform .25s;
+    -webkit-tap-highlight-color:transparent}
+  .mn-fab.on{opacity:1;transform:none;pointer-events:auto}
+  .mn-fab:active{transform:scale(.94)}
+  .mn-fab:focus-visible{outline:2px solid #2a1a24;outline-offset:3px}
+  html.wl-open .mn-fab{display:none}
+  @media (max-width:879px){ .mn-fab{right:16px;bottom:calc(16px + env(safe-area-inset-bottom));width:44px;height:44px} }
+  /* MENU:SON */
 </style>
 </head>
 <body>
+<!-- MENU:BAŞ -->
+<nav class="mn-nav" aria-label="Sayfa içi">
+  <a href="#nasil" data-mn=".spine">Nasıl çalışıyor</a>
+</nav>
+<button class="mn-fab" id="mnFab" type="button" aria-label="Başa dön" tabindex="-1">
+  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19V5"/><path d="M5 12l7-7 7 7"/></svg>
+</button>
+<!-- MENU:SON -->
+
 <!-- WL:BAŞ -->
 <header class="wl-bar" id="wlBar" inert>
   <a class="wl-btn wl-btn-sm wl-btn-pink" href="#katil" data-wl-open>Bekleme listesine katıl</a>
@@ -801,16 +816,6 @@
 </div>
 <!-- WL:SON -->
 
-<!-- MENU:BAŞ -->
-<nav class="mn-nav" aria-label="Bölümler">
-  <a href="#nasil" data-mn=".spine">Nasıl çalışıyor</a>
-  <a href="#niyetler" data-mn=".gal">Niyetler</a>
-  <a href="#guven" data-mn=".trust">Güven</a>
-</nav>
-<button class="mn-fab" id="mnFab" type="button" aria-label="Başa dön" tabindex="-1">
-  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19V5"/><path d="M5 12l7-7 7 7"/></svg>
-</button>
-<!-- MENU:SON -->
 
 
 
@@ -1695,33 +1700,6 @@
   }
   addEventListener('scroll', s, {passive: true}); addEventListener('resize', s); s();
 })();/* MOBİL:SON */</script>
-<script>/* MENU:BAŞ */(function(){
-  /* Tıklayınca bölüme yumuşak kaydırma. Durak kaydırması kaydırma olayında hedefini kendisi eşitler
-     (animasyon yokken hedef = scrollY) → programla kaydırma onunla çakışmaz. */
-  var linkler = [].slice.call(document.querySelectorAll('.mn-nav a'));
-  function ust(el){ return Math.round(el.getBoundingClientRect().top + scrollY); }
-  function git(y){ scrollTo({top: y, behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth'}); }
-  linkler.forEach(function(a){
-    a.addEventListener('click', function(e){
-      var el = document.querySelector(a.getAttribute('data-mn')); if (!el) return;
-      e.preventDefault(); git(ust(el));
-      try { history.replaceState(null, '', a.getAttribute('href')); } catch(x){}
-    });
-  });
-  /* Adresle gelen (#nasil vb.) doğrudan o bölümde açılır. */
-  var ilk = linkler.filter(function(a){ return a.getAttribute('href') === location.hash; })[0];
-  if (ilk) addEventListener('load', function(){ var el = document.querySelector(ilk.getAttribute('data-mn')); if (el) scrollTo(0, ust(el)); });
-  var fab = document.getElementById('mnFab');
-  fab.addEventListener('click', function(){ git(0); });
-  function guncelle(){
-    var on = scrollY > innerHeight * .9;
-    fab.classList.toggle('on', on); fab.tabIndex = on ? 0 : -1;
-    var orta = scrollY + innerHeight * .4, aktif = null;
-    linkler.forEach(function(a){ var el = document.querySelector(a.getAttribute('data-mn')); if (el && el.offsetParent !== null && ust(el) <= orta && ust(el) + el.offsetHeight > orta) aktif = a; });
-    linkler.forEach(function(a){ a.setAttribute('aria-current', a === aktif ? 'true' : 'false'); });
-  }
-  addEventListener('scroll', guncelle, {passive: true}); addEventListener('resize', guncelle); guncelle();
-})();/* MENU:SON */</script>
 <script>/* WL:BAŞ */
 /* ─── BEKLEME LİSTESİ (2026-09-27) ─────────────────────────────────────────
    Tablo istemciye kapalı; yalnız üç fonksiyon çağrılır (crowdmatch-rn
@@ -2034,5 +2012,36 @@
   });
 })();
 /* WL:SON */</script>
+<script>/* MENU:BAŞ */(function(){
+  /* Tıklayınca bölüme yumuşak kaydırma. Durak kaydırması kaydırma olayında hedefini kendisi eşitler
+     (animasyon yokken hedef = scrollY) → programla kaydırma onunla çakışmaz. */
+  var linkler = [].slice.call(document.querySelectorAll('.mn-nav a'));
+  function ust(el){ return Math.round(el.getBoundingClientRect().top + scrollY); }
+  function git(y){ scrollTo({top: y, behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth'}); }
+  linkler.forEach(function(a){
+    a.addEventListener('click', function(e){
+      var el = document.querySelector(a.getAttribute('data-mn')); if (!el) return;
+      e.preventDefault(); git(ust(el));
+      try { history.replaceState(null, '', a.getAttribute('href')); } catch(x){}
+    });
+  });
+  /* Adresle gelen (#nasil vb.) doğrudan o bölümde açılır. */
+  var ilk = linkler.filter(function(a){ return a.getAttribute('href') === location.hash; })[0];
+  if (ilk) addEventListener('load', function(){ var el = document.querySelector(ilk.getAttribute('data-mn')); if (el) scrollTo(0, ust(el)); });
+  /* Cam inince bağlantı pembe düğmenin soluna kayar: düğme genişliği + 24px boşluk. Düğme camla birlikte
+     yukarıda dururken de yerleşimi var (transform ölçüyü bozmaz) → her an ölçülebilir. Yazı tipi geç
+     yüklenirse genişlik değişir → fonts.ready'de yeniden ölç. */
+  var dugme = document.querySelector('#wlBar a');
+  function olc(){ document.documentElement.style.setProperty('--mn-shift', dugme ? (dugme.offsetWidth + 24) + 'px' : '0px'); }
+  olc(); addEventListener('resize', olc); addEventListener('load', olc);
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(olc);
+  var fab = document.getElementById('mnFab');
+  fab.addEventListener('click', function(){ git(0); });
+  function guncelle(){
+    var on = scrollY > innerHeight * .9;
+    fab.classList.toggle('on', on); fab.tabIndex = on ? 0 : -1;
+  }
+  addEventListener('scroll', guncelle, {passive: true}); addEventListener('resize', guncelle); guncelle();
+})();/* MENU:SON */</script>
 </body>
 </html>
