@@ -46,6 +46,8 @@ body {
   display: inline-flex; align-items: center;
 }
 .wm { display: block; height: .873em; width: auto; color: inherit; overflow: visible; }
+.telif { display: inline-flex; align-items: center; gap: .3em; }
+.wm-inline { height: .78em; }
 
 /* ─── Düğmeler ─── */
 .btn {

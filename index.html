@@ -39,6 +39,8 @@
   .wordmark{display:inline-flex;align-items:center;line-height:1;color:var(--wm,var(--ink));
     font-size:clamp(22px,3vw,30px);text-decoration:none}
   .wm{display:block;height:.873em;width:auto;color:inherit;overflow:visible}
+  .telif{display:inline-flex;align-items:center;gap:.3em}
+  .wm-inline{height:.78em}
   img,video{display:block;max-width:100%}
 
   /* ═══ 0 · HERO — kart kadrajı + F14 küçülme ═══ */
@@ -118,7 +120,8 @@
     font-size:clamp(13px,1.25vw,17px);font-weight:600;letter-spacing:.14em;text-transform:uppercase;
     opacity:0;transform:translateY(8px);transition:opacity .5s,transform .5s}
   .tel-ara.on{opacity:1;transform:none}
-  .tel-marka{font-weight:900;letter-spacing:-.07em;line-height:.88;color:#3a1b3e;
+  /* Marka = wordmark svg (logo ailesi v1, 10-03): font-size yalnız ölçek, harfler currentColor (#3a1b3e), nokta pembe. */
+  .tel-marka{display:flex;justify-content:center;line-height:1;color:#3a1b3e;
     font-size:clamp(64px,13.5vw,190px);opacity:0;transform:scale(.6);transform-origin:50% 0;will-change:transform,opacity}
   .whisper{position:absolute;left:0;right:0;bottom:14svh;text-align:center;
     color:#d3bcc9;font-size:clamp(14px,1.9vw,17px);opacity:0;
@@ -374,14 +377,12 @@
   .fin-copy .not{font-size:12.5px;color:#9a9da0;opacity:0;transition:opacity .5s .2s}
   .fin-copy .not.on{opacity:1}
   footer.mega{background:transparent;padding:26px 0 0}
-  /* Wordmark sayfanın DİBİNDEN kesik çıkar (referans 2026-08-23) — AMA kesim
-     çizgisi 'p' kuyruğunun ORTASINDAN geçer: ölçüm (Chrome, aynı font) ascent
-     .705em, descent .171em. Kutu .79em → kuyruğun ~yarısı görünür: yazı gerçekten
-     kesik durur AMA 'n' hiç kuyruk taşımadığı için "shinshin" okuması imkânsız. */
-  .mega-kirp{overflow:hidden;height:.86em;font-size:clamp(80px,19vw,300px)}
-  .mega-mark{display:block;width:100%;text-align:center;color:#fff7f4;
-    font-weight:400;letter-spacing:-.05em;line-height:.705;
-    font-size:1em;user-select:none}
+  /* Wordmark sayfanın DİBİNDEN kesik çıkar (referans 2026-08-23). Artık svg wordmark (10-03): kesim çizgisi
+     p inişinin ORTASINDAN geçsin diye kutu, svg yüksekliğinin %91,9'u (taban çizgisi 1000, p dibi 1141 → yarısı 1070;
+     (1070−268,5)/872,6). Genişlik tam sayfa, yükseklik orandan. */
+  .mega-kirp{overflow:hidden;width:100%;aspect-ratio:3974/802}
+  .mega-mark{display:block;width:100%;color:#fff7f4;user-select:none}
+  .mega-mark .wm{display:block;width:100%;height:auto}
   .mega-alt{display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;
     padding:0 var(--gutter) 30px;font-size:13px;color:rgba(255,247,244,.6)}
   .mega-alt a{color:rgba(255,247,244,.85);text-decoration:none;font-weight:600}
@@ -527,8 +528,7 @@
     .wl-bar-nokta{top:calc(env(safe-area-inset-top) + 28px + .05em)}
     .stage-head{padding-top:calc(56px + clamp(14px,3svh,26px)) !important}
   }
-  .wl-wm{font-size:clamp(21px,2.4vw,26px);font-weight:400;letter-spacing:-.025em;color:#2a1a24;
-    text-decoration:none;line-height:1}
+  .wl-wm{font-size:clamp(21px,2.4vw,26px);color:#2a1a24;text-decoration:none;line-height:1;display:inline-flex;align-items:center}
   .wl-btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:48px;padding:0 24px;
     border-radius:999px;border:0;cursor:pointer;font-family:inherit;font-size:15.5px;font-weight:700;line-height:1.2;
     text-decoration:none;background:#2a1a24;color:#fdf7f4;-webkit-tap-highlight-color:transparent}
@@ -747,7 +747,7 @@
 <a class="wl-bar-wm" id="wlBarWm" href="/" aria-label="shipship ana sayfa" tabindex="-1"><svg class="wm" viewBox="0 268.5 3974 872.6" aria-hidden="true" focusable="false"><use href="/img/marka/wordmark.svg#harfler"/><use class="wm-nokta" href="/img/marka/wordmark.svg#nokta"/></svg></a>
 <div class="wl" id="wl" role="dialog" aria-modal="true" aria-labelledby="wlH" aria-hidden="true">
   <div class="wl-top">
-    <span class="wl-wm">shipship</span>
+    <span class="wl-wm" role="img" aria-label="shipship"><svg class="wm" viewBox="0 268.5 3974 872.6" aria-hidden="true" focusable="false"><use href="/img/marka/wordmark.svg#harfler"/><use class="wm-nokta" href="/img/marka/wordmark.svg#nokta"/></svg></span>
     <button class="wl-btn wl-btn-sm wl-btn-line" type="button" data-wl-close>Kapat <span aria-hidden="true">✕</span></button>
   </div>
 
@@ -895,7 +895,7 @@
       <div class="tel-ekran" id="telEkran"><div class="tel-grup" id="telGrup">
         <p class="say quote" data-type>“Siz çok yakışıyorsunuz.”</p>
         <p class="tel-ara" id="telFisilti">Diyen bir uygulama yaptık:</p>
-        <div class="tel-marka" id="telMarka">shipship</div>
+        <div class="tel-marka" id="telMarka" role="img" aria-label="shipship"><svg class="wm" viewBox="0 268.5 3974 872.6" aria-hidden="true" focusable="false"><use href="/img/marka/wordmark.svg#harfler"/><use class="wm-nokta" href="/img/marka/wordmark.svg#nokta"/></svg></div>
       </div></div>
       <div class="evo-cam" id="evoCam">
         <div class="evo-cunku" id="evoCunku">
@@ -1116,10 +1116,10 @@
 
 <footer class="mega">
   <div class="mega-alt">
-    <span>© 2026 shipship</span>
+    <span class="telif">© 2026 <svg class="wm wm-inline" viewBox="0 268.5 3974 872.6" aria-hidden="true" focusable="false"><use href="/img/marka/wordmark.svg#harfler"/><use class="wm-nokta" href="/img/marka/wordmark.svg#nokta"/></svg></span>
     <span><a href="/destek">Destek</a> · <a href="/kosullar">Koşullar</a> · <a href="/gizlilik">Gizlilik</a> · <a href="/guvenlik">Güvenlik</a></span>
   </div>
-  <div class="mega-kirp"><span class="mega-mark">shipship</span></div>
+  <div class="mega-kirp"><span class="mega-mark" role="img" aria-label="shipship"><svg class="wm" viewBox="0 268.5 3974 872.6" aria-hidden="true" focusable="false"><use href="/img/marka/wordmark.svg#harfler"/><use class="wm-nokta" href="/img/marka/wordmark.svg#nokta"/></svg></span></div>
 </footer>
 
 <script>
