@@ -39,10 +39,13 @@ body {
   background: rgba(253, 247, 244, .6); border-bottom: 1px solid var(--line);
   -webkit-backdrop-filter: saturate(1.4) blur(12px); backdrop-filter: saturate(1.4) blur(12px);
 }
+/* Wordmark = markanın kendi vektör çizimi (logo ailesi v1, 2026-10-03; kaynak img/marka/wordmark.svg, uygulamayla aynı
+   geometri). font-size yalnız ÖLÇEK: svg yüksekliği em'in %87'si (harf kutusu), harfler currentColor, nokta pembe. */
 .wordmark {
-  font-size: clamp(22px, 2.4vw, 26px); font-weight: 400; letter-spacing: -.025em;
-  color: var(--ink); text-decoration: none; line-height: 1;
+  font-size: clamp(22px, 2.4vw, 26px); line-height: 1; color: var(--ink); text-decoration: none;
+  display: inline-flex; align-items: center;
 }
+.wm { display: block; height: .873em; width: auto; color: inherit; overflow: visible; }
 
 /* ─── Düğmeler ─── */
 .btn {

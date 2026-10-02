@@ -19,7 +19,9 @@
 <meta property="og:image:height" content="630">
 <meta property="og:image:alt" content="Birbirine bakan iki kişi, arkalarında arkadaşları; üstünde shipship yazısı">
 <meta name="twitter:card" content="summary_large_image">
-<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🚢</text></svg>">
+<link rel="icon" href="/img/marka/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="/img/marka/favicon-32.png" sizes="32x32" type="image/png">
+<link rel="apple-touch-icon" href="/img/marka/apple-touch-icon.png">
 <style>
   :root{
     --gutter:clamp(22px,8vw,160px);
@@ -32,9 +34,11 @@
   body{background:transparent;color:var(--soft);
     font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
     -webkit-font-smoothing:antialiased;line-height:1.5;overflow-x:hidden}
-  .wordmark{display:inline-block;line-height:1.18;color:var(--wm,var(--ink));
-    font-size:clamp(22px,3vw,30px);font-weight:400;letter-spacing:-.025em;
-    text-decoration:none}
+  /* Wordmark = markanın vektör çizimi (logo ailesi v1, 2026-10-03; img/marka/wordmark.svg). font-size yalnız ölçek:
+     svg yüksekliği em'in %87'si, harfler currentColor, nokta pembe. */
+  .wordmark{display:inline-flex;align-items:center;line-height:1;color:var(--wm,var(--ink));
+    font-size:clamp(22px,3vw,30px);text-decoration:none}
+  .wm{display:block;height:.873em;width:auto;color:inherit;overflow:visible}
   img,video{display:block;max-width:100%}
 
   /* ═══ 0 · HERO — kart kadrajı + F14 küçülme ═══ */
@@ -495,11 +499,20 @@
     color:#fff;mix-blend-mode:difference;
     transform:translateY(-101%);transition:transform .35s cubic-bezier(.22,1,.36,1)}
   .wl-bar-wm.on{transform:none}
+  /* Masaüstünde katman "fark" karışımında: pembe nokta ters dönerdi → nokta svg'de gizlenir, camın (wl-bar)
+     içindeki normal karışımlı ikizi aynı noktaya çizilir (x = sol + wordmark genişliğinin yarısı 1.987em;
+     y = orta + .05em; çap .16em — oranlar wordmark.svg geometrisinden). Mobilde karışım yok → svg'deki nokta. */
+  .wl-bar-wm .wm-nokta{display:none}
+  .wl-bar-nokta{position:absolute;left:calc(clamp(18px,4vw,40px) + 1.987em);top:calc(env(safe-area-inset-top) + 32px + .05em);
+    width:.16em;height:.16em;margin:-.08em 0 0 -.08em;border-radius:50%;background:#E6336E;
+    font-size:clamp(21px,2.4vw,26px);pointer-events:none}
   /* Mobil (tasarımcı 09-27): fark karışımı fotoğraf/ekran görüntüsü geçerken harfleri parça parça
      boyuyordu → logo TEK RENK BEYAZ; okunması için cam hafif FÜME (hâlâ saydam + bulanık). */
   @media (max-width:879px){
     .wl-bar{background:rgba(24,16,22,.42);border-bottom-color:rgba(255,255,255,.08);box-shadow:none}
     .wl-bar-wm{mix-blend-mode:normal;color:#fff}
+    .wl-bar-wm .wm-nokta{display:block}
+    .wl-bar-nokta{display:none}
   }
   /* "Nasıl çalışıyor" bandı camın ALTINA uzanır: bölümdeyken cam hep krem bandın üstünde
      durur → iki ayrı başlık (cam + bant) görünmez, altından görsel kaymaz. Bant boyu sabit
@@ -511,6 +524,7 @@
   @media (max-width:600px){
     .wl-bar{height:calc(56px + env(safe-area-inset-top))}
     .wl-bar-wm{height:calc(56px + env(safe-area-inset-top))}
+    .wl-bar-nokta{top:calc(env(safe-area-inset-top) + 28px + .05em)}
     .stage-head{padding-top:calc(56px + clamp(14px,3svh,26px)) !important}
   }
   .wl-wm{font-size:clamp(21px,2.4vw,26px);font-weight:400;letter-spacing:-.025em;color:#2a1a24;
@@ -726,11 +740,11 @@
 <!-- WL:BAŞ -->
 <!-- Cam yalnız zemin: "Bekleme listesine katıl" düğmesi camın İÇİNDE değil, kendi sabit katmanında
      (lab/menu.py .mn-cta) — en üstte çerçeveli ikincil, cam inince pembe birincil (tasarımcı 09-28). -->
-<header class="wl-bar" id="wlBar" inert></header>
+<header class="wl-bar" id="wlBar" inert><i class="wl-bar-nokta" aria-hidden="true"></i></header>
 <!-- Wordmark başlığın DIŞINDA ayrı katman: başlık (cam) kendi yığın bağlamını kurduğu için
      içindeki yazı alttaki sayfayla karışamazdı. Ayrı katmanda "fark" karışımıyla krem
      bölümde koyu, koyu bölümde açık görünür ("KAYDIR" işaretiyle aynı yöntem). -->
-<a class="wl-bar-wm" id="wlBarWm" href="/" aria-label="shipship ana sayfa" tabindex="-1">shipship</a>
+<a class="wl-bar-wm" id="wlBarWm" href="/" aria-label="shipship ana sayfa" tabindex="-1"><svg class="wm" viewBox="0 268.5 3974 872.6" aria-hidden="true" focusable="false"><use href="/img/marka/wordmark.svg#harfler"/><use class="wm-nokta" href="/img/marka/wordmark.svg#nokta"/></svg></a>
 <div class="wl" id="wl" role="dialog" aria-modal="true" aria-labelledby="wlH" aria-hidden="true">
   <div class="wl-top">
     <span class="wl-wm">shipship</span>
@@ -844,7 +858,7 @@
   <div class="hero-scroll" id="heroScroll">
     <div class="hero-stage">
       <div class="topbar">
-        <span class="wordmark">shipship</span>
+        <span class="wordmark" role="img" aria-label="shipship"><svg class="wm" viewBox="0 268.5 3974 872.6" aria-hidden="true" focusable="false"><use href="/img/marka/wordmark.svg#harfler"/><use class="wm-nokta" href="/img/marka/wordmark.svg#nokta"/></svg></span>
       </div>
       <div class="hero-say" id="heroSay" aria-hidden="true">
         <p class="say" data-fill>Kendin için *doğru kişiyi* seçmek sence de *çok zor* değil mi?</p>
