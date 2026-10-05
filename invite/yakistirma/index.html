@@ -29,14 +29,14 @@
   <meta property="og:locale" content="tr_TR">
   <meta property="og:url" content="https://shipshipapp.com/invite/yakistirma/">
   <meta property="og:title" content="shipship — Topluluk destekli tanışma uygulaması">
-  <meta property="og:description" content="Bir arkadaşın seni biriyle yakıştırdı. Kim olduğunu uygulamada gör.">
+  <meta property="og:description" content="Arkadaşın seni biriyle yakıştırdı. Kim olduğunu uygulamada gör.">
   <meta property="og:image" content="https://shipshipapp.com/img/davet-yakistirma.jpg">
   <meta property="og:image:type" content="image/jpeg">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
   <meta property="og:image:alt" content="Bulanık bir kart ve soru işareti; yanında shipship ve "Sana birini yakıştırdım."">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="description" content="Bir arkadaşın seni biriyle yakıştırdı. Kim olduğunu uygulamada gör.">
+  <meta name="description" content="Arkadaşın seni biriyle yakıştırdı. Kim olduğunu uygulamada gör.">
   <!-- DAVET-OG:SON -->
   <link rel="stylesheet" href="/ortak.css">
   <style>
@@ -71,7 +71,7 @@
     // telefon eşleşmesiyle kurulur). Diğer yollar → sade 404.
     var invite = /^\/invite(\/|$)/.test(location.pathname);
     if (invite && (/^\/invite\/yakistirma\/?$/.test(location.pathname) || location.hash === "#y")) {
-      document.getElementById("invTitle").textContent = "Bir arkadaşın seni biriyle yakıştırdı";
+      document.getElementById("invTitle").textContent = "Arkadaşın seni biriyle yakıştırdı";
       document.getElementById("invSub").textContent = "shipship'te ikilileri topluluk oylar. Uygulamayı indir, kendi numaranla gir; yakıştırıldığın kişiyle oylamaya çık. Tanışıp tanışmamak senin kararın.";
     }
     // Davet karşılamasında tek eylem App Store — üstteki bekleme listesi düğmesi onunla yarışmasın.

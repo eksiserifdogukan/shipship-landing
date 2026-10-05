@@ -71,7 +71,7 @@
     // telefon eşleşmesiyle kurulur). Diğer yollar → sade 404.
     var invite = /^\/invite(\/|$)/.test(location.pathname);
     if (invite && (/^\/invite\/yakistirma\/?$/.test(location.pathname) || location.hash === "#y")) {
-      document.getElementById("invTitle").textContent = "Bir arkadaşın seni biriyle yakıştırdı";
+      document.getElementById("invTitle").textContent = "Arkadaşın seni biriyle yakıştırdı";
       document.getElementById("invSub").textContent = "shipship'te ikilileri topluluk oylar. Uygulamayı indir, kendi numaranla gir; yakıştırıldığın kişiyle oylamaya çık. Tanışıp tanışmamak senin kararın.";
     }
     // Davet karşılamasında tek eylem App Store — üstteki bekleme listesi düğmesi onunla yarışmasın.
