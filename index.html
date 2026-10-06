@@ -1721,8 +1721,14 @@
 <div id="mTintBottom" aria-hidden="true"></div><script>/* MOBİL:BAŞ */(function(){
   var mq = window.matchMedia && matchMedia('(max-width: 879px)'), f = document.querySelector('footer.mega'), r = document.documentElement;
   if (!mq || !f) return;
+  /* Histerezis (10-06): Safari alt çubuğu kayarken innerHeight ~80px oynuyor; tek çizgilik eşikte alt bilgi
+     sınırda iken koyu zemin açılıp kapanıyor, çubuklar koyulaşıp açılıyordu. Açılış 40px içeride, kapanış 120px
+     dışarıda → arada kararsızlık yok. */
+  var dip = false;
   function s(){
-    var on = mq.matches && f.getBoundingClientRect().top < innerHeight;
+    var top = f.getBoundingClientRect().top;
+    var on = mq.matches && (dip ? top < innerHeight + 120 : top < innerHeight - 40);
+    dip = on;
     r.classList.toggle('m-dip', on);
     r.style.backgroundColor = on ? '#191a1b' : '';
     document.body.style.backgroundColor = on ? '#191a1b' : '';   // Safari 26 yedek kaynak: body rengi
@@ -1945,7 +1951,15 @@
      katmanında (lab/menu.py .mn-cta): en üstte çerçeveli, cam inince pembe. Zemin koyulaşması hero'nun
      ~%35'inde başlar (ana JS ciz), eşik ondan çok önce → çerçeve hep krem üstünde kalır. */
   var barWm = $('wlBarWm');
-  function esik(){ var e = Math.max(80, innerHeight * .15); return bar.classList.contains('on') ? e - 24 : e; }
+  /* Telefonda (tasarımcı 10-06): cam KAYDIRIR KAYDIRMAZ iner. Eşik ekran boyuna bağlıyken (%15) aradaki
+     ~100px'te sabit düğme içeriğin üstünde camsız yüzüyordu; Safari çubuğu kayarken innerHeight değişip eşik de
+     oynadığından cam inip kalkıyor, üst kısım koyulaşıp açılıyordu. Sabit 4px eşik ekran boyundan bağımsız;
+     yalnız en tepede (ve tepedeki esnemede) kalkar. Masaüstü 09-28 kararıyla aynı. */
+  var telefonMu = window.matchMedia ? matchMedia('(max-width: 879px)') : null;
+  function esik(){
+    if (telefonMu && telefonMu.matches) return 4;
+    var e = Math.max(80, innerHeight * .15); return bar.classList.contains('on') ? e - 24 : e;
+  }
   function syncBar(){
     var on = scrollY > esik() && !wl.classList.contains('on');
     if (bar.classList.contains('on') === on) return;
