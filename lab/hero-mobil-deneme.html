@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="tr"><head><meta charset="utf-8">
+<title>Mobil hero — seçenekler</title>
+<style>
+  body{margin:0;background:#e9e3e6;font-family:-apple-system,BlinkMacSystemFont,sans-serif;color:#2a1a24}
+  .grid{display:grid;gap:18px;padding:18px;grid-template-columns:repeat(var(--n),var(--w))}
+  .cell h3{margin:0 0 8px;font-size:17px;font-weight:700}
+  .cell h3 small{font-weight:500;color:#5c4553;font-size:14px}
+  iframe{display:block;width:var(--w);height:var(--h);border:0;border-radius:28px;background:#fff;box-shadow:0 8px 30px rgba(0,0,0,.12)}
+</style></head>
+<body>
+<div class="grid" id="g"></div>
+<script>
+/* Yalnız karşılaştırma içindir (lab/ yayına girmez). Her hücre gerçek ana sayfayı telefon
+   genişliğinde açar, seçeneğin stilini ekler ve videoyu belirli bir ana sarar. */
+var V916 = '/video/loop9x16.mp4';
+var VARS = {
+  simdi: { ad: 'Şimdi', alt: '', css: '', v: null },
+  a: { ad: 'A', alt: '· yazının altı koyulaşır, video tam ekran', v: V916, css: `
+    .hero-card::after{background:linear-gradient(180deg,rgba(27,17,25,.28) 0%,rgba(27,17,25,0) 18%)}
+    .hero-copy::before{content:"";position:absolute;z-index:-1;left:-40px;right:-40px;top:-130px;
+      bottom:calc(-8.5svh - 90px);background:linear-gradient(180deg,rgba(27,17,25,0) 0,rgba(27,17,25,.74) 130px,rgba(27,17,25,.9) 100%)}
+    .hero-copy p{font-size:15.5px;line-height:1.5;color:rgba(255,247,244,.92)}
+    .hero-copy .eyebrow{letter-spacing:.1em}` },
+  b: { ad: 'B', alt: '· video üstte, yazı altında koyu zeminde', v: null, css: `
+    .hero-card{display:flex;flex-direction:column}
+    .hero-card video{flex:1 1 auto;min-height:0;height:auto}
+    .hero-card::after{background:linear-gradient(180deg,rgba(27,17,25,.28) 0%,rgba(27,17,25,0) 18%)}
+    .hero-copy{position:relative;left:auto;right:auto;bottom:auto;flex:none;margin-top:-80px;
+      padding:80px 20px calc(8.5svh + 72px);background:linear-gradient(180deg,rgba(27,17,25,0) 0,#1b1119 80px)}
+    .hero-copy p{font-size:15.5px;line-height:1.5;color:rgba(255,247,244,.9)}
+    .hero-copy .eyebrow{letter-spacing:.1em}` },
+  c: { ad: 'C', alt: '· video kartta, yazı altında kremde', v: null, css: `
+    .hero-card{display:flex;flex-direction:column;background:transparent;overflow:visible;box-shadow:none;border-radius:0}
+    .hero-card video{flex:1 1 auto;min-height:0;height:auto;border-radius:22px;box-shadow:0 18px 40px rgba(90,20,70,.18)}
+    .hero-card::after{display:none}
+    .hero-copy{position:relative;left:auto;right:auto;bottom:auto;flex:none;padding:22px 6px calc(8.5svh + 60px);color:#2a1a24}
+    .hero-copy .eyebrow{color:#8a7280}
+    .hero-copy p{font-size:15.5px;line-height:1.5;color:#5c4553}
+    .hero-pause{bottom:auto;top:12px;right:12px}
+    .scroll-cue{color:#2a1a24}` }
+};
+var q = new URLSearchParams(location.search);
+var cols = (q.get('v') || 'simdi,a,b,c').split(',');
+var anlar = (q.get('t') || '3').split(',').map(Number);
+var g = document.getElementById('g'); g.style.setProperty('--n', cols.length);
+g.style.setProperty('--w', (q.get('w') || 390) + 'px'); g.style.setProperty('--h', (q.get('h') || 844) + 'px');
+var bekleyen = 0;
+anlar.forEach(function(t){
+  cols.forEach(function(k){
+    var d = VARS[k], cell = document.createElement('div'); cell.className = 'cell';
+    var h = document.createElement('h3'); h.textContent = d.ad + ' '; var s = document.createElement('small'); s.textContent = d.alt + '  (' + t + ' sn)'; h.appendChild(s);
+    var f = document.createElement('iframe'); f.src = '/?deneme=' + k + '-' + t;
+    cell.appendChild(h); cell.appendChild(f); g.appendChild(cell); bekleyen++;
+    f.addEventListener('load', function(){
+      var doc = f.contentDocument, st = doc.createElement('style');
+      st.textContent = '@media (max-width:879px){' + d.css + '}'; doc.head.appendChild(st);
+      var vid = doc.getElementById('heroVid');
+      // Başsız tarayıcı videoyu güvenilir sarmıyor → o anın karesi kapak görseli olarak (aynı kırpma: cover).
+      vid.pause(); vid.removeAttribute('autoplay'); vid.removeAttribute('src');
+      vid.setAttribute('poster', '/lab/hero-kare/' + (d.v ? '9x16' : '16x9') + '-' + t + '.jpg'); vid.load();
+      var im = new Image(); im.onload = function(){ setTimeout(function(){ if (--bekleyen === 0) document.title = 'hazir'; }, 300); };
+      im.src = vid.getAttribute('poster');
+    });
+  });
+});
+</script>
+</body></html>

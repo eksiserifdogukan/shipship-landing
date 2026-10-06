@@ -4,7 +4,22 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="robots" content="noindex,nofollow">
-<title>shipship — TAM SİTE MOCKUP'I (yayında değil)</title>
+<title>shipship — Topluluk yakıştırır, son söz senin</title>
+<meta name="description" content="Adayını sen aramazsın. Profiline uyanlarla ve arkadaşlarının önerdikleriyle ikili olursun, topluluk oylar. shipship yakında App Store'da.">
+<!-- Paylaşım önizlemesi (tasarımcı 09-27: "Hinge yaklaşımı" — filmden ikili + arkadaşları karesi; tez görselde olduğu için başlık = ne olduğu). Görsel 1200×630. -->
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="shipship">
+<meta property="og:locale" content="tr_TR">
+<meta property="og:url" content="https://shipshipapp.com/">
+<meta property="og:title" content="shipship — Topluluk destekli tanışma uygulaması">
+<meta property="og:description" content="Yakında açılıyor. Bekleme listesine katıl, sınırlı ilk gruba gir.">
+<meta property="og:image" content="https://shipshipapp.com/img/paylasim.jpg">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Birbirine bakan iki kişi, arkalarında arkadaşları; üstünde shipship yazısı">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🚢</text></svg>">
 <style>
   :root{
     --gutter:clamp(22px,8vw,160px);
@@ -17,13 +32,9 @@
   body{background:transparent;color:var(--soft);
     font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
     -webkit-font-smoothing:antialiased;line-height:1.5;overflow-x:hidden}
-  /* Wordmark = markanın vektör çizimi (logo ailesi v1, 2026-10-03; img/marka/wordmark.svg). font-size yalnız ölçek:
-     svg yüksekliği em'in %87'si, harfler currentColor, nokta pembe. */
-  .wordmark{display:inline-flex;align-items:center;line-height:1;color:var(--wm,var(--ink));
-    font-size:clamp(22px,3vw,30px);text-decoration:none}
-  .wm{display:block;height:.873em;width:auto;color:inherit;overflow:visible}
-  .telif{display:inline-flex;align-items:center;gap:.3em}
-  .wm-inline{height:.78em}
+  .wordmark{display:inline-block;line-height:1.18;color:var(--wm,var(--ink));
+    font-size:clamp(22px,3vw,30px);font-weight:400;letter-spacing:-.025em;
+    text-decoration:none}
   img,video{display:block;max-width:100%}
 
   /* ═══ 0 · HERO — kart kadrajı + F14 küçülme ═══ */
@@ -103,8 +114,7 @@
     font-size:clamp(13px,1.25vw,17px);font-weight:600;letter-spacing:.14em;text-transform:uppercase;
     opacity:0;transform:translateY(8px);transition:opacity .5s,transform .5s}
   .tel-ara.on{opacity:1;transform:none}
-  /* Marka = wordmark svg (logo ailesi v1, 10-03): font-size yalnız ölçek, harfler currentColor (#3a1b3e), nokta pembe. */
-  .tel-marka{display:flex;justify-content:center;line-height:1;color:#3a1b3e;
+  .tel-marka{font-weight:900;letter-spacing:-.07em;line-height:.88;color:#3a1b3e;
     font-size:clamp(64px,13.5vw,190px);opacity:0;transform:scale(.6);transform-origin:50% 0;will-change:transform,opacity}
   .whisper{position:absolute;left:0;right:0;bottom:14svh;text-align:center;
     color:#d3bcc9;font-size:clamp(14px,1.9vw,17px);opacity:0;
@@ -360,12 +370,14 @@
   .fin-copy .not{font-size:12.5px;color:#9a9da0;opacity:0;transition:opacity .5s .2s}
   .fin-copy .not.on{opacity:1}
   footer.mega{background:transparent;padding:26px 0 0}
-  /* Wordmark sayfanın DİBİNDEN kesik çıkar (referans 2026-08-23). Artık svg wordmark (10-03): kesim çizgisi
-     p inişinin ORTASINDAN geçsin diye kutu, svg yüksekliğinin %91,9'u (taban çizgisi 1000, p dibi 1141 → yarısı 1070;
-     (1070−268,5)/872,6). Genişlik tam sayfa, yükseklik orandan. */
-  .mega-kirp{overflow:hidden;width:100%;aspect-ratio:3974/802}
-  .mega-mark{display:block;width:100%;color:#fff7f4;user-select:none}
-  .mega-mark .wm{display:block;width:100%;height:auto}
+  /* Wordmark sayfanın DİBİNDEN kesik çıkar (referans 2026-08-23) — AMA kesim
+     çizgisi 'p' kuyruğunun ORTASINDAN geçer: ölçüm (Chrome, aynı font) ascent
+     .705em, descent .171em. Kutu .79em → kuyruğun ~yarısı görünür: yazı gerçekten
+     kesik durur AMA 'n' hiç kuyruk taşımadığı için "shinshin" okuması imkânsız. */
+  .mega-kirp{overflow:hidden;height:.86em;font-size:clamp(80px,19vw,300px)}
+  .mega-mark{display:block;width:100%;text-align:center;color:#fff7f4;
+    font-weight:400;letter-spacing:-.05em;line-height:.705;
+    font-size:1em;user-select:none}
   .mega-alt{display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;
     padding:0 var(--gutter) 30px;font-size:13px;color:rgba(255,247,244,.6)}
   .mega-alt a{color:rgba(255,247,244,.85);text-decoration:none;font-weight:600}
@@ -395,6 +407,13 @@
   .hero-copy p{max-width:50ch;text-wrap:balance}
   /* Dar/orta ekranda ortadaki "kaydır" işareti metnin üstüne biniyordu → blok yukarı alınır. */
   @media (max-width:1099px){.hero-copy{bottom:calc(8.5svh + 72px)}} /* işaret hero'da 8.5vh yukarıda durur (cueGuncelle) */
+
+  /* Hareket azaltma: yalnız süs animasyonları ve geçişler durur. Hero filmi HER ZAMAN
+     otomatik oynar (tasarımcı kararı 2026-09-21); ❚❚ düğmesi durdurma yoludur. */
+  @media (prefers-reduced-motion: reduce){
+    .scroll-cue svg{animation:none}
+    *{transition-duration:.01ms !important}
+  }
   /* MOBİL:BAŞ — telefonda yalnız hero + "Nasıl çalışıyor" + alt bilgi (tasarımcı 09-27).
      Hero tek ekran (kaydırmayla küçülüp soru soran sahne mobilde yok: cevabı hikâye bölümündeydi).
      Diğer bölümler ve onların sabit renk perdeleri gizli. Adımlar soluk değil; her adımın
@@ -476,20 +495,11 @@
     color:#fff;mix-blend-mode:difference;
     transform:translateY(-101%);transition:transform .35s cubic-bezier(.22,1,.36,1)}
   .wl-bar-wm.on{transform:none}
-  /* Masaüstünde katman "fark" karışımında: pembe nokta ters dönerdi → nokta svg'de gizlenir, camın (wl-bar)
-     içindeki normal karışımlı ikizi aynı noktaya çizilir (x = sol + wordmark genişliğinin yarısı 1.987em;
-     y = orta + .05em; çap .16em — oranlar wordmark.svg geometrisinden). Mobilde karışım yok → svg'deki nokta. */
-  .wl-bar-wm .wm-nokta{display:none}
-  .wl-bar-nokta{position:absolute;left:calc(clamp(18px,4vw,40px) + 1.987em);top:calc(env(safe-area-inset-top) + 32px + .05em);
-    width:.16em;height:.16em;margin:-.08em 0 0 -.08em;border-radius:50%;background:#E6336E;
-    font-size:clamp(21px,2.4vw,26px);pointer-events:none}
   /* Mobil (tasarımcı 09-27): fark karışımı fotoğraf/ekran görüntüsü geçerken harfleri parça parça
      boyuyordu → logo TEK RENK BEYAZ; okunması için cam hafif FÜME (hâlâ saydam + bulanık). */
   @media (max-width:879px){
     .wl-bar{background:rgba(24,16,22,.42);border-bottom-color:rgba(255,255,255,.08);box-shadow:none}
     .wl-bar-wm{mix-blend-mode:normal;color:#fff}
-    .wl-bar-wm .wm-nokta{display:block}
-    .wl-bar-nokta{display:none}
   }
   /* "Nasıl çalışıyor" bandı camın ALTINA uzanır: bölümdeyken cam hep krem bandın üstünde
      durur → iki ayrı başlık (cam + bant) görünmez, altından görsel kaymaz. Bant boyu sabit
@@ -501,10 +511,10 @@
   @media (max-width:600px){
     .wl-bar{height:calc(56px + env(safe-area-inset-top))}
     .wl-bar-wm{height:calc(56px + env(safe-area-inset-top))}
-    .wl-bar-nokta{top:calc(env(safe-area-inset-top) + 28px + .05em)}
     .stage-head{padding-top:calc(56px + clamp(14px,3svh,26px)) !important}
   }
-  .wl-wm{font-size:clamp(21px,2.4vw,26px);color:#2a1a24;text-decoration:none;line-height:1;display:inline-flex;align-items:center}
+  .wl-wm{font-size:clamp(21px,2.4vw,26px);font-weight:400;letter-spacing:-.025em;color:#2a1a24;
+    text-decoration:none;line-height:1}
   .wl-btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:48px;padding:0 24px;
     border-radius:999px;border:0;cursor:pointer;font-family:inherit;font-size:15.5px;font-weight:700;line-height:1.2;
     text-decoration:none;background:#2a1a24;color:#fdf7f4;-webkit-tap-highlight-color:transparent}
@@ -672,21 +682,18 @@
   .mn-nav a:focus-visible{outline:2px solid #fff;outline-offset:4px}
   html.wl-open .mn-nav{display:none}
   @media (max-width:879px){ .mn-nav{display:none} }
-  /* Bekleme listesi düğmesi (tasarımcı 09-28) camın DIŞINDA kendi sabit katmanında (fark karışımı YOK; pembe ters
+  /* TASLAK 09-28 — Bekleme listesi düğmesi camın DIŞINDA kendi sabit katmanında (fark karışımı YOK; pembe ters
      dönmesin). Sayfa en üstteyken İKİNCİL (çerçeveli — birincil pembe hero'nun içinde zaten var), cam inince
-     BİRİNCİL pembe. Yer değiştirmez, yalnız ağırlığı değişir; cam arkasına iner. Telefonda da aynı (iki düğme
-     sorun değil — tasarımcı). Camın kendi düğmesi yok (wl.html); cam yalnız zemin. Çerçevenin koyu rengi hero
-     zemini KREMKEN doğru — cam, zemin koyulaşmadan çok önce iner (eşik wl.js'te, ~%15 ekran; koyulaşma ~%70). */
+     BİRİNCİL pembe. Yer değiştirmez, yalnız ağırlığı değişir; cam arkasına iner. Camın kendi düğmesi bu taslakta
+     CSS'le gizli; onaylanırsa wl.html'den çıkar. */
   .mn-cta{position:fixed;top:0;right:clamp(18px,4vw,40px);z-index:83;height:calc(64px + env(safe-area-inset-top));
     padding-top:env(safe-area-inset-top);display:flex;align-items:center}
   .mn-cta .wl-btn{background:transparent;color:#2a1a24;box-shadow:inset 0 0 0 1.5px #2a1a24;
     transition:background-color .35s cubic-bezier(.22,1,.36,1),color .35s cubic-bezier(.22,1,.36,1),box-shadow .35s cubic-bezier(.22,1,.36,1)}
   html.wl-bar-on .mn-cta .wl-btn{background:#E6336E;color:#fff;box-shadow:none}
   html.wl-open .mn-cta{display:none}
-  /* Hero'nun kendi üst şeridi camla AYNI yükseklikte: wordmark, bağlantı ve düğme tek çizgide; kart başlığın
-     altından başlar (eskiden şerit ~45px'ti — düğmenin altı kartın üstüne biniyordu, wordmark 10px yukarıdaydı). */
-  .hero .topbar{min-height:64px}
-  @media (max-width:879px){ .mn-cta{height:calc(56px + env(safe-area-inset-top))} .hero .topbar{min-height:56px} }
+  .wl-bar > [data-wl-open]{display:none}
+  @media (max-width:879px){ .mn-cta{height:calc(56px + env(safe-area-inset-top))} }
   @media (prefers-reduced-motion:reduce){ .mn-cta .wl-btn{transition:none} }
   /* Başa dön: ilk ekran geçilince belirir; krem daire (koyu bölümde de seçilir), sağ altta. */
   .mn-fab{position:fixed;right:24px;bottom:24px;z-index:84;width:48px;height:48px;border-radius:999px;border:0;
@@ -713,17 +720,18 @@
 </button>
 <!-- MENU:SON -->
 
+
 <!-- WL:BAŞ -->
-<!-- Cam yalnız zemin: "Bekleme listesine katıl" düğmesi camın İÇİNDE değil, kendi sabit katmanında
-     (lab/menu.py .mn-cta) — en üstte çerçeveli ikincil, cam inince pembe birincil (tasarımcı 09-28). -->
-<header class="wl-bar" id="wlBar" inert><i class="wl-bar-nokta" aria-hidden="true"></i></header>
+<header class="wl-bar" id="wlBar" inert>
+  <a class="wl-btn wl-btn-sm wl-btn-pink" href="#katil" data-wl-open>Bekleme listesine katıl</a>
+</header>
 <!-- Wordmark başlığın DIŞINDA ayrı katman: başlık (cam) kendi yığın bağlamını kurduğu için
      içindeki yazı alttaki sayfayla karışamazdı. Ayrı katmanda "fark" karışımıyla krem
      bölümde koyu, koyu bölümde açık görünür ("KAYDIR" işaretiyle aynı yöntem). -->
-<a class="wl-bar-wm" id="wlBarWm" href="/" aria-label="shipship ana sayfa" tabindex="-1"><svg class="wm" viewBox="0 268.5 3974 872.6" aria-hidden="true" focusable="false"><use href="/img/marka/wordmark.svg#harfler"/><use class="wm-nokta" href="/img/marka/wordmark.svg#nokta"/></svg></a>
+<a class="wl-bar-wm" id="wlBarWm" href="/" aria-label="shipship ana sayfa" tabindex="-1">shipship</a>
 <div class="wl" id="wl" role="dialog" aria-modal="true" aria-labelledby="wlH" aria-hidden="true">
   <div class="wl-top">
-    <span class="wl-wm" role="img" aria-label="shipship"><svg class="wm" viewBox="0 268.5 3974 872.6" aria-hidden="true" focusable="false"><use href="/img/marka/wordmark.svg#harfler"/><use class="wm-nokta" href="/img/marka/wordmark.svg#nokta"/></svg></span>
+    <span class="wl-wm">shipship</span>
     <button class="wl-btn wl-btn-sm wl-btn-line" type="button" data-wl-close>Kapat <span aria-hidden="true">✕</span></button>
   </div>
 
@@ -823,7 +831,6 @@
 
 
 
-<div class="flag">TAM SİTE MOCKUP · yayında değil · metinler taslak</div>
 <div class="scroll-cue" id="scrollCue" aria-hidden="true">
   <span class="txt">kaydır</span>
   <svg width="14" height="9" viewBox="0 0 14 9" fill="none"><path d="M1 1l6 6 6-6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
@@ -834,7 +841,7 @@
   <div class="hero-scroll" id="heroScroll">
     <div class="hero-stage">
       <div class="topbar">
-        <span class="wordmark" role="img" aria-label="shipship"><svg class="wm" viewBox="0 268.5 3974 872.6" aria-hidden="true" focusable="false"><use href="/img/marka/wordmark.svg#harfler"/><use class="wm-nokta" href="/img/marka/wordmark.svg#nokta"/></svg></span>
+        <span class="wordmark">shipship</span>
       </div>
       <div class="hero-say" id="heroSay" aria-hidden="true">
         <p class="say" data-fill>Kendin için *doğru kişiyi* seçmek sence de *çok zor* değil mi?</p>
@@ -871,7 +878,7 @@
       <div class="tel-ekran" id="telEkran"><div class="tel-grup" id="telGrup">
         <p class="say quote" data-type>“Siz çok yakışıyorsunuz.”</p>
         <p class="tel-ara" id="telFisilti">Diyen bir uygulama yaptık:</p>
-        <div class="tel-marka" id="telMarka" role="img" aria-label="shipship"><svg class="wm" viewBox="0 268.5 3974 872.6" aria-hidden="true" focusable="false"><use href="/img/marka/wordmark.svg#harfler"/><use class="wm-nokta" href="/img/marka/wordmark.svg#nokta"/></svg></div>
+        <div class="tel-marka" id="telMarka">shipship</div>
       </div></div>
       <div class="evo-cam" id="evoCam">
         <div class="evo-cunku" id="evoCunku">
@@ -946,7 +953,7 @@
               <div class="oy-kart a" id="oyA"><img src="img/oy-kart-a.jpg" alt=""></div>
               <div class="oy-rozet" id="oyRozet"><span class="halka">✓</span>Uygun</div>
             </div>
-            <div class="app"><img src="img/s-04-eslesmelerin.jpg" alt="Tanış ya da Geç"></div>
+            <div class="app"><img src="img/s-04-sira-sende.jpg" alt="Sıra sende: Tanış ya da Geç"></div>
             <div class="app"><img src="img/s-08-oneri.jpg" alt="Arkadaşına aday öner"></div>
             <div class="app"><img src="img/s-07-tercihler.jpg" alt="Sadece oy ver"></div>
           </div></div>
@@ -1092,10 +1099,10 @@
 
 <footer class="mega">
   <div class="mega-alt">
-    <span class="telif">© 2026 <svg class="wm wm-inline" viewBox="0 268.5 3974 872.6" aria-hidden="true" focusable="false"><use href="/img/marka/wordmark.svg#harfler"/><use class="wm-nokta" href="/img/marka/wordmark.svg#nokta"/></svg></span>
+    <span>© 2026 shipship</span>
     <span><a href="/destek">Destek</a> · <a href="/kosullar">Koşullar</a> · <a href="/gizlilik">Gizlilik</a> · <a href="/guvenlik">Güvenlik</a></span>
   </div>
-  <div class="mega-kirp"><span class="mega-mark" role="img" aria-label="shipship"><svg class="wm" viewBox="0 268.5 3974 872.6" aria-hidden="true" focusable="false"><use href="/img/marka/wordmark.svg#harfler"/><use class="wm-nokta" href="/img/marka/wordmark.svg#nokta"/></svg></span></div>
+  <div class="mega-kirp"><span class="mega-mark">shipship</span></div>
 </footer>
 
 <script>
@@ -1697,14 +1704,8 @@
 <div id="mTintBottom" aria-hidden="true"></div><script>/* MOBİL:BAŞ */(function(){
   var mq = window.matchMedia && matchMedia('(max-width: 879px)'), f = document.querySelector('footer.mega'), r = document.documentElement;
   if (!mq || !f) return;
-  /* Histerezis (10-06): Safari alt çubuğu kayarken innerHeight ~80px oynuyor; tek çizgilik eşikte alt bilgi
-     sınırda iken koyu zemin açılıp kapanıyor, çubuklar koyulaşıp açılıyordu. Açılış 40px içeride, kapanış 120px
-     dışarıda → arada kararsızlık yok. */
-  var dip = false;
   function s(){
-    var top = f.getBoundingClientRect().top;
-    var on = mq.matches && (dip ? top < innerHeight + 120 : top < innerHeight - 40);
-    dip = on;
+    var on = mq.matches && f.getBoundingClientRect().top < innerHeight;
     r.classList.toggle('m-dip', on);
     r.style.backgroundColor = on ? '#191a1b' : '';
     document.body.style.backgroundColor = on ? '#191a1b' : '';   // Safari 26 yedek kaynak: body rengi
@@ -1922,22 +1923,10 @@
     if ((dy > 0 && atTop) || (dy < 0 && atEnd)) e.preventDefault();
   }, {passive: false});
 
-  /* Sabit üst başlık: ilk piksele değil, BİRAZ kaydırınca iner (tasarımcı 09-28) — ekranın ~%15'i, en az 80px.
-     Küçük histerezis: eşiğin hemen altında ileri-geri sallanınca titremesin. Düğme camın içinde değil, kendi
-     katmanında (lab/menu.py .mn-cta): en üstte çerçeveli, cam inince pembe. Zemin koyulaşması hero'nun
-     ~%35'inde başlar (ana JS ciz), eşik ondan çok önce → çerçeve hep krem üstünde kalır. */
+  /* Sabit üst başlık: kaydırma başladığı an iner; en üstte hero'nun kendi düğmesi var. */
   var barWm = $('wlBarWm');
-  /* Telefonda (tasarımcı 10-06): cam KAYDIRIR KAYDIRMAZ iner. Eşik ekran boyuna bağlıyken (%15) aradaki
-     ~100px'te sabit düğme içeriğin üstünde camsız yüzüyordu; Safari çubuğu kayarken innerHeight değişip eşik de
-     oynadığından cam inip kalkıyor, üst kısım koyulaşıp açılıyordu. Sabit 4px eşik ekran boyundan bağımsız;
-     yalnız en tepede (ve tepedeki esnemede) kalkar. Masaüstü 09-28 kararıyla aynı. */
-  var telefonMu = window.matchMedia ? matchMedia('(max-width: 879px)') : null;
-  function esik(){
-    if (telefonMu && telefonMu.matches) return 4;
-    var e = Math.max(80, innerHeight * .15); return bar.classList.contains('on') ? e - 24 : e;
-  }
   function syncBar(){
-    var on = scrollY > esik() && !wl.classList.contains('on');
+    var on = scrollY > 4 && !wl.classList.contains('on');
     if (bar.classList.contains('on') === on) return;
     bar.classList.toggle('on', on); bar.inert = !on;
     barWm.classList.toggle('on', on); barWm.tabIndex = on ? 0 : -1;

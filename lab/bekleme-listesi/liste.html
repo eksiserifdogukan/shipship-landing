@@ -1,0 +1,31 @@
+<article class="doc">
+  <h1>Bekleme listesi kaydın</h1>
+
+  <div id="lsLoading"><p class="lede">Kaydın yükleniyor…</p></div>
+
+  <div id="lsOk" hidden>
+    <p class="lede">Kayıtlı şehrin: <strong id="lsCity"></strong></p>
+
+    <h2 id="lsCityH">Şehrini değiştir</h2>
+    <div class="field">
+      <select id="lsSel" aria-labelledby="lsCityH" autocomplete="address-level1"></select>
+    </div>
+    <button class="btn" type="button" id="lsSave">Kaydet</button>
+    <p class="msg" id="lsMsg" role="status"></p>
+
+    <h2 id="lsLeaveH">Listeden çık</h2>
+    <p>Kaydın hemen silinir ve sana başka e-posta gelmez.</p>
+    <button class="btn btn-line" type="button" id="lsLeave">Listeden çık</button>
+    <p class="msg" id="lsMsg2" role="status"></p>
+  </div>
+
+  <div id="lsLeft" hidden>
+    <h2 tabindex="-1" id="lsLeftH">Listeden çıktın</h2>
+    <p>Kaydını sildik. Fikrin değişirse <a href="/">shipshipapp.com</a> üzerinden yeniden katılabilirsin.</p>
+  </div>
+
+  <div id="lsBad" hidden>
+    <p class="lede">Bu bağlantı artık geçerli değil. Listeden zaten çıkmış olabilirsin.</p>
+    <p>Yeniden katılmak istersen <a href="/">shipshipapp.com</a> üzerinden katılabilirsin. Bir sorun olduğunu düşünüyorsan <a href="mailto:merhaba@shipshipapp.com">merhaba@shipshipapp.com</a> adresine yaz.</p>
+  </div>
+</article>

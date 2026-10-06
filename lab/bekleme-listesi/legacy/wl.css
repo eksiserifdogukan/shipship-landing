@@ -1,0 +1,55 @@
+
+  /* Telefonda sayfa yana taşıyordu (evrim bölümü öğeleri) → yerleşim görünümü genişliyor, sabit
+     öğeler ekran dışına düşüyordu. clip (hidden değil): kaydırma kabı KURMAZ, sticky sahneler bozulmaz. */
+  html,body{overflow-x:clip}
+  /* ─── BEKLEME LİSTESİ (2026-09-27) — sağ üstte sabit düğme + TAM SAYFA form ───
+     Tam sayfa + düz zemin (tasarımcı 09-27): arkadaki film yazıyı okunmaz yapıyordu. */
+  .wl-cta{position:fixed;top:max(14px,env(safe-area-inset-top));right:clamp(14px,2.4vw,26px);z-index:70;
+    font-family:inherit;font-weight:800;font-size:14px;line-height:1;padding:11px 18px;border-radius:999px;cursor:pointer;
+    background:#fff7f4;color:var(--ink);border:1px solid rgba(42,26,36,.16);
+    box-shadow:0 6px 18px rgba(20,8,16,.18);transition:transform .2s}
+  .wl-cta:active{transform:scale(.97)}
+  .wl{position:fixed;inset:0;z-index:90;background:var(--night);color:#f7ecf1;
+    display:flex;flex-direction:column;overflow-y:auto;-webkit-overflow-scrolling:touch;
+    opacity:0;visibility:hidden;transition:opacity .25s,visibility 0s .25s}
+  .wl.on{opacity:1;visibility:visible;transition:opacity .25s}
+  .wl-top{position:sticky;top:0;z-index:2;display:flex;align-items:center;justify-content:space-between;
+    padding:max(14px,env(safe-area-inset-top)) clamp(18px,3vw,32px) 14px;background:var(--night)}
+  .wl-wm{font-size:clamp(22px,2.4vw,26px);letter-spacing:-.025em;color:#f7ecf1}
+  .wl-x{display:inline-flex;align-items:center;gap:8px;font:inherit;font-size:15px;font-weight:700;
+    color:#f7ecf1;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.22);
+    border-radius:999px;padding:10px 16px 10px 18px;cursor:pointer}
+  .wl-x span{font-size:17px;line-height:1}
+  .wl-main{flex:1;display:flex;align-items:center;justify-content:center;
+    padding:clamp(12px,4vh,48px) 22px calc(28px + env(safe-area-inset-bottom))}
+  .wl-col{width:100%;max-width:460px;transform:translateY(12px);transition:transform .35s cubic-bezier(.22,1,.36,1)}
+  .wl.on .wl-col{transform:none}
+  .wl h2{font-size:clamp(32px,4.4vw,46px);font-weight:800;letter-spacing:-.04em;line-height:1.08;margin:0 0 14px}
+  .wl p.wl-sub{font-size:clamp(16px,1.5vw,18px);line-height:1.55;color:#e8d6e1;margin:0 0 30px}
+  .wl label.wl-l{display:block;font-size:14px;font-weight:600;color:#e8d6e1;margin:0 0 8px}
+  .wl input[type=email],.wl select{width:100%;box-sizing:border-box;font:inherit;font-size:17px;color:#fff7f4;
+    background:#2b1d27;border:1px solid #5a4352;border-radius:14px;padding:15px 16px;margin:0 0 20px;
+    -webkit-appearance:none;appearance:none}
+  .wl input::placeholder{color:#a08b98}
+  .wl select{background-image:linear-gradient(45deg,transparent 50%,#c9a6c0 50%),linear-gradient(135deg,#c9a6c0 50%,transparent 50%);
+    background-position:calc(100% - 22px) 55%,calc(100% - 16px) 55%;background-size:6px 6px;background-repeat:no-repeat}
+  .wl select:invalid{color:#a08b98}
+  .wl input:focus,.wl select:focus{outline:none;border-color:#f7ecf1;box-shadow:0 0 0 3px rgba(247,236,241,.16)}
+  .wl .wl-hint{font-size:13.5px;color:#c9a6c0;margin:-12px 0 20px}
+  .wl .wl-chk{display:flex;align-items:center;gap:12px;font-size:16px;margin:4px 0 26px;cursor:pointer}
+  .wl .wl-chk input{width:22px;height:22px;margin:0;accent-color:#fff7f4;flex-shrink:0}
+  .wl .wl-go{width:100%;font:inherit;font-weight:800;font-size:17px;padding:17px;border:0;border-radius:999px;
+    background:#fff7f4;color:var(--ink);cursor:pointer}
+  .wl .wl-go[aria-busy=true]{opacity:.6}
+  .wl .wl-err{min-height:20px;font-size:14.5px;color:#ffb3bd;margin:12px 0 0;text-align:center}
+  .wl .wl-fine{font-size:13.5px;line-height:1.55;color:#bfa9b6;text-align:center;margin:10px 0 0}
+  .wl a{color:#f7ecf1}
+  .wl .wl-ig{display:block;text-align:center;font-size:14.5px;color:#e8d6e1;margin-top:28px}
+  .wl .wl-hp{position:absolute;left:-9999px;width:1px;height:1px;opacity:0}
+  .wl .wl-ok-ic{width:52px;height:52px;border-radius:50%;border:2px solid var(--ok);color:var(--ok);
+    display:flex;align-items:center;justify-content:center;font-size:24px;margin:0 0 22px}
+  .wl .wl-sec{width:100%;font:inherit;font-size:16px;font-weight:700;padding:16px;border-radius:999px;cursor:pointer;
+    background:transparent;color:#f7ecf1;border:1px solid #6b5462}
+  .wl .wl-links{display:flex;justify-content:center;gap:22px;margin-top:20px;font-size:15px}
+  .wl .wl-links button{background:none;border:0;padding:0;font:inherit;color:#e8d6e1;text-decoration:underline;cursor:pointer}
+  .wl [hidden]{display:none !important}

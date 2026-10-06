@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="tr"><head><meta charset="utf-8"><title>video yedek testi</title></head>
+<body>
+<iframe id="f" src="/?deneme=video-yedek" style="width:390px;height:844px;border:0"></iframe>
+<pre id="out" style="position:fixed;left:0;top:0;right:0;z-index:9;background:#fff;font:15px/1.4 monospace;white-space:pre-wrap;margin:0;padding:10px">bekliyor</pre>
+<script>
+/* Yalnız test (lab/ yayına girmez): hero videosunun Düşük Güç Modu yedeğini taklitle dener. */
+var bekle = function(ms){ return new Promise(function(r){ setTimeout(r, ms); }); };
+var yaz = function(r){ document.getElementById('out').textContent = Object.keys(r).map(function(k){ return k + ': ' + JSON.stringify(r[k]); }).join('\n'); };
+setTimeout(async function(){
+  var fr = document.getElementById('f'), w = fr.contentWindow, d = fr.contentDocument, r = { basladi: d.readyState };
+  yaz(r);
+  try {
+    var vid = d.getElementById('heroVid'), btn = d.getElementById('heroPause');
+    var img = function(){ return d.querySelector('.hero-vid-img'); };
+    var R = function(el){ var b = el.getBoundingClientRect(); return [Math.round(b.left), Math.round(b.top), Math.round(b.width), Math.round(b.height)].join(','); };
+    var durum = function(){ return { resim: !!img(), videoGizli: vid.style.display === 'none', duruyor: vid.paused, simge: btn.textContent }; };
+    await bekle(1500);
+    r.acilis = durum(); r.videoKutusu = R(vid);
+    var asil = w.HTMLMediaElement.prototype.play;
+    var engelle = function(){ w.HTMLMediaElement.prototype.play = function(){ return Promise.reject(new w.DOMException('engel', 'NotAllowedError')); }; };
+    var ac = function(){ w.HTMLMediaElement.prototype.play = asil; };
+    // A) Engel + resim açılamıyor (Safari dışı) → video kapakta, ▶
+    engelle(); vid.pause(); await bekle(50);
+    d.dispatchEvent(new w.Event('touchend')); await bekle(20);
+    r.A_hemen = durum();
+    await bekle(1500);
+    r.A_sonra = durum();
+    // B) Engel + resim açılıyor (Safari gibi; kapak görseliyle taklit) → resim aynı kutuda, ❚❚
+    Object.defineProperty(vid, 'currentSrc', { configurable: true, get: function(){ return '/video/poster.jpg'; } });
+    d.dispatchEvent(new w.Event('touchend')); await bekle(800);
+    r.B_yedek = durum(); r.B_resimKutusu = img() ? R(img()) : null;
+    // B2) Kaydırma sonu (touchend) ve sayfaya dönüş resmi bozmaz
+    d.dispatchEvent(new w.Event('touchend')); d.dispatchEvent(new w.Event('visibilitychange')); await bekle(200);
+    r.B2_bozulmadi = durum();
+    // C) Gerçek dokunuş (tıklama) → video artık izinli → gerçek videoya geçer
+    ac(); delete vid.currentSrc;
+    d.body.click(); await bekle(900);
+    r.C_dokunus = durum();
+    // D) Yedekteyken ❚❚ → durur ve dokunuşlarla BAŞLAMAZ
+    engelle(); Object.defineProperty(vid, 'currentSrc', { configurable: true, get: function(){ return '/video/poster.jpg'; } });
+    vid.pause(); d.dispatchEvent(new w.Event('touchend')); await bekle(800);
+    r.D_once = durum();
+    ac(); delete vid.currentSrc;
+    btn.dispatchEvent(new w.PointerEvent('pointerup', { bubbles: true })); btn.click(); await bekle(300);
+    d.dispatchEvent(new w.Event('touchend')); d.body.click(); await bekle(400);
+    r.D_durdu = durum();
+    // E) ▶ → oynar
+    btn.click(); await bekle(900);
+    r.E_oynat = durum();
+  } catch (e) { r.hata = String(e); }
+  r.bitti = true; yaz(r);
+}, 3000);
+</script>
+</body></html>

@@ -1,0 +1,105 @@
+
+<!-- Cam yalnız zemin: "Bekleme listesine katıl" düğmesi camın İÇİNDE değil, kendi sabit katmanında
+     (lab/menu.py .mn-cta) — en üstte çerçeveli ikincil, cam inince pembe birincil (tasarımcı 09-28). -->
+<header class="wl-bar" id="wlBar" inert></header>
+<!-- Wordmark başlığın DIŞINDA ayrı katman: başlık (cam) kendi yığın bağlamını kurduğu için
+     içindeki yazı alttaki sayfayla karışamazdı. Ayrı katmanda "fark" karışımıyla krem
+     bölümde koyu, koyu bölümde açık görünür ("KAYDIR" işaretiyle aynı yöntem). -->
+<a class="wl-bar-wm" id="wlBarWm" href="/" aria-label="shipship ana sayfa" tabindex="-1">shipship</a>
+<div class="wl" id="wl" role="dialog" aria-modal="true" aria-labelledby="wlH" aria-hidden="true">
+  <div class="wl-top">
+    <span class="wl-wm">shipship</span>
+    <button class="wl-btn wl-btn-sm wl-btn-line" type="button" data-wl-close>Kapat <span aria-hidden="true">✕</span></button>
+  </div>
+
+  <!-- Form = kayan alan + ALT ŞERİT. Kutunun tamamı görünür alana (visualViewport) oturur →
+       klavye açıkken de düğme her zaman klavyenin hemen üstünde (tasarımcı 09-27). -->
+  <form id="wlForm" class="wl-form" novalidate>
+    <div class="wl-scroll" id="wlScroll"><div class="wl-col">
+      <!-- Bekleme listesi: satırlar yukarı kayar, en alta "sen" (mor) eklenir. Uygulamanın
+           illüstrasyon dili: daire + çizgi, nötr + illüstrasyon moru; pembe YOK. -->
+      <svg class="wl-illu" width="64" height="56" viewBox="0 0 64 56" aria-hidden="true" focusable="false">
+        <defs><clipPath id="wlIlluClip"><rect x="3" y="3" width="58" height="50" rx="11"/></clipPath></defs>
+        <rect x="3" y="3" width="58" height="50" rx="11" fill="#fffdfc" stroke="rgba(42,26,36,.16)" stroke-width="1.5"/>
+        <g clip-path="url(#wlIlluClip)">
+          <g class="wl-illu-rows">
+            <g class="wl-illu-first"><circle cx="15" cy="16" r="4.5" fill="#cdb9c4"/><rect x="24" y="13.5" width="26" height="5" rx="2.5" fill="rgba(42,26,36,.12)"/></g>
+            <g><circle cx="15" cy="28" r="4.5" fill="#cdb9c4"/><rect x="24" y="25.5" width="26" height="5" rx="2.5" fill="rgba(42,26,36,.12)"/></g>
+            <g><circle cx="15" cy="40" r="4.5" fill="#cdb9c4"/><rect x="24" y="37.5" width="26" height="5" rx="2.5" fill="rgba(42,26,36,.12)"/></g>
+            <g class="wl-illu-you"><circle cx="15" cy="52" r="4.5"/><rect x="24" y="49.5" width="26" height="5" rx="2.5"/></g>
+          </g>
+        </g>
+      </svg>
+      <h2 tabindex="-1" id="wlH">Bekleme listesine katıl</h2>
+      <p class="wl-sub">Sınırlı ilk gruba gir.</p>
+
+      <div class="wl-field" id="wlEmailF">
+        <label class="wl-lbl" for="wlEmail">E-posta</label>
+        <input id="wlEmail" type="email" inputmode="email" autocomplete="email" autocapitalize="off" autocorrect="off" spellcheck="false" enterkeyhint="done" placeholder="adin@ornek.com" aria-describedby="wlEmailErr" required>
+        <p class="wl-ferr" id="wlEmailErr"></p>
+      </div>
+      <div class="wl-field" id="wlCityF" role="radiogroup" aria-labelledby="wlCityL" aria-describedby="wlCityErr">
+        <span class="wl-lbl" id="wlCityL">Şehrin</span>
+        <!-- Sürtünme (tasarımcı 09-27): en olası şehirler tek dokunuş; kalanı "Diğer" → liste. -->
+        <div class="wl-chips" id="wlChips">
+          <label class="wl-chip"><input type="radio" name="wlCityPick" value="Eskişehir">Eskişehir</label>
+          <label class="wl-chip"><input type="radio" name="wlCityPick" value="İstanbul">İstanbul</label>
+          <label class="wl-chip"><input type="radio" name="wlCityPick" value="Ankara">Ankara</label>
+          <label class="wl-chip"><input type="radio" name="wlCityPick" value="İzmir">İzmir</label>
+          <label class="wl-chip wl-chip-other"><input type="radio" name="wlCityPick" value="__diger">Diğer</label>
+        </div>
+        <select id="wlCity" aria-label="Şehrini seç" aria-describedby="wlCityErr" hidden><option value="" disabled selected>Şehrini seç</option></select>
+        <p class="wl-ferr" id="wlCityErr"></p>
+      </div>
+      <!-- Cinsiyet İSTEĞE BAĞLI (tasarımcı 09-27): yalnız toplam oran için; seçenekler uygulamanın sözlüğüyle aynı. -->
+      <div class="wl-field" id="wlGenderF" role="radiogroup" aria-labelledby="wlGenderL">
+        <span class="wl-lbl" id="wlGenderL">Cinsiyetin <span class="wl-opt">isteğe bağlı</span></span>
+        <div class="wl-chips">
+          <label class="wl-chip"><input type="radio" name="wlGender" value="woman">Kadın</label>
+          <label class="wl-chip"><input type="radio" name="wlGender" value="man">Erkek</label>
+          <label class="wl-chip"><input type="radio" name="wlGender" value="nonbinary">Non-binary</label>
+        </div>
+      </div>
+      <input class="wl-hp" id="wlHp" type="text" tabindex="-1" autocomplete="off" aria-hidden="true">
+      <label class="wl-check" id="wlAdultL"><input id="wlAdult" type="checkbox" aria-describedby="wlAdultErr"> 18 yaşından büyüğüm</label>
+      <span class="wl-sr" id="wlAdultErr"></span>
+    </div></div>
+
+    <div class="wl-foot"><div class="wl-col">
+      <button class="wl-btn wl-btn-block wl-btn-pink" type="submit" aria-disabled="true">Listeye katıl</button>
+      <p class="wl-err" id="wlErr" role="alert"></p>
+      <p class="wl-fine">Yalnız iki e-posta: onay ve açılış · <a href="/bekleme-listesi/" target="_blank" rel="noopener">Bilgilendirme metni</a></p>
+    </div></div>
+  </form>
+
+  <div class="wl-body" id="wlBody" hidden><div class="wl-col">
+    <div id="wlDone" hidden>
+      <div class="wl-ok-ic" aria-hidden="true">✓</div>
+      <h2 tabindex="-1" id="wlDoneH">Listedesin</h2>
+      <p class="wl-sub" id="wlDoneP"></p>
+      <button class="wl-btn wl-btn-block wl-btn-pink" type="button" id="wlShare"><svg class="wl-ic" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 3v12"/><path d="M8 7l4-4 4 4"/><path d="M8 11H6.5A2.5 2.5 0 0 0 4 13.5v5A2.5 2.5 0 0 0 6.5 21h11a2.5 2.5 0 0 0 2.5-2.5v-5a2.5 2.5 0 0 0-2.5-2.5H16"/></svg><span id="wlShareT">Uygulamayı arkadaşınla paylaş</span></button>
+      <div id="wlEdit">
+        <div class="wl-links"><button type="button" id="wlChange">Şehrini değiştir</button></div>
+        <div class="wl-citybox" id="wlCityBox" hidden>
+          <div class="wl-field">
+            <label class="wl-lbl" for="wlCity2">Yeni şehrin</label>
+            <select id="wlCity2"></select>
+          </div>
+          <button class="wl-btn wl-btn-block" type="button" id="wlCitySave">Kaydet</button>
+        </div>
+      </div>
+      <p class="wl-fine" id="wlNoEdit" hidden>Şehrini değiştirmek ya da listeden çıkmak için onay e-postandaki bağlantıyı kullanabilir ya da <a href="mailto:merhaba@shipshipapp.com">merhaba@shipshipapp.com</a> adresine yazabilirsin.</p>
+      <p class="wl-err" id="wlErr2" role="alert"></p>
+    </div>
+
+  </div></div>
+  <!-- Instagram: "Listedesin" ekranının ALTINDA sabit şerit (tasarımcı 09-27: "daha profesyonel, ekranın altında, logoyla").
+       Logo Instagram'ın kendi işareti, KENDİ renk geçişinde (tasarımcı 09-27; marka kuralı: biçimi değiştirilmez, kutuya konmaz). -->
+  <div class="wl-igfoot" id="wlIgFoot" hidden><div class="wl-col">
+    <a class="wl-igrow" href="https://www.instagram.com/shipshipapp/" target="_blank" rel="noopener">
+      <svg class="wl-igic" width="28" height="28" viewBox="0 0 24 24" fill="none" aria-hidden="true" focusable="false"><defs><radialGradient id="wlIgGrad" cx="7.2" cy="25.7" r="30.7" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#fdf497"/><stop offset=".05" stop-color="#fdf497"/><stop offset=".45" stop-color="#fd5949"/><stop offset=".6" stop-color="#d6249f"/><stop offset=".9" stop-color="#285aeb"/></radialGradient></defs><g stroke="url(#wlIgGrad)" stroke-width="2"><rect x="2.6" y="2.6" width="18.8" height="18.8" rx="5.4"/><circle cx="12" cy="12" r="4.3"/></g><circle cx="17.35" cy="6.65" r="1.2" fill="url(#wlIgGrad)"/></svg>
+      <span class="wl-igtx"><strong>Instagram'da takip et</strong><span>@shipshipapp</span></span>
+      <svg class="wl-igarr" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M7 17L17 7"/><path d="M9 7h8v8"/></svg>
+    </a>
+  </div></div>
+</div>

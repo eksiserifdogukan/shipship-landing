@@ -1,0 +1,201 @@
+
+  /* Telefonda sayfa yana taşıyordu (evrim bölümü öğeleri) → yerleşim görünümü genişliyor, sabit
+     öğeler ekran dışına düşüyordu. clip (hidden değil): kaydırma kabı KURMAZ, sticky sahneler bozulmaz. */
+  html,body{overflow-x:clip}
+  html.wl-open{overflow:hidden;background:#fdf7f4 !important}
+  html.wl-open body{background-color:#fdf7f4 !important}   /* Safari 26 çubuk rengini body öğesinden alır — form açıkken krem */   /* mobil alt bilgi betiği kök zemini koyulaştırabilir; form açıkken krem kazanır */
+  /* Form açıkken arkada TÜM ekranı taşan krem zemin: iPhone klavye açılırken görünür alanı
+     kaydırır, kutu bu kaymayı bir an geriden izler → kalan şeritte arkadaki koyu sayfa
+     görünüyordu (siyah bantlar, 09-27 cihaz). Zemin kutunun hemen altında durur. */
+  html.wl-open body::after{content:"";position:fixed;left:0;right:0;top:-50vh;bottom:-50vh;z-index:89;background:#fdf7f4}
+  /* ─── BEKLEME LİSTESİ — sabit üst başlık + hero düğmesi + tam sayfa form ───
+     Değerler alt sayfaların /ortak.css'iyle AYNI (krem · mürekkep · hap düğme);
+     biri değişirse ikisi birlikte değişir. */
+  .wl-bar{position:fixed;top:0;left:0;right:0;z-index:70;height:calc(64px + env(safe-area-inset-top));
+    display:flex;align-items:center;justify-content:space-between;gap:12px;
+    padding:env(safe-area-inset-top) clamp(18px,4vw,40px) 0;
+    justify-content:flex-end;
+    /* Kendi rengi YOK (tasarımcı 09-27): saydam cam — hafif bulanıklık + ince ışık kenarı. */
+    background:rgba(255,255,255,.06);border-bottom:1px solid rgba(255,255,255,.14);
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.16);
+    -webkit-backdrop-filter:blur(16px) saturate(1.6);backdrop-filter:blur(16px) saturate(1.6);
+    transform:translateY(-101%);transition:transform .35s cubic-bezier(.22,1,.36,1)}
+  .wl-bar.on{transform:none}
+  .wl-bar-wm{position:fixed;top:0;left:clamp(18px,4vw,40px);z-index:71;height:calc(64px + env(safe-area-inset-top));
+    padding-top:env(safe-area-inset-top);display:flex;align-items:center;
+    font-size:clamp(21px,2.4vw,26px);font-weight:400;letter-spacing:-.025em;line-height:1;text-decoration:none;
+    color:#fff;mix-blend-mode:difference;
+    transform:translateY(-101%);transition:transform .35s cubic-bezier(.22,1,.36,1)}
+  .wl-bar-wm.on{transform:none}
+  /* Mobil (tasarımcı 09-27): fark karışımı fotoğraf/ekran görüntüsü geçerken harfleri parça parça
+     boyuyordu → logo TEK RENK BEYAZ; okunması için cam hafif FÜME (hâlâ saydam + bulanık). */
+  @media (max-width:879px){
+    .wl-bar{background:rgba(24,16,22,.42);border-bottom-color:rgba(255,255,255,.08);box-shadow:none}
+    .wl-bar-wm{mix-blend-mode:normal;color:#fff}
+  }
+  /* "Nasıl çalışıyor" bandı camın ALTINA uzanır: bölümdeyken cam hep krem bandın üstünde
+     durur → iki ayrı başlık (cam + bant) görünmez, altından görsel kaymaz. Bant boyu sabit
+     (cam durumuna bağlı değil) → sayfa yerleşimi kaydırmayla oynamaz. */
+  .stage-head{top:0 !important;padding-top:calc(64px + clamp(14px,3svh,26px)) !important}
+  /* Cam başlık inince hero'nun kendi wordmark'ı çekilir (iki yazı üst üste binmesin). */
+  .hero .topbar .wordmark{transition:opacity .25s}
+  html.wl-bar-on .hero .topbar .wordmark{opacity:0}
+  @media (max-width:600px){
+    .wl-bar{height:calc(56px + env(safe-area-inset-top))}
+    .wl-bar-wm{height:calc(56px + env(safe-area-inset-top))}
+    .stage-head{padding-top:calc(56px + clamp(14px,3svh,26px)) !important}
+  }
+  .wl-wm{font-size:clamp(21px,2.4vw,26px);font-weight:400;letter-spacing:-.025em;color:#2a1a24;
+    text-decoration:none;line-height:1}
+  .wl-btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:48px;padding:0 24px;
+    border-radius:999px;border:0;cursor:pointer;font-family:inherit;font-size:15.5px;font-weight:700;line-height:1.2;
+    text-decoration:none;background:#2a1a24;color:#fdf7f4;-webkit-tap-highlight-color:transparent}
+  .wl-btn:active{transform:scale(.98)}
+  .wl-btn-sm{min-height:36px;padding:0 15px;font-size:14px}
+  .wl-btn-block{width:100%}
+  .wl-btn-line{background:transparent;color:#2a1a24;box-shadow:inset 0 0 0 1.5px #2a1a24}
+  .wl-btn[aria-busy=true]{opacity:.6}
+  .wl-btn[aria-disabled=true]:active{transform:none}
+  /* Marka pembesi (#E6336E, BRAND_PINK) YALNIZ ana eylemlerde: bekleme listesi düğmeleri + Listedesin'deki paylaş — tasarımcı 09-27.
+     Form eksikken SOLUK — yine de basılabilir: basınca eksik alana kayar ve onu gösterir. */
+  .wl-btn-pink{background:#E6336E;color:#fff}
+  .wl-btn-pink[aria-disabled=true]{opacity:.4}
+  .fin-copy .indir[data-wl-open]{background:#E6336E;color:#fff}
+  .wl-bar a:focus-visible,.wl a:focus-visible,.wl button:focus-visible,.wl input:focus-visible,.wl select:focus-visible,
+  .wl-hero-btn:focus-visible{outline:2px solid #2a1a24;outline-offset:3px}
+  /* Hero'daki düğme: koyu film karartmasının üstünde */
+  .wl-hero-btn{position:relative;z-index:2;display:inline-flex;align-items:center;justify-content:center;
+    margin-top:clamp(16px,2.4svh,24px);min-height:52px;padding:0 30px;border-radius:999px;
+    font-family:inherit;font-size:16px;font-weight:700;text-decoration:none;
+    background:#E6336E;color:#fff;box-shadow:0 10px 30px rgba(0,0,0,.28)}
+  .wl-hero-btn:active{transform:scale(.98)}
+
+  /* ─── Kutu: GÖRÜNÜR ALANA oturur (JS top/height'ı visualViewport'tan yazar) ─── */
+  .wl{position:fixed;top:0;left:0;right:0;height:100%;z-index:90;background:#fdf7f4;color:#2a1a24;
+    display:flex;flex-direction:column;overflow:hidden;
+    opacity:0;visibility:hidden;transition:opacity .25s,visibility 0s .25s}
+  .wl.on{opacity:1;visibility:visible;transition:opacity .25s}
+  .wl-top{flex:none;height:calc(52px + env(safe-area-inset-top));
+    display:flex;align-items:center;justify-content:space-between;gap:12px;
+    padding:env(safe-area-inset-top) 18px 0;border-bottom:1px solid #eadde3}
+  .wl-form{flex:1;min-height:0;display:flex;flex-direction:column}
+  .wl-scroll,.wl-body{flex:1;min-height:0;overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;
+    display:flex;padding:18px 18px 8px}
+  .wl-col{width:100%;max-width:440px;margin:0 auto}
+  .wl-scroll > .wl-col{margin:auto}          /* yer varsa dikeyde ortalar, taşarsa kayar */
+  .wl-body > .wl-col{margin:auto auto auto}
+  .wl-foot{flex:none;padding:10px 18px calc(10px + env(safe-area-inset-bottom));background:#fdf7f4;
+    border-top:1px solid #eadde3}
+  /* Bilgisayar / geniş ekran: form + düğme birlikte ortada, ayrı alt şerit yok. */
+  @media (min-width:700px) and (min-height:640px){
+    .wl-top{height:64px;padding:0 clamp(18px,4vw,40px)}
+    .wl-form{justify-content:center;overflow-y:auto}
+    .wl-scroll{flex:none;overflow:visible;padding:0 18px}
+    .wl-foot{border-top:0;padding:18px 18px 0}
+    .wl-form::after{content:"";flex:none;height:48px}
+  }
+
+  .wl h2{font-size:clamp(23px,3vw,30px);font-weight:800;letter-spacing:-.03em;line-height:1.12;margin:0 0 6px;text-wrap:balance}
+  .wl h2:focus{outline:none}
+  .wl-illu{display:block;width:54px;height:auto;margin:0 0 14px}
+  .wl .wl-sub{font-size:15px;line-height:1.5;color:#5c4553;margin:0 0 20px}
+  .wl .wl-field{margin:0 0 16px}
+  .wl .wl-lbl{display:block;font-size:13px;font-weight:600;color:#2a1a24;margin:0 0 7px}
+  /* YERLİ seçici: seçim kutusu telefonda sistemin seçicisini, bilgisayarda tarayıcının
+     listesini açar; kutunun görünümü bizim. 16px altı yazı iOS'ta yakınlaştırır. */
+  .wl input[type=email],.wl select{display:block;width:100%;min-height:46px;padding:0 14px;
+    font-family:inherit;font-size:16px;color:#2a1a24;background-color:#fffdfc;
+    border:1px solid #cdb9c4;border-radius:12px}
+  .wl input::placeholder{color:#a08b98}
+  .wl input[type=email]:focus-visible,.wl select:focus-visible{outline:none;border-color:#2a1a24;box-shadow:0 0 0 3px rgba(42,26,36,.12)}
+  .wl select{-webkit-appearance:none;appearance:none;padding-right:44px;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1.5l5 5 5-5' fill='none' stroke='%235c4553' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+    background-repeat:no-repeat;background-position:right 16px center;background-size:12px 8px}
+  .wl select:invalid{color:#a08b98}
+  .wl select option{color:#2a1a24}
+  .wl .wl-chips{display:flex;flex-wrap:wrap;gap:6px}
+  .wl .wl-chip{position:relative;display:inline-flex;align-items:center;min-height:36px;padding:0 12px;
+    border-radius:999px;background:#fffdfc;border:1px solid #cdb9c4;font-size:14px;color:#2a1a24;white-space:nowrap;
+    cursor:pointer;-webkit-user-select:none;user-select:none;-webkit-tap-highlight-color:transparent}
+  .wl .wl-chip input{position:absolute;opacity:0;width:1px;height:1px;margin:0;pointer-events:none}
+  .wl .wl-chip-other{border-style:dashed;color:#5c4553}
+  .wl .wl-opt{font-weight:400;color:#8a7280;margin-left:4px}
+  .wl .wl-chip.on{background:#2a1a24;border:1px solid #2a1a24;color:#fdf7f4}
+  .wl .wl-chip.focus{outline:2px solid #2a1a24;outline-offset:3px}
+  .wl #wlCity{margin-top:10px}
+  .wl .wl-check{display:flex;align-items:center;gap:10px;font-size:15px;color:#2a1a24;margin:2px 0 6px;cursor:pointer}
+  .wl .wl-check input{width:20px;height:20px;margin:0;flex:none;accent-color:#2a1a24}
+  /* Alan hataları ALANIN yanında: kutu kızarır, mesaj hemen altında; 18 yaş kutusu yazısız
+     yalnız kızarır (ekran okuyucuya görünmez metin gider). */
+  .wl .wl-ferr{font-size:13px;line-height:1.4;color:#b8304a;margin:6px 0 0}
+  .wl .wl-ferr:empty{display:none}
+  .wl input[aria-invalid=true],.wl select[aria-invalid=true]{border-color:#b8304a;box-shadow:0 0 0 3px rgba(184,48,74,.12)}
+  .wl .wl-chips.bad .wl-chip:not(.on){border-color:#b8304a}
+  .wl .wl-check.bad{color:#b8304a}
+  .wl .wl-check.bad input{outline:2px solid #b8304a;outline-offset:1px}
+  .wl .wl-sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+  .wl .wl-err{font-size:14px;line-height:1.4;color:#b8304a;margin:8px 0 0;text-align:center}
+  .wl .wl-err:empty{margin:0}
+  .wl .wl-fine{font-size:12.5px;line-height:1.45;color:#8a7280;margin:8px 0 0;text-align:center}
+  .wl a{color:#2a1a24;font-weight:600;text-decoration:underline;text-decoration-color:#cdb9c4;text-underline-offset:3px}
+  .wl .wl-fine a{color:#5c4553}
+  .wl-body .wl-fine{text-align:left}
+  /* Paylaş (Listedesin'in ana eylemi): pembe + baştaki paylaş ikonu. */
+  .wl-btn .wl-ic{flex:none;margin-left:-2px}
+  /* Instagram şeridi: ekranın altında, form ekranındaki alt şeritle aynı dil (üst çizgi + güvenli alan). */
+  .wl-igfoot{flex:none;padding:6px 18px calc(6px + env(safe-area-inset-bottom));border-top:1px solid #eadde3;background:#fdf7f4}
+  .wl a.wl-igrow{display:flex;align-items:center;gap:14px;min-height:60px;padding:6px 2px;
+    color:#2a1a24;text-decoration:none;-webkit-tap-highlight-color:transparent}
+  .wl a.wl-igrow:active{opacity:.6}
+  .wl-igic{flex:none}
+  .wl-igtx{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px;line-height:1.25}
+  .wl-igtx strong{font-size:15px;font-weight:700}
+  .wl-igtx span{font-size:13.5px;color:#8a7280}
+  .wl-igarr{flex:none;color:#8a7280}
+  .wl .wl-hp{position:absolute;left:-9999px;width:1px;height:1px;opacity:0}
+  .wl .wl-ok-ic{width:44px;height:44px;border-radius:50%;border:2px solid #2f8a5b;color:#2f8a5b;
+    display:flex;align-items:center;justify-content:center;font-size:20px;margin:0 0 18px}
+  .wl #wlDone h2{margin:0 0 8px}
+  .wl #wlDone .wl-sub{margin-bottom:22px}
+  .wl .wl-links{display:flex;justify-content:center;gap:20px;flex-wrap:wrap;margin-top:18px;font-size:14.5px}
+  .wl .wl-links button{background:none;border:0;padding:0;font:inherit;font-weight:600;color:#2a1a24;
+    text-decoration:underline;text-decoration-color:#cdb9c4;text-underline-offset:3px;cursor:pointer}
+  .wl .wl-citybox{margin-top:20px}
+  .wl [hidden],.wl-bar[hidden]{display:none !important}
+
+  /* Küçük telefon (SE vb.) — formun tamamı kaydırmadan sığsın (tasarımcı 09-27). */
+  @media (max-width:360px),(max-height:560px){
+    .wl-top{height:calc(46px + env(safe-area-inset-top))}
+    .wl-scroll{padding:12px 16px 6px}
+    .wl-foot{padding:8px 16px calc(8px + env(safe-area-inset-bottom))}
+    .wl h2{font-size:21px}
+    .wl .wl-sub{font-size:14px;line-height:1.42;margin-bottom:12px}
+    .wl .wl-field{margin-bottom:11px}
+    .wl .wl-lbl{font-size:12.5px;margin-bottom:5px}
+    .wl input[type=email],.wl select{min-height:42px}
+    .wl .wl-chips{gap:5px}
+    .wl .wl-chip{min-height:32px;padding:0 10px;font-size:13.5px}
+    .wl .wl-check{font-size:14px;margin:0 0 2px}
+    .wl-btn{min-height:44px}
+    .wl .wl-fine{font-size:11.5px;margin-top:6px}
+  }
+  /* Sığma önceliği (tasarımcı: en küçük ekranda bile kaydırma yok): kısa ekranda görsel gizlenir. */
+  @media (max-width:340px),(max-height:600px){ .wl-illu{display:none} }
+
+  /* ─── Liste illüstrasyonu: satırlar yukarı kayar, en alta "sen" (mor) eklenir, sonra
+     sıradan bir satıra döner → döngü dikişsiz. Yalnız kutu açıkken oynar. ─── */
+  .wl-illu-rows{animation:wlq 2.8s cubic-bezier(.22,1,.36,1) infinite}
+  .wl-illu-first{animation:wlqf 2.8s ease infinite}
+  .wl-illu-you{animation:wlqy 2.8s ease infinite}
+  .wl-illu-you circle{fill:#c47fb8;animation:wlqc 2.8s ease infinite}
+  .wl-illu-you rect{fill:rgba(196,127,184,.5);animation:wlqr 2.8s ease infinite}
+  @keyframes wlq{0%,10%{transform:translateY(0)}34%,100%{transform:translateY(-12px)}}
+  @keyframes wlqf{0%,10%{opacity:1}30%,100%{opacity:0}}
+  @keyframes wlqy{0%,12%{opacity:0}34%,100%{opacity:1}}
+  @keyframes wlqc{0%,72%{fill:#c47fb8}94%,100%{fill:#cdb9c4}}
+  @keyframes wlqr{0%,72%{fill:rgba(196,127,184,.5)}94%,100%{fill:rgba(42,26,36,.12)}}
+  .wl:not(.on) .wl-illu *{animation-play-state:paused}
+  @media (prefers-reduced-motion:reduce){
+    .wl-illu-rows,.wl-illu-first,.wl-illu-you,.wl-illu-you circle,.wl-illu-you rect{animation:none}
+    .wl-illu-rows{transform:translateY(-12px)} .wl-illu-first{opacity:0} .wl-illu-you{opacity:1}
+  }

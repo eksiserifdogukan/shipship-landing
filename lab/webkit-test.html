@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="tr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>webkit video-resim testi</title>
+<style>
+  body{font:16px/1.4 -apple-system,sans-serif;margin:12px;background:#fff;color:#111}
+  pre{white-space:pre-wrap;font:14px/1.45 ui-monospace,monospace;background:#f3f3f3;padding:8px;border-radius:8px}
+  .row{display:flex;gap:6px;flex-wrap:wrap} .row div{font-size:11px;text-align:center}
+  .row img,.row video{width:108px;height:80px;object-fit:cover;background:#ddd;display:block}
+</style></head>
+<body>
+<b>Safari: MP4 resim olarak (yalnız test, lab/)</b>
+<pre id="out">başlıyor…</pre>
+<div class="row" id="row"></div>
+<script>
+/* Soru: <video> aynı MP4'ü (parça parça) indirdikten sonra <img> ile açmak başarısız mı? Ayrı adres (?img=1) kurtarıyor mu? */
+var CANLI = 'https://shipshipapp.com/video/loop16x9.mp4', log = [], row = document.getElementById('row');
+function yaz(s){ log.push(s); document.getElementById('out').textContent = log.join('\n'); }
+function kutu(el, ad){ var d = document.createElement('div'); d.appendChild(el); d.appendChild(document.createTextNode(ad)); row.appendChild(d); }
+function resim(src, ad){
+  return new Promise(function(res){
+    var t0 = Date.now(), im = new Image(); kutu(im, ad);
+    im.onload = function(){ yaz(ad + ': YÜKLENDİ ' + im.naturalWidth + 'x' + im.naturalHeight + ' (' + (Date.now() - t0) + ' ms)'); res(); };
+    im.onerror = function(){ yaz(ad + ': HATA (' + (Date.now() - t0) + ' ms)'); res(); };
+    im.src = src;
+    setTimeout(function(){ if (!im.complete) { yaz(ad + ': 12 sn içinde sonuç yok'); res(); } }, 12000);
+  });
+}
+(async function(){
+  yaz('userAgent: ' + navigator.userAgent.replace(/.*(Version\/[\d.]+).*/, '$1'));
+  await resim(CANLI + '?taze=' + Date.now(), 'A tek başına');
+  var v = document.createElement('video'); v.muted = true; v.setAttribute('muted', ''); v.playsInline = true; v.setAttribute('playsinline', '');
+  v.preload = 'auto'; v.src = CANLI; kutu(v, 'video');
+  var p = v.play(); if (p) p.then(function(){ yaz('video.play: oynadı'); }, function(e){ yaz('video.play: RED ' + e.name); });
+  await new Promise(function(r){ var bitti = false; v.addEventListener('canplay', function(){ if (!bitti) { bitti = true; yaz('video canplay (readyState ' + v.readyState + ')'); r(); } }); setTimeout(function(){ if (!bitti) { bitti = true; yaz('video canplay gelmedi'); r(); } }, 8000); });
+  await new Promise(function(r){ setTimeout(r, 1500); });
+  await resim(v.currentSrc, 'B video sonrası aynı adres');
+  await resim(CANLI + '?img=1', 'C ayrı adres ?img=1');
+  yaz('bitti');
+})();
+</script>
+</body></html>

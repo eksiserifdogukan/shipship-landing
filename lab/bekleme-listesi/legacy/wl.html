@@ -1,0 +1,49 @@
+
+<!-- ─── BEKLEME LİSTESİ (2026-09-27) ─── -->
+<button class="wl-cta" type="button" data-wl-open>Listeye katıl</button>
+<div class="wl" id="wl" role="dialog" aria-modal="true" aria-labelledby="wlH" aria-hidden="true">
+  <div class="wl-top">
+    <span class="wl-wm">shipship</span>
+    <button class="wl-x" type="button" data-wl-close>Kapat <span aria-hidden="true">✕</span></button>
+  </div>
+  <div class="wl-main"><div class="wl-col">
+
+    <form id="wlForm" novalidate>
+      <h2 id="wlH">Şehrini açanlardan ol</h2>
+      <p class="wl-sub">shipship şehir şehir açılıyor. Şehrin açıldığında önce listedekiler girer.</p>
+      <label class="wl-l" for="wlEmail">E-posta</label>
+      <input id="wlEmail" type="email" inputmode="email" autocomplete="email" placeholder="adin@ornek.com" required>
+      <label class="wl-l" for="wlCity">Şehrin</label>
+      <select id="wlCity" required><option value="" disabled selected>Şehrini seç</option></select>
+      <p class="wl-hint">İlk açılacak şehir: Eskişehir</p>
+      <input class="wl-hp" id="wlHp" type="text" tabindex="-1" autocomplete="off" aria-hidden="true">
+      <label class="wl-chk"><input id="wlAdult" type="checkbox"> 18 yaşından büyüğüm</label>
+      <button class="wl-go" type="submit">Listeye katıl</button>
+      <p class="wl-err" id="wlErr" role="alert"></p>
+      <p class="wl-fine">Sana yalnızca şehrin açıldığında tek bir e-posta atarız. Bilgilerini nasıl kullandığımızı <a href="/bekleme-listesi/" target="_blank" rel="noopener">bilgilendirme metninde</a> anlattık.</p>
+    </form>
+
+    <div id="wlDone" hidden>
+      <div class="wl-ok-ic" aria-hidden="true">✓</div>
+      <h2 tabindex="-1" id="wlDoneH">Listedesin</h2>
+      <p class="wl-sub" id="wlDoneP"></p>
+      <button class="wl-sec" type="button" id="wlShare">Bağlantıyı arkadaşına gönder</button>
+      <div id="wlEdit">
+        <div class="wl-links"><button type="button" id="wlChange">Şehrini değiştir</button><button type="button" id="wlLeave">Listeden çık</button></div>
+        <div id="wlCityBox" hidden style="margin-top:20px">
+          <select id="wlCity2" aria-label="Yeni şehrin"></select>
+          <button class="wl-go" type="button" id="wlCitySave">Kaydet</button>
+        </div>
+      </div>
+      <p class="wl-fine" id="wlNoEdit" hidden>Şehrini değiştirmek ya da listeden çıkmak için <a href="mailto:kvkk@shipshipapp.com">kvkk@shipshipapp.com</a> adresine yazabilirsin.</p>
+      <p class="wl-err" id="wlErr2" role="alert"></p>
+    </div>
+
+    <div id="wlLeft" hidden>
+      <h2 tabindex="-1" id="wlLeftH">Listeden çıktın</h2>
+      <p class="wl-sub">Kaydını sildik. Fikrin değişirse istediğin zaman yeniden katılabilirsin.</p>
+    </div>
+
+    <a class="wl-ig" href="https://www.instagram.com/shipshipapp/" target="_blank" rel="noopener">Gelişmeler Instagram'da · @shipshipapp</a>
+  </div></div>
+</div>
