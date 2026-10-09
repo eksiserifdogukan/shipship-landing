@@ -13,7 +13,7 @@ CSS = """
      Diğer bölümler ve onların sabit renk perdeleri gizli. */
   #mTintBottom{display:none}
   @media (max-width:879px){
-    .hero-scroll{height:100svh}
+    .hero-scroll{height:100vh;height:100svh}
     .hero-say{display:none}
     /* Hero okunurluğu (tasarımcı 09-27, seçenek B): yazı videonun ÜSTÜNE binmez. Video kartta kalan
        alanı doldurur, yazı altında düz koyu zeminde (videodan yumuşak geçişle). Ekran boyundan
@@ -53,19 +53,27 @@ CSS = """
 JS = """<div id="mTintBottom" aria-hidden="true"></div><script>/* MOBİL:BAŞ */(function(){
   var mq = window.matchMedia && matchMedia('(max-width: 879px)'), f = document.querySelector('footer.mega'), r = document.documentElement;
   if (!mq || !f) return;
-  /* Histerezis (10-06): Safari alt çubuğu kayarken innerHeight ~80px oynuyor; tek çizgilik eşikte alt bilgi
-     sınırda iken koyu zemin açılıp kapanıyor, çubuklar koyulaşıp açılıyordu. Açılış 40px içeride, kapanış 120px
-     dışarıda → arada kararsızlık yok. */
+  /* Eşik KÜÇÜK görünür alana (100svh) bağlı, innerHeight'a DEĞİL. 10-06: Safari alt çubuğu kayarken innerHeight
+     ~80px oynuyor, eşik onunla kayınca koyu zemin açılıp kapanıyordu. 10-09: o günün 120px'lik kapanış payı, sayfa
+     kısalınca (yalnız hero + alt bilgi) alt bilgiyi hiç "uzak" saymıyordu → bir kez koyulaşan zemin en üste
+     dönünce de koyu kalıyor, alt kenarda ince koyu şerit duruyordu. Şimdi: alt bilginin 40px'i küçük görünür alana
+     girince açılır, neredeyse tamamen çıkınca (8px) kapanır; çubuk hareketi eşiği oynatmaz. */
+  var svh = innerHeight;
+  function olc(){
+    var p = document.createElement('div');
+    p.style.cssText = 'position:absolute;top:0;left:0;width:1px;height:100svh;visibility:hidden;pointer-events:none';
+    document.body.appendChild(p); svh = p.getBoundingClientRect().height || innerHeight; p.remove();
+  }
   var dip = false;
   function s(){
     var top = f.getBoundingClientRect().top;
-    var on = mq.matches && (dip ? top < innerHeight + 120 : top < innerHeight - 40);
+    var on = mq.matches && (dip ? top < svh - 8 : top < svh - 40);
     dip = on;
     r.classList.toggle('m-dip', on);
     r.style.backgroundColor = on ? '#191a1b' : '';
     document.body.style.backgroundColor = on ? '#191a1b' : '';   // Safari 26 yedek kaynak: body rengi
   }
-  addEventListener('scroll', s, {passive: true}); addEventListener('resize', s); s();
+  addEventListener('scroll', s, {passive: true}); addEventListener('resize', function(){ olc(); s(); }); olc(); s();
 })();/* MOBİL:SON */</script>
 """
 

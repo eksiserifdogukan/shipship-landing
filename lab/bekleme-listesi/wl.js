@@ -84,17 +84,23 @@
     return k;
   })();
 
+  /* Zaman aşımı (10-09): zayıf mobil bağlantıda istek asılı kalınca düğme sonsuza dek "Gönderiliyor…" kalıyordu.
+     20 sn sonra vazgeçilir, kişi bağlantı mesajını görüp yeniden dener (sunucu e-postayı tekil tutar: ilk istek
+     aslında işlendiyse ikinci deneme "Listedesin"e düşer, çift kayıt olmaz). */
   function rpc(fn, body){
+    var ac = window.AbortController ? new AbortController() : null;
+    var zaman = ac ? setTimeout(function(){ ac.abort(); }, 20000) : 0;
     return fetch(WL_URL + '/rest/v1/rpc/' + fn, {
       method: 'POST',
       headers: {'apikey': WL_KEY, 'Content-Type': 'application/json'},
-      body: JSON.stringify(body)
+      body: JSON.stringify(body),
+      signal: ac ? ac.signal : undefined
     }).then(function(r){
       return r.json().then(function(j){
         if (!r.ok) { var e = new Error(j && j.message || 'hata'); e.code = j && j.message; e.pg = j && j.code; e.status = r.status; throw e; }
         return j;
       });
-    });
+    }).then(function(j){ clearTimeout(zaman); return j; }, function(e){ clearTimeout(zaman); throw e; });
   }
 
   var MSG = {
@@ -132,17 +138,38 @@
     if (saved && saved.t) { token = saved.t; city = saved.c; showDone(); } else { show('form'); }
     sc.scrollTop = 0; $('wlBody').scrollTop = 0;
     wl.classList.add('on'); wl.setAttribute('aria-hidden', 'false');
-    root.classList.add('wl-open'); background(true); syncBar(); fitVV();
+    root.classList.add('wl-open'); background(true); syncBar(); fitVV(); gecmisEkle();
     // Telefonda klavye kendiliğinden açılıp formu kapatmasın: odağı başlığa ver.
     setTimeout(function(){ (form.hidden ? $('wlDoneH') : $('wlH')).focus({preventScroll: true}); }, 60);
   }
-  function close(){
+  function close(geriden){
+    if (!wl.classList.contains('on')) return;
     wl.classList.remove('on'); wl.setAttribute('aria-hidden', 'true');
     root.classList.remove('wl-open'); background(false); syncBar();
     wl.style.top = ''; wl.style.height = ''; vvTop = -1; vvH = -1;
-    if (location.hash === '#katil') history.replaceState(null, '', location.pathname + location.search);
+    if (geriden !== true) {
+      // Kapat / Esc: formun eklediği geçmiş kaydını geri al (yoksa sonraki "geri" formu boşuna yeniden açardı).
+      try {
+        if (history.state && history.state.wl) history.back();
+        else if (location.hash === '#katil') history.replaceState(null, '', location.pathname + location.search);
+      } catch(e){}
+    }
     if (lastFocus && lastFocus.focus) lastFocus.focus({preventScroll: true});
   }
+  /* Telefonun GERİ tuşu / geri kaydırma jesti formu KAPATIR, sayfadan çıkarmaz (10-09: Android'de formdayken "geri"
+     diyen kişi siteden çıkıp geldiği yere — reklamdan geldiyse Instagram'a — dönüyordu). Form açılınca geçmişe bir
+     kayıt eklenir (#katil); geri o kaydı tüketir. Alt sayfadan /#katil ile gelende önce adres sadeleşir: geri → ana
+     sayfa, bir geri daha → geldiği alt sayfa. */
+  function gecmisEkle(){
+    try {
+      if (history.state && history.state.wl) return;
+      if (location.hash === '#katil') history.replaceState(null, '', location.pathname + location.search);
+      history.pushState({wl: 1}, '', location.pathname + location.search + '#katil');
+    } catch(e){}
+  }
+  addEventListener('popstate', function(){
+    if (wl.classList.contains('on') && !(history.state && history.state.wl)) close(true);
+  });
 
   /* ─── Kutu GÖRÜNÜR ALANA oturur (visualViewport). iPhone'da klavye açılınca yerleşim
      görünümü küçülmez, yalnız görünür alan küçülür → sabit/yapışık alt öğeler klavyenin
@@ -239,7 +266,7 @@
   /* Alt sayfalardaki "Bekleme listesine katıl" → /#katil → form kendiliğinden açılır. */
   if (location.hash === '#katil') open();
   addEventListener('hashchange', function(){ if (location.hash === '#katil') open(); });
-  wl.querySelectorAll('[data-wl-close]').forEach(function(b){ b.addEventListener('click', close); });
+  wl.querySelectorAll('[data-wl-close]').forEach(function(b){ b.addEventListener('click', function(){ close(); }); });
   document.addEventListener('keydown', function(e){ if (e.key === 'Escape' && wl.classList.contains('on')) close(); });
 
   /* Alan hataları alanın kendisine bağlı: kutu kızarır + altında mesaj (18 yaş: yalnız kızarır). */
@@ -260,6 +287,11 @@
   }
   var FIELD_OF = {cm_invalid_email: 'email', cm_invalid_city: 'city', cm_adult_required: 'adult'};
   $('wlEmail').addEventListener('input', function(){ fieldErr('email', false); err.textContent = ''; syncReady(); });
+  /* Klavyedeki "Bitti" tuşu form eksikken GÖNDERMEZ, yalnız klavyeyi kapatır (10-09): e-postayı yazıp tuşa basan
+     kişi henüz sırası gelmemiş şehir/18 yaş için kırmızı uyarı görmesin. Form hazırsa gönderir. */
+  $('wlEmail').addEventListener('keydown', function(e){
+    if (e.key === 'Enter' && !formReady()) { e.preventDefault(); this.blur(); }
+  });
   // Yazarken değil, alandan ÇIKINCA uyar (yarım adrese kırmızı göstermek kaba durur).
   $('wlEmail').addEventListener('blur', function(){
     var v = this.value.trim(); if (v && !EMAIL_RE.test(v)) fieldErr('email', true);
