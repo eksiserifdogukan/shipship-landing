@@ -4,7 +4,24 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="robots" content="noindex,nofollow">
-<title>shipship — TAM SİTE MOCKUP'I (yayında değil)</title>
+<title>shipship — Topluluk yakıştırır, son söz senin</title>
+<meta name="description" content="Adayını sen aramazsın. Profiline uyanlarla ve arkadaşlarının önerdikleriyle ikili olursun, topluluk oylar. shipship yakında App Store'da.">
+<!-- Paylaşım önizlemesi (tasarımcı 09-27: "Hinge yaklaşımı" — filmden ikili + arkadaşları karesi; tez görselde olduğu için başlık = ne olduğu). Görsel 1200×630. -->
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="shipship">
+<meta property="og:locale" content="tr_TR">
+<meta property="og:url" content="https://shipshipapp.com/">
+<meta property="og:title" content="shipship — Topluluk destekli tanışma uygulaması">
+<meta property="og:description" content="Yakında açılıyor. Bekleme listesine katıl, sınırlı ilk gruba gir.">
+<meta property="og:image" content="https://shipshipapp.com/img/paylasim.jpg">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Birbirine bakan iki kişi, arkalarında arkadaşları; üstünde shipship yazısı">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="/img/marka/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="/img/marka/favicon-32.png" sizes="32x32" type="image/png">
+<link rel="apple-touch-icon" href="/img/marka/apple-touch-icon.png">
 <style>
   :root{
     --gutter:clamp(22px,8vw,160px);
@@ -66,8 +83,7 @@
     color:#fff7f4;font-size:11px;cursor:pointer;backdrop-filter:blur(6px)}
 
   /* ═══ 1 · HİKÂYE — F1 + F2 + F15 ═══ */
-  .story{position:relative;background:var(--night);color:#fff7f4;
-    overflow:clip}  /* yapışkan zemin katmanları (-100svh payı) bölüm bitince taşmasın — eskiden ardındaki omurga örtüyordu (10-09) */
+  .story{position:relative;background:var(--night);color:#fff7f4}
   .story .bgl{position:sticky;top:0;height:100svh;margin-bottom:-100svh;
     pointer-events:none}
   .story .bgl.grad{z-index:0;
@@ -159,6 +175,88 @@
       rgba(27,17,25,.88) 0%, rgba(27,17,25,.88) 30%,
       rgba(27,17,25,0) 40%, rgba(27,17,25,0) 60%,
       rgba(27,17,25,.88) 70%, rgba(27,17,25,.88) 100%)}
+
+  /* ═══ 2 · OMURGA — Wispr düzeni: solda yapışkan telefon, sağda akan adımlar ═══ */
+  .spine{position:relative;background:var(--cream)}
+  .spine-scroll{position:relative;padding:0 var(--gutter)}
+  .spine-grid{display:grid;grid-template-columns:1fr;gap:clamp(18px,4vw,80px);align-items:start}
+  .spine-sticky{position:sticky;top:0;height:100svh;display:flex;align-items:center;justify-content:center}
+  /* telefon sayfayla kaymaz: bölüme girilince ekranın SOLUNDAN gelir */
+  .spine-sticky .phone-wrap{transform:translateX(-140%);opacity:0;
+    transition:transform .7s cubic-bezier(.22,1,.36,1),opacity .5s ease}
+  .spine-sticky.in .phone-wrap{transform:none;opacity:1}
+  .spine-col{padding:clamp(24px,8svh,80px) 0 30svh}
+  /* bölüm etiketi YAPIŞKAN: adımlar akarken "Nasıl çalışıyor?" tepede kalır
+     (tasarımcı 2026-08-23) — okur hangi bölümde olduğunu kaybetmesin */
+  .stage-head{position:sticky;top:0;z-index:3;background:var(--cream);
+    padding:clamp(14px,3svh,26px) 0 clamp(6px,1.4svh,12px)}
+  .stage-head h2{color:var(--accent);font-size:clamp(12px,1.1vw,14px);letter-spacing:.18em;
+    text-transform:uppercase;font-weight:700;line-height:1;margin-bottom:clamp(8px,2svh,20px)}
+  .steps{display:flex;flex-direction:column;max-width:44ch}
+  .step{min-height:52svh;display:flex;flex-direction:column;justify-content:center;
+    opacity:.28;transition:opacity .35s ease}
+  .step.on{opacity:1}
+  .step h3{color:var(--ink);font-size:clamp(24px,3vw,38px);letter-spacing:-.035em;font-weight:800;line-height:1.1}
+  .step p{font-size:clamp(15px,1.3vw,18px);margin-top:12px;line-height:1.5;color:var(--ink-soft,#5c4553)}
+  .phone-wrap{display:flex;justify-content:center;align-items:center;min-height:0}
+  /* GERÇEK CİHAZ GÖVDESİ (tasarımcı 2026-08-23: "çok 2D duruyor").
+     Işıma yok — derinlik cihazın kendisinden gelir: metal kenar gradyanı,
+     ince iç parlama halkası, yan tuşlar, cam yansıması ve ZEMİNE OTURAN
+     iki katmanlı gölge (yakın temas + geniş yumuşak). */
+  .phone{position:relative;height:min(70svh,560px);aspect-ratio:9/19.5;
+    border-radius:42px;padding:11px;flex:none;
+    background:linear-gradient(150deg,#4a4a52 0%,#232329 18%,#111114 46%,
+      #1b1b20 72%,#43434b 100%);
+    box-shadow:
+      0 2px 3px rgba(20,12,18,.28),           /* temas */
+      0 10px 18px rgba(20,12,18,.18),
+      0 34px 60px rgba(20,12,18,.20),         /* geniş, yumuşak */
+      inset 0 0 0 1px rgba(255,255,255,.13),  /* metal kenar parlaması */
+      inset 0 1px 2px rgba(255,255,255,.16)}
+  /* yan tuşlar: sol ses, sağ güç */
+  .phone::before,.phone::after{content:"";position:absolute;width:3px;border-radius:3px;
+    background:linear-gradient(180deg,#5a5a63,#2a2a30);pointer-events:none}
+  .phone::before{left:-3px;top:23%;height:11%}
+  .phone::after{right:-3px;top:26%;height:13%}
+  /* cam yansıması: köşeden geçen ince diyagonal ışık */
+  .screen::after{content:"";position:absolute;inset:0;pointer-events:none;z-index:9;
+    background:linear-gradient(118deg,rgba(255,255,255,.10) 0 14%,
+      rgba(255,255,255,.03) 18%,transparent 34%)}
+  /* ekran değişiminde telefonun kendisi de titrer — değişim gözden kaçmaz */
+  .phone.titre{animation:titre .22s cubic-bezier(.22,1,.36,1) both}
+  @keyframes titre{35%{transform:translateY(-5px) scale(1.012)}100%{transform:none}}   /* tek sarsıntı */
+  .screen{position:relative;width:100%;height:100%;border-radius:29px;
+    overflow:hidden;background:var(--night2)}
+  /* ekran değişimi: kaydırmaya bağlı kayma değil, Wispr'daki gibi kısa bir "titreme" —
+     eski ekran anında söner, yenisi hafif büyüyüp yerine otururken belirir (~180 ms) */
+  .app{position:absolute;inset:0;opacity:0;transform:scale(.985) translateY(6px);
+    transition:opacity .16s ease-out,transform .24s cubic-bezier(.22,1,.36,1);will-change:opacity,transform}
+  .app img{width:100%;height:100%;object-fit:cover;object-position:top}
+  .app.on{opacity:1;transform:none}
+  /* OY ADIMI — sahte sayaç ekranı YOK (tasarımcı 2026-08-23): uygulamanın
+     gerçek Akış ekranı zemin, üstünde o ekrandan KIRPILMIŞ iki gerçek kart.
+     Kaydırdıkça kartlar sağa gidip birbirine yaklaşır ve rozet belirir —
+     yani oyu okuyan veriyormuş gibi. Hareket uygulamanın kendi sözleşmesi:
+     sağa = Uygun, kartlar merkeze yakınsar. */
+  .oy .zem{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:top}
+  .oy-kart{position:absolute;border-radius:16px;overflow:hidden;will-change:transform;
+    box-shadow:0 14px 34px rgba(0,0,0,.45)}
+  .oy-kart img{width:100%;height:100%;object-fit:cover;display:block}
+  .oy-kart.arka{filter:blur(6px);opacity:.35;transform:scale(.94)}   /* uygulamadaki bgReveal hâli */
+  .oy-kart.a{left:3.18%;top:11.99%;width:93.56%;height:38.63%}
+  .oy-kart.b{left:3.18%;top:51.46%;width:93.56%;height:38.77%}
+  .oy-rozet{position:absolute;left:50%;top:46%;z-index:5;display:flex;align-items:center;gap:7px;
+    padding:7px 14px 7px 8px;border-radius:999px;background:rgba(0,0,0,.5);
+    color:#fff;font-weight:800;font-size:12.5px;opacity:0;
+    transform:translate(-50%,-50%) scale(.92);will-change:opacity,transform}
+  .oy-rozet .halka{width:22px;height:22px;border-radius:999px;border:2.5px solid var(--ok);
+    display:grid;place-items:center;font-size:11px}
+  @media (min-width:880px){
+    .spine-grid{grid-template-columns:minmax(0,1fr) minmax(0,1.1fr)}
+  }
+  @media (max-width:879px){
+    .spine-sticky{display:none}
+  }
 
   /* ═══ 3b · DEĞER TEKERLEĞİ — F20 ═══ */
   /* Renk geçişi SAYFANIN İÇİNDE (tasarımcı 2026-08-23): ekran yerinde
@@ -314,9 +412,18 @@
   .hero-copy p{max-width:50ch;text-wrap:balance}
   /* Dar/orta ekranda ortadaki "kaydır" işareti metnin üstüne biniyordu → blok yukarı alınır. */
   @media (max-width:1099px){.hero-copy{bottom:calc(8.5svh + 72px)}} /* işaret hero'da 8.5vh yukarıda durur (cueGuncelle) */
-  /* MOBİL:BAŞ — telefonda yalnız hero + alt bilgi (tasarımcı 09-27; "Nasıl çalışıyor" 10-09'da kalktı → lab/arsiv/nasil-calisiyor-2026-10-09).
+
+  /* Hareket azaltma: yalnız süs animasyonları ve geçişler durur. Hero filmi HER ZAMAN
+     otomatik oynar (tasarımcı kararı 2026-09-21); ❚❚ düğmesi durdurma yoludur. */
+  @media (prefers-reduced-motion: reduce){
+    .scroll-cue svg{animation:none}
+    *{transition-duration:.01ms !important}
+  }
+  /* MOBİL:BAŞ — telefonda yalnız hero + "Nasıl çalışıyor" + alt bilgi (tasarımcı 09-27).
      Hero tek ekran (kaydırmayla küçülüp soru soran sahne mobilde yok: cevabı hikâye bölümündeydi).
-     Diğer bölümler ve onların sabit renk perdeleri gizli. */
+     Diğer bölümler ve onların sabit renk perdeleri gizli. Adımlar soluk değil; her adımın
+     altında kendi uygulama ekranı (masaüstünde telefonun içinde dönen görseller). */
+  .step-shot{display:none}
   #mTintBottom{display:none}
   @media (max-width:879px){
     .hero-scroll{height:100svh}
@@ -337,6 +444,19 @@
     .hero-copy p{font-size:15.5px;line-height:1.5;color:rgba(255,247,244,.9)}
     .hero-copy .eyebrow{letter-spacing:.1em}   /* iki satıra kırılıyordu */
     .story,.wheel,.gal,.trust,.fin,.wheel-perde,.yesil-perde,.trust-perde,.fade-dark{display:none !important}
+    .spine-col{padding:8px 0 56px}
+    /* Yapışkan "Nasıl çalışıyor" başlığı kenardan kenara (sütunun boşluklarında içerik görünüyordu). */
+    .stage-head{margin:0 calc(-1 * var(--gutter));padding-left:var(--gutter);padding-right:var(--gutter)}
+    .step{min-height:0;opacity:1 !important;padding:26px 0 32px}
+    .step + .step{border-top:1px solid #eadde3}
+    .step-shot{display:block;position:relative;width:min(58vw,232px);aspect-ratio:9/19.5;margin-top:20px;
+      border-radius:28px;overflow:hidden;background:#241820;border:6px solid #1b1b20;
+      box-shadow:0 2px 3px rgba(20,12,18,.2),0 18px 40px rgba(20,12,18,.18)}
+    .step-shot > img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:top}
+    .step-shot .k{position:absolute;border-radius:9px;overflow:hidden;box-shadow:0 8px 20px rgba(0,0,0,.4)}
+    .step-shot .k img{display:block;width:100%;height:100%;object-fit:cover}
+    .step-shot .k.a{left:3.18%;top:11.99%;width:93.56%;height:38.63%}
+    .step-shot .k.b{left:3.18%;top:51.46%;width:93.56%;height:38.77%}
     footer.mega{background:#191a1b;padding-top:40px;padding-bottom:env(safe-area-inset-bottom)}
     /* "KAYDIR" işareti işini hero'da yapar; kaydırma başlayınca metnin üstünde asılı kalmasın. */
     html.wl-bar-on .scroll-cue{opacity:0;pointer-events:none}
@@ -395,6 +515,10 @@
     .wl-bar-wm .wm-nokta{display:block}
     .wl-bar-nokta{display:none}
   }
+  /* "Nasıl çalışıyor" bandı camın ALTINA uzanır: bölümdeyken cam hep krem bandın üstünde
+     durur → iki ayrı başlık (cam + bant) görünmez, altından görsel kaymaz. Bant boyu sabit
+     (cam durumuna bağlı değil) → sayfa yerleşimi kaydırmayla oynamaz. */
+  .stage-head{top:0 !important;padding-top:calc(64px + clamp(14px,3svh,26px)) !important}
   /* Cam başlık inince hero'nun kendi wordmark'ı çekilir (iki yazı üst üste binmesin). */
   .hero .topbar .wordmark{transition:opacity .25s}
   html.wl-bar-on .hero .topbar .wordmark{opacity:0}
@@ -402,6 +526,7 @@
     .wl-bar{height:calc(56px + env(safe-area-inset-top))}
     .wl-bar-wm{height:calc(56px + env(safe-area-inset-top))}
     .wl-bar-nokta{top:calc(env(safe-area-inset-top) + 28px + .05em)}
+    .stage-head{padding-top:calc(56px + clamp(14px,3svh,26px)) !important}
   }
   .wl-wm{font-size:clamp(21px,2.4vw,26px);color:#2a1a24;text-decoration:none;line-height:1;display:inline-flex;align-items:center}
   .wl-btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:48px;padding:0 24px;
@@ -558,9 +683,19 @@
   }
   /* WL:SON */
 
-  /* MENU:BAŞ — üst başlıktaki bekleme listesi düğmesi + başa dön. Masaüstündeki "Nasıl çalışıyor" bağlantısı
-     (09-28, BACKLOG 45) bölümle birlikte 2026-10-09'da kalktı → lab/arsiv/nasil-calisiyor-2026-10-09.
-     Bağlantı kodu (aşağıdaki .mn-nav taraması) bağlantı yokken boş döner; bölüm geri gelirse yeniden çalışır. */
+  /* MENU:BAŞ — masaüstü "Nasıl çalışıyor" bağlantısı + başa dön (tasarımcı 09-27 → 09-28 tek bağlantı, BACKLOG 45).
+     Başlık camının DIŞINDA ayrı sabit katman: cam kendi yığın bağlamını kurduğu için içindeki yazı
+     alttaki sayfayla karışamazdı; "fark" karışımıyla krem bölümde koyu, koyu bölümde açık (wordmark'la aynı yöntem).
+     SAĞDA durur: hero'da tek başına sağ kenarda; cam inince pembe düğmenin soluna kayar. Düğme genişliği
+     JS'te ölçülüp --mn-shift'e yazılır; kayma camın inişiyle aynı süre ve eğri → ikisi birlikte yerleşir. */
+  .mn-nav{position:fixed;top:0;right:calc(clamp(18px,4vw,40px) + var(--mn-shift, 0px));z-index:83;height:64px;
+    display:flex;align-items:center;mix-blend-mode:difference;pointer-events:none}
+  .mn-nav a{pointer-events:auto;color:#fff;font-size:15px;font-weight:600;letter-spacing:-.005em;text-decoration:none;
+    padding:8px 2px;border-bottom:1.5px solid transparent}
+  .mn-nav a:hover{border-bottom-color:#fff}
+  .mn-nav a:focus-visible{outline:2px solid #fff;outline-offset:4px}
+  html.wl-open .mn-nav{display:none}
+  @media (max-width:879px){ .mn-nav{display:none} }
   /* Bekleme listesi düğmesi (tasarımcı 09-28) camın DIŞINDA kendi sabit katmanında (fark karışımı YOK; pembe ters
      dönmesin). Sayfa en üstteyken İKİNCİL (çerçeveli — birincil pembe hero'nun içinde zaten var), cam inince
      BİRİNCİL pembe. Yer değiştirmez, yalnız ağırlığı değişir; cam arkasına iner. Telefonda da aynı (iki düğme
@@ -593,6 +728,9 @@
 </head>
 <body>
 <!-- MENU:BAŞ -->
+<nav class="mn-nav" aria-label="Sayfa içi">
+  <a href="#nasil" data-mn=".spine">Nasıl çalışıyor</a>
+</nav>
 <div class="mn-cta"><a class="wl-btn wl-btn-sm" href="#katil" data-wl-open>Bekleme listesine katıl</a></div>
 <button class="mn-fab" id="mnFab" type="button" aria-label="Başa dön" tabindex="-1">
   <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19V5"/><path d="M5 12l7-7 7 7"/></svg>
@@ -709,7 +847,7 @@
 
 
 
-<div class="flag">TAM SİTE MOCKUP · yayında değil · metinler taslak</div>
+
 <div class="scroll-cue" id="scrollCue" aria-hidden="true">
   <span class="txt">kaydır</span>
   <svg width="14" height="9" viewBox="0 0 14 9" fill="none"><path d="M1 1l6 6 6-6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
@@ -813,6 +951,44 @@
     </div>
   </div>
   <div class="story-out"></div>
+</section>
+
+<!-- ═══ 2 · OMURGA ═══ -->
+<section class="spine">
+  <div class="spine-scroll" id="spineScroll">
+    <div class="spine-grid">
+      <div class="spine-sticky">
+        <div class="phone-wrap">
+          <div class="phone"><div class="screen">
+            <div class="app on"><img src="img/s-06b-duzenle.jpg" alt="Profilini doldur"></div>
+            <div class="app"><img src="img/s-03-adaylar.jpg" alt="Adaylarını sistem belirler"></div>
+            <div class="app oy" id="oyKat">
+              <img class="zem" src="img/oy-zemin.jpg" alt="Akış ekranı">
+              <div class="oy-kart b arka" id="oyB2"><img src="img/oy2-kart-b.jpg" alt=""></div>
+              <div class="oy-kart a arka" id="oyA2"><img src="img/oy2-kart-a.jpg" alt=""></div>
+              <div class="oy-kart b" id="oyB"><img src="img/oy-kart-b.jpg" alt=""></div>
+              <div class="oy-kart a" id="oyA"><img src="img/oy-kart-a.jpg" alt=""></div>
+              <div class="oy-rozet" id="oyRozet"><span class="halka">✓</span>Uygun</div>
+            </div>
+            <div class="app"><img src="img/s-04-sira-sende.jpg" alt="Sıra sende: Tanış ya da Geç"></div>
+            <div class="app"><img src="img/s-08-oneri.jpg" alt="Arkadaşına aday öner"></div>
+            <div class="app"><img src="img/s-07-tercihler.jpg" alt="Sadece oy ver"></div>
+          </div></div>
+        </div>
+      </div>
+      <div class="spine-col">
+        <div class="stage-head"><h2>Nasıl çalışıyor?</h2></div>
+        <div class="steps" id="steps">
+          <div class="step"><h3>Profilini doldurursun</h3><p>Birkaç fotoğraf, ne aradığın ve seni anlatan birkaç satır. Her şey buradan başlar.</p><!-- MOBİL:BAŞ --><div class="step-shot" aria-hidden="true"><img src="img/s-06b-duzenle.jpg" alt="" loading="lazy" decoding="async"></div><!-- MOBİL:SON --></div>
+          <div class="step"><h3>Adayların belirlenir</h3><p>Sistem herkesin girdiği bilgilere bakar, sana uyanları aday olarak seçer. Profilin doldukça adayların isabetlenir.</p><!-- MOBİL:BAŞ --><div class="step-shot" aria-hidden="true"><img src="img/s-03-adaylar.jpg" alt="" loading="lazy" decoding="async"></div><!-- MOBİL:SON --></div>
+          <div class="step"><h3>İkilileri oylarsın, oyladıkça sen de oylanırsın</h3><p>Akış’ta karşına ikili gelir; oy kişiye değil, ikilinin uyumuna verilir. Oy verdikçe aday olduğun ikililer Akış’ta öne geçer, daha hızlı oylanırsın.</p><!-- MOBİL:BAŞ --><div class="step-shot" aria-hidden="true"><img src="img/oy-zemin.jpg" alt="" loading="lazy" decoding="async"><span class="k a"><img src="img/oy-kart-a.jpg" alt="" loading="lazy" decoding="async"></span><span class="k b"><img src="img/oy-kart-b.jpg" alt="" loading="lazy" decoding="async"></span></div><!-- MOBİL:SON --></div>
+          <div class="step"><h3>Yeterli “Uygun” oyu gelince yakıştırılırsın</h3><p>Topluluk yeterince “Uygun” derse seni yakıştırır. Tanışmak ya da geçmek sana kalmış; ikiniz de Tanış derseniz eşleşirsiniz, sohbet açılır.</p><!-- MOBİL:BAŞ --><div class="step-shot" aria-hidden="true"><img src="img/s-04-sira-sende.jpg" alt="" loading="lazy" decoding="async"></div><!-- MOBİL:SON --></div>
+          <div class="step"><h3>Arkadaşlarınla birbirinize aday önerebilirsiniz</h3><p>Yakın arkadaşlarını çevrene eklersin; onlar sana, sen onlara aday çıkarırsın. Arkadaşlar birbirini daha iyi tanır.</p><!-- MOBİL:BAŞ --><div class="step-shot" aria-hidden="true"><img src="img/s-08-oneri.jpg" alt="" loading="lazy" decoding="async"></div><!-- MOBİL:SON --></div>
+          <div class="step"><h3>Görünürlüğünü gizleyebilirsin</h3><p>Profilini oylamalardan çekebilirsin; kimse seni oylamaz ama sen oylamaya devam edersin. İstediğin an geri dönersin.</p><!-- MOBİL:BAŞ --><div class="step-shot" aria-hidden="true"><img src="img/s-07-tercihler.jpg" alt="" loading="lazy" decoding="async"></div><!-- MOBİL:SON --></div>
+        </div>
+      </div>
+    </div>
+  </div>
 </section>
 
 <!-- ═══ 3b · DEĞER TEKERLEĞİ ═══ -->
@@ -1061,6 +1237,15 @@
     return {x:p.x, y:p.y, a:Math.atan2(q.y-p.y, q.x-p.x)};
   }
   evoYolKur(); addEventListener('resize', evoYolKur);
+  var spineScroll = document.getElementById('spineScroll'), sonAdim = -1;
+  var steps = [].slice.call(document.querySelectorAll('.step'));
+  var apps  = [].slice.call(document.querySelectorAll('.app'));
+  var oyA = document.getElementById('oyA'), oyB = document.getElementById('oyB');
+  var oyA2 = document.getElementById('oyA2'), oyB2 = document.getElementById('oyB2');
+  var oyRozet = document.getElementById('oyRozet');
+  var OY_ADIM = 2;                    // "İkilileri oylamaya başlarsın" adımı
+  var TILT = 4.2, CONV = 3.2, KAY = 32;   // derece · yakınsama % · sağa kayma %
+
   var wheelScroll = document.getElementById('wheelScroll');
   var tambur = document.getElementById('tambur');
   var wheelPerde = document.getElementById('wheelPerde');
@@ -1262,6 +1447,51 @@
     var grup = document.getElementById('telGrup');
     grup.style.transform = 'translateY(' + ((marka.offsetHeight + 0) / 2 * (1 - mkE)) + 'px)';
 
+    /* 2 · OMURGA — aktif adım ekran ortasına en yakın olan; telefon ekranı ona eşlik eder */
+    // telefon girişi: bölümün üstü ekranın üst %25'ine gelince soldan girer (tek sefer, CSS geçişi)
+    var spTop = spineScroll.getBoundingClientRect().top;
+    document.querySelector('.spine-sticky').classList.toggle('in', spTop < innerHeight * .25);
+    var vc = innerHeight * .38, N = steps.length, merk = steps.map(function(el){ var r = el.getBoundingClientRect(); return r.top + r.height/2; });
+    var i = 0, bd = 1e9;
+    merk.forEach(function(m, n){ var d = Math.abs(m - vc); if (d < bd){ bd = d; i = n; } });
+    steps.forEach(function(el,n){ el.classList.toggle('on', n === i); });
+    // ekranlar App Store sırasıyla; aktif adım değişince ekran "titreyerek" değişir (CSS geçişi)
+    var ara = merk.length > 1 ? (merk[1] - merk[0]) : innerHeight;
+    for (var ai = 0; ai < apps.length; ai++) apps[ai].classList.toggle('on', ai === Math.min(i, apps.length - 1));
+    if (i !== sonAdim){                      // adım değişti: telefon titrer (animasyon yeniden başlatılır)
+      var ph = document.querySelector('.phone');
+      ph.classList.remove('titre'); void ph.offsetWidth; ph.classList.add('titre');
+      sonAdim = i;
+    }
+    /* OY ADIMI — kaydırma oyu VERİR: kartlar sağa gider, birbirine yakınsar,
+       "Uygun" rozeti belirir. Sahte sayaç ekranı YOK; pikseller uygulamanın
+       kendi Akış ekranından kırpıldı (tasarımcı 2026-08-23). */
+    var sOy = c01((vc - merk[OY_ADIM] + ara * .5) / ara);
+    /* Zamanlama (tasarımcı 2026-08-23): başlık ekran ortasına OTURANA kadar
+       (sOy < .5) hiç oy yok — okur önce cümleyi okur. Sonrasında kısa bir
+       kaydırma aralığında oy TAM tamamlanır; yarıda kalmış kart bırakmaz. */
+    /* Üç faz (tasarımcı 2026-08-23: oy TAMAMLANIP sıradaki ikiliye geçmeli —
+       uygulamadaki gerçek akış): sürükle → kartlar sağa UÇAR → arkadaki
+       bulanık ikili netleşip öne gelir. */
+    var t = c01((sOy - .50) / .50);
+    var drag = c01(t / .42), ucus = c01((t - .42) / .26), gel = c01((t - .52) / .44);
+    var yum = 1 - Math.pow(1 - drag, 2);
+    if (oyA){
+      var dx = yum*KAY + ucus*140, tilt = TILT * c01(yum + ucus*.6);
+      oyA.style.transform = 'translate(' + dx + '%,' + (yum*CONV) + '%) rotate(' + tilt + 'deg)';
+      oyB.style.transform = 'translate(' + dx + '%,' + (-yum*CONV) + '%) rotate(' + tilt + 'deg)';
+      oyA.style.opacity = oyB.style.opacity = String(1 - c01((ucus - .6) / .4));
+      var rg = c01((drag - .10) * 2.6) * (1 - ucus);
+      oyRozet.style.opacity = String(rg);
+      oyRozet.style.transform = 'translate(-50%,-50%) scale(' + (.92 + .08*rg) + ')';
+      var gE = 1 - Math.pow(1 - gel, 2);
+      [oyA2, oyB2].forEach(function(el){
+        el.style.filter = 'blur(' + (6 * (1 - gE)) + 'px)';
+        el.style.opacity = String(.35 + .65 * gE);
+        el.style.transform = 'scale(' + (.94 + .06 * gE) + ')';
+      });
+    }
+
     /* 3b · TEKERLEK — F20 */
     /* Sıra (tasarımcı 2026-08-23): adımlar biter → krem→koyu bant sayfayla
        birlikte kayar → ekran tam koyu olunca tambur ekranın ALTINDAN yükselir
@@ -1388,7 +1618,7 @@
   var duraklar = [], hedef = scrollY, kilit = 0, animId = 0, sonHamle = 0;
   // .trust listeden ÇIKARILDI (2026-08-23): sticky sahnesi yok, ekrandan kısa —
   // durak olarak scroll'u sürekli geri çekiyordu (titreme şikayeti).
-  var DURAK_SEC = '.hero-scroll,.sscroll,.evo-scroll,.modes-scroll,.wheel-scroll,.gal-scroll,.fin-scroll';
+  var DURAK_SEC = '.hero-scroll,.sscroll,.evo-scroll,.spine-scroll,.modes-scroll,.wheel-scroll,.gal-scroll,.fin-scroll';
   function durakOlc(){
     duraklar = [].slice.call(document.querySelectorAll(DURAK_SEC)).map(function(el){
       return Math.round(el.getBoundingClientRect().top + scrollY);

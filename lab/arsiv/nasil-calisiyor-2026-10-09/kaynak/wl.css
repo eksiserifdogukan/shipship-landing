@@ -33,12 +33,17 @@
     .wl-bar{background:rgba(24,16,22,.42);border-bottom-color:rgba(255,255,255,.08);box-shadow:none}
     .wl-bar-wm{mix-blend-mode:normal;color:#fff}
   }
+  /* "Nasıl çalışıyor" bandı camın ALTINA uzanır: bölümdeyken cam hep krem bandın üstünde
+     durur → iki ayrı başlık (cam + bant) görünmez, altından görsel kaymaz. Bant boyu sabit
+     (cam durumuna bağlı değil) → sayfa yerleşimi kaydırmayla oynamaz. */
+  .stage-head{top:0 !important;padding-top:calc(64px + clamp(14px,3svh,26px)) !important}
   /* Cam başlık inince hero'nun kendi wordmark'ı çekilir (iki yazı üst üste binmesin). */
   .hero .topbar .wordmark{transition:opacity .25s}
   html.wl-bar-on .hero .topbar .wordmark{opacity:0}
   @media (max-width:600px){
     .wl-bar{height:calc(56px + env(safe-area-inset-top))}
     .wl-bar-wm{height:calc(56px + env(safe-area-inset-top))}
+    .stage-head{padding-top:calc(56px + clamp(14px,3svh,26px)) !important}
   }
   .wl-wm{font-size:clamp(21px,2.4vw,26px);font-weight:400;letter-spacing:-.025em;color:#2a1a24;
     text-decoration:none;line-height:1}

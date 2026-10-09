@@ -1,5 +1,4 @@
-"""Üst başlıktaki bekleme listesi düğmesi + "başa dön" yüzen düğmesi. Masaüstü "Nasıl çalışıyor" bağlantısı
-2026-10-09'da bölümle birlikte kalktı → lab/arsiv/nasil-calisiyor-2026-10-09 (betiğin o anki hâli kaynak/menu.py).
+"""Masaüstü üst bağlantı ("Nasıl çalışıyor", tıklayınca yumuşak kaydırma) + "başa dön" yüzen düğmesi.
 Karar: BACKLOG 45 (tasarımcı 09-27: üç bölüm ortada; 09-28: TEK bağlantı, SAĞDA — "Niyetler" uygulamanın
 sözcüğü, "Güven" varış noktası değil; ortada tek kelime yetim kalır, pembe düğmenin yanında ikincil eylem okunur).
 İşaretli blok olarak eklenir; tekrar koşmak bloğu yeniler.
@@ -12,9 +11,19 @@ L = pathlib.Path(__file__).resolve().parent.parent
 B, S = 'MENU:BAŞ', 'MENU:SON'
 
 CSS = """
-  /* MENU:BAŞ — üst başlıktaki bekleme listesi düğmesi + başa dön. Masaüstündeki "Nasıl çalışıyor" bağlantısı
-     (09-28, BACKLOG 45) bölümle birlikte 2026-10-09'da kalktı → lab/arsiv/nasil-calisiyor-2026-10-09.
-     Bağlantı kodu (aşağıdaki .mn-nav taraması) bağlantı yokken boş döner; bölüm geri gelirse yeniden çalışır. */
+  /* MENU:BAŞ — masaüstü "Nasıl çalışıyor" bağlantısı + başa dön (tasarımcı 09-27 → 09-28 tek bağlantı, BACKLOG 45).
+     Başlık camının DIŞINDA ayrı sabit katman: cam kendi yığın bağlamını kurduğu için içindeki yazı
+     alttaki sayfayla karışamazdı; "fark" karışımıyla krem bölümde koyu, koyu bölümde açık (wordmark'la aynı yöntem).
+     SAĞDA durur: hero'da tek başına sağ kenarda; cam inince pembe düğmenin soluna kayar. Düğme genişliği
+     JS'te ölçülüp --mn-shift'e yazılır; kayma camın inişiyle aynı süre ve eğri → ikisi birlikte yerleşir. */
+  .mn-nav{position:fixed;top:0;right:calc(clamp(18px,4vw,40px) + var(--mn-shift, 0px));z-index:83;height:64px;
+    display:flex;align-items:center;mix-blend-mode:difference;pointer-events:none}
+  .mn-nav a{pointer-events:auto;color:#fff;font-size:15px;font-weight:600;letter-spacing:-.005em;text-decoration:none;
+    padding:8px 2px;border-bottom:1.5px solid transparent}
+  .mn-nav a:hover{border-bottom-color:#fff}
+  .mn-nav a:focus-visible{outline:2px solid #fff;outline-offset:4px}
+  html.wl-open .mn-nav{display:none}
+  @media (max-width:879px){ .mn-nav{display:none} }
   /* Bekleme listesi düğmesi (tasarımcı 09-28) camın DIŞINDA kendi sabit katmanında (fark karışımı YOK; pembe ters
      dönmesin). Sayfa en üstteyken İKİNCİL (çerçeveli — birincil pembe hero'nun içinde zaten var), cam inince
      BİRİNCİL pembe. Yer değiştirmez, yalnız ağırlığı değişir; cam arkasına iner. Telefonda da aynı (iki düğme
@@ -46,6 +55,9 @@ CSS = """
 """
 
 HTML = """<!-- MENU:BAŞ -->
+<nav class="mn-nav" aria-label="Sayfa içi">
+  <a href="#nasil" data-mn=".spine">Nasıl çalışıyor</a>
+</nav>
 <div class="mn-cta"><a class="wl-btn wl-btn-sm" href="#katil" data-wl-open>Bekleme listesine katıl</a></div>
 <button class="mn-fab" id="mnFab" type="button" aria-label="Başa dön" tabindex="-1">
   <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19V5"/><path d="M5 12l7-7 7 7"/></svg>
