@@ -12,6 +12,8 @@
   var $ = function(id){ return document.getElementById(id); };
   var wl = $('wl'), bar = $('wlBar'), form = $('wlForm'), err = $('wlErr'), err2 = $('wlErr2');
   var root = document.documentElement;
+  /* Yalnız Android'den gelene "önce iPhone" notu (tasarımcı 10-09); cihaz hiçbir yere yazılmaz. */
+  if (/Android/i.test(navigator.userAgent || '')) $('wlAndroid').hidden = false;
   var lastFocus = null, token = null, city = null;
 
   function clear(el){ while (el.firstChild) el.removeChild(el.firstChild); }

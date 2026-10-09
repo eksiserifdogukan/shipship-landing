@@ -458,6 +458,7 @@
   .wl h2:focus{outline:none}
   .wl-illu{display:block;width:54px;height:auto;margin:0 0 14px}
   .wl .wl-sub{font-size:15px;line-height:1.5;color:#5c4553;margin:0 0 20px}
+  .wl .wl-android{font-size:14px;line-height:1.45;color:#5c4553;margin:-12px 0 20px}
   .wl .wl-field{margin:0 0 16px}
   .wl .wl-lbl{display:block;font-size:13px;font-weight:600;color:#2a1a24;margin:0 0 7px}
   /* YERLİ seçici: seçim kutusu telefonda sistemin seçicisini, bilgisayarda tarayıcının
@@ -529,6 +530,7 @@
     .wl-foot{padding:8px 16px calc(8px + env(safe-area-inset-bottom))}
     .wl h2{font-size:21px}
     .wl .wl-sub{font-size:14px;line-height:1.42;margin-bottom:12px}
+    .wl .wl-android{font-size:13px;line-height:1.4;margin:-6px 0 12px}
     .wl .wl-field{margin-bottom:11px}
     .wl .wl-lbl{font-size:12.5px;margin-bottom:5px}
     .wl input[type=email],.wl select{min-height:42px}
@@ -635,6 +637,9 @@
       </svg>
       <h2 tabindex="-1" id="wlH">Bekleme listesine katıl</h2>
       <p class="wl-sub">Sınırlı ilk gruba gir.</p>
+      <!-- Yalnız Android'den gelene (tasarımcı 10-09: ilk açılış yalnız iPhone). Not formdan VAZGEÇİRMEZ, katılmaya çağırır.
+           Cihaz yalnız bu notu göstermek için okunur, hiçbir yere yazılmaz (aydınlatma: cihaz tutulmaz). -->
+      <p class="wl-android" id="wlAndroid" hidden>Önce iPhone'da açılıyoruz, Android sürümü yolda. Şimdi katıl, Android'e geldiğimiz gün ilk sen duy.</p>
 
       <div class="wl-field" id="wlEmailF">
         <label class="wl-lbl" for="wlEmail">E-posta</label>
@@ -1547,6 +1552,8 @@
   var $ = function(id){ return document.getElementById(id); };
   var wl = $('wl'), bar = $('wlBar'), form = $('wlForm'), err = $('wlErr'), err2 = $('wlErr2');
   var root = document.documentElement;
+  /* Yalnız Android'den gelene "önce iPhone" notu (tasarımcı 10-09); cihaz hiçbir yere yazılmaz. */
+  if (/Android/i.test(navigator.userAgent || '')) $('wlAndroid').hidden = false;
   var lastFocus = null, token = null, city = null;
 
   function clear(el){ while (el.firstChild) el.removeChild(el.firstChild); }

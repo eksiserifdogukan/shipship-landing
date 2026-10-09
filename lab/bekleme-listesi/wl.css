@@ -97,6 +97,7 @@
   .wl h2:focus{outline:none}
   .wl-illu{display:block;width:54px;height:auto;margin:0 0 14px}
   .wl .wl-sub{font-size:15px;line-height:1.5;color:#5c4553;margin:0 0 20px}
+  .wl .wl-android{font-size:14px;line-height:1.45;color:#5c4553;margin:-12px 0 20px}
   .wl .wl-field{margin:0 0 16px}
   .wl .wl-lbl{display:block;font-size:13px;font-weight:600;color:#2a1a24;margin:0 0 7px}
   /* YERLİ seçici: seçim kutusu telefonda sistemin seçicisini, bilgisayarda tarayıcının
@@ -168,6 +169,7 @@
     .wl-foot{padding:8px 16px calc(8px + env(safe-area-inset-bottom))}
     .wl h2{font-size:21px}
     .wl .wl-sub{font-size:14px;line-height:1.42;margin-bottom:12px}
+    .wl .wl-android{font-size:13px;line-height:1.4;margin:-6px 0 12px}
     .wl .wl-field{margin-bottom:11px}
     .wl .wl-lbl{font-size:12.5px;margin-bottom:5px}
     .wl input[type=email],.wl select{min-height:42px}
