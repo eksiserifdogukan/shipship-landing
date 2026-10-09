@@ -22,26 +22,25 @@ CSS = """
     .hero-card video,.hero-card .hero-vid-img{flex:1 1 auto;min-height:0;height:auto}
     .hero-card::after{background:linear-gradient(180deg,rgba(27,17,25,.28) 0%,rgba(27,17,25,0) 18%)}
     /* Oran (tasarımcı 09-27): düğme kartın DİBİNDE, yazı ona yaslanır, video kalan yüksekliği alır.
-       Altta yalnız "kaydır" işaretine yer: işaret ekranın en altında (hero'daki yukarı kaldırma iptal),
-       düğme onun hemen üstünde. Durdur düğmesi bekleme listesi düğmesiyle aynı sırada, ortası hizalı. */
+       10-09: "KAYDIR" işareti telefonda kalktı → düğmenin altındaki boşluk yanlarla EŞİT (tasarımcı seçeneği B;
+       önceden işarete 56px yer ayrılıyordu, video o kadar uzadı). Durdur düğmesi bekleme listesi düğmesiyle aynı
+       sırada, ortası hizalı. */
     .hero-copy{position:relative;left:auto;right:auto;bottom:auto;flex:none;margin-top:-72px;
-      padding:72px clamp(20px,4vw,48px) 56px;   /* işaret 26 + boyu 29 + ara 15 − kart altı boşluğu 14 */
+      padding:72px clamp(20px,4vw,48px) clamp(20px,4vw,48px);
       background:linear-gradient(180deg,rgba(27,17,25,0) 0,var(--night) 72px)}
-    .hero-pause{bottom:63px}   /* 56 + (52 − 38) / 2 → bekleme listesi düğmesiyle aynı hiza */
+    .hero-pause{bottom:calc(clamp(20px,4vw,48px) + 7px)}   /* + (52 − 38) / 2 → bekleme listesi düğmesiyle aynı hiza */
     .hero-copy p{font-size:15.5px;line-height:1.5;color:rgba(255,247,244,.9)}
     .hero-copy .eyebrow{letter-spacing:.1em}   /* iki satıra kırılıyordu */
     .story,.wheel,.gal,.trust,.fin,.wheel-perde,.yesil-perde,.trust-perde,.fade-dark{display:none !important}
     footer.mega{background:#191a1b;padding-top:40px;padding-bottom:env(safe-area-inset-bottom)}
-    /* "KAYDIR" işareti işini hero'da yapar; kaydırma başlayınca metnin üstünde asılı kalmasın. */
-    html.wl-bar-on .scroll-cue{opacity:0;pointer-events:none}
+    /* "KAYDIR" telefonda YOK (tasarımcı 10-09): sayfa yalnız hero + alt bilgi, kaydırınca açılan bölüm kalmadı. */
+    .scroll-cue{display:none}
     /* Safari 26 alt çubuğu renk için ÖNCE ekranın altına yapışık (≤3px), ≥%80 genişlikte sabit bir öğeye
        bakar, yoksa body öğesinin rengine (html'e DEĞİL; theme-color yok sayılır). Alt bilgi görününce bu ince
        koyu şerit açılır → çubuk koyulaşır. Gizlerken display:none (opaklık değil — Safari yine sayar). */
     #mTintBottom{position:fixed;left:0;bottom:-8px;width:100%;min-height:12px;background:#191a1b;pointer-events:none;display:none}
     html.m-dip #mTintBottom{display:block}
     html.wl-open #mTintBottom{display:none !important}
-    /* Mobilde düz beyaz (tasarımcı 09-27) — fark karışımı video üstünde parçalı görünüyordu. */
-    .scroll-cue{mix-blend-mode:normal;color:#fff;transform:translateX(-50%);bottom:26px}   /* kartın içinde, alt kenardan 12px */
   }
   /* MOBİL:SON */
 """
